@@ -1,13 +1,13 @@
 import { Button, Form, FormControl } from 'react-bootstrap';
 import { useState } from 'react';
+
 function Authorization() {
 	const formDefault = {
 		email: 'user@mail.ru',
 		password: '111111',
 	};
 	const [formValue, setFormValue] = useState(formDefault);
-	const { email } = formValue;
-	const { password } = formValue;
+	let { email, password } = formValue;
 	const changeInput = (e) => {
 		const { name, value } = e.target;
 		setFormValue({ ...formValue, [name]: value });
@@ -17,8 +17,8 @@ function Authorization() {
 		e.preventDefault();
 		try {
 			const apiKey = 'AIzaSyB4c4RDOCAaTXro1HTbNH857drwGWX-K20';
-			const dbUrl = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=';
-			const response = await fetch(`${dbUrl}${apiKey}`, {
+			const authorizationUrl = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=';
+			const response = await fetch(`${authorizationUrl}${apiKey}`, {
 				method: 'POST',
 				body: JSON.stringify(formValue),
 				headers: {
@@ -44,12 +44,28 @@ function Authorization() {
 		} catch (error) {
 			throw new Error(error);
 		}
+		{
+		}
+		const currentTime = Math.floor(Date.now() / 1000);
+		await fetch('https://bsh-app-3e342-default-rtdb.firebaseio.com/authorization/.json', {
+			method: 'POST',
+			body: JSON.stringify({ email, currentTime }),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
 	};
-
 	return (
 		<Form className='d-flex flex-column align-items-center w-50' onSubmit={authorizationResponse}>
-			<FormControl placeholder='Email' onChange={changeInput} value={email} name='email' />
-			<FormControl placeholder='Пароль' className='m-2' onChange={changeInput} value={password} name='password' />
+			<FormControl placeholder='Email' onChange={changeInput} value={email} name='email' type='email' />
+			<FormControl
+				placeholder='Пароль'
+				className='m-2'
+				onChange={changeInput}
+				value={password}
+				name='password'
+				type='password'
+			/>
 			<Button className='m-2' variant='primary' type='submit'>
 				отправить
 			</Button>
