@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-   "dev": "vite",
-  "build": "npm run lint && vite build",
- "lint": "eslint src --ext js,jsx",
+    "dev": "vite",  
+    "build": "npm run lint && vite build",
+    "lint": "eslint src --ext js,jsx",
     "preview": "vite preview",
-    "styles-fix": "npx stylelint \"**/*.scss\" --fix" 
+    "styles-fix": "npx stylelint \"**/*.scss\" --fix"
   },
   "dependencies": {
     "react": "^18.2.0",
