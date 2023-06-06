@@ -1,0 +1,21 @@
+{
+  "overrides": [
+    {
+      "files": ["src/**/*.{js,jsx,json}"],
+      "options": {
+        "printWidth": 90,
+        "useTabs": false,
+        "tabWidth": 2,
+        "singleQuote": true,
+        "jsxSingleQuote": true,
+        "endOfLine": "auto"
+      }
+    },
+    {
+      "files": "*.json",
+      "options": {
+        "parser": "json"
+      }
+    }
+  ]
+}
