@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-  "build": "lint && vite build",
-    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+   "dev": "vite",
+  "build": "npm run lint && vite build",
+ "lint": "eslint src --ext js,jsx",
     "preview": "vite preview",
-    "styles-fix": "npx stylelint \"**/*.scss\" --fix"
+    "styles-fix": "npx stylelint \"**/*.scss\" --fix" 
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -16,7 +16,7 @@
     "react-router": "^6.11.2"
   },
   "devDependencies": {
-        "eslint-config-prettier": "^8.8.0",
+    "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
