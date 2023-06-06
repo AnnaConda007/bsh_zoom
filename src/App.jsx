@@ -4,7 +4,8 @@ import Authorization from '../routes/authorization/authorization.component';
 function App() {
 	return (
 		<Routes>
-			<Route path='/' element={<Authorization />}></Route>
+			<Route path='/' element />
+			<Route path='authorization' element={<Authorization />}></Route>
 		</Routes>
 	);
 }
