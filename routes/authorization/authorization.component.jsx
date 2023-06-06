@@ -1,7 +1,10 @@
 import { Button, Form, FormControl } from 'react-bootstrap';
 import { useState } from 'react';
+//import { Redirect } from 'react-router-dom'; вызывает ошибку
+import { useNavigate } from 'react-router-dom';
 
 function Authorization() {
+	const navigate = useNavigate();
 	const formValueDefault = {
 		email: 'user@mail.ru',
 		password: '111111',
@@ -59,6 +62,7 @@ function Authorization() {
 		e.preventDefault();
 		await sendAuthorizationData();
 		await fixAuthorizationTime();
+		navigate('/');
 	};
 	return (
 		<Form className='d-flex flex-column align-items-center w-50' onSubmit={hundleSubmitAuthorization}>
