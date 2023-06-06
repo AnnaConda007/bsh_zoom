@@ -47,10 +47,10 @@ function Authorization() {
 	};
 
 	return (
-		<Form onSubmit={authorizationResponse}>
-			<FormControl onChange={changeInput} value={email} name='email' />
-			<FormControl onChange={changeInput} value={password} name='password' />
-			<Button variant='primary' type='submit'>
+		<Form className='d-flex flex-column align-items-center w-50' onSubmit={authorizationResponse}>
+			<FormControl placeholder='Email' onChange={changeInput} value={email} name='email' />
+			<FormControl placeholder='Пароль' className='m-2' onChange={changeInput} value={password} name='password' />
+			<Button className='m-2' variant='primary' type='submit'>
 				отправить
 			</Button>
 		</Form>
