@@ -1,10 +1,11 @@
+import { Routes, Route } from 'react-router-dom';
 
 import Authorization from '../routes/authorization/authorization.component';
 function App() {
 	return (
-		<div>
-			<Authorization />
-		</div>
+		<Routes>
+			<Route path='/' element={<Authorization />}></Route>
+		</Routes>
 	);
 }
 
