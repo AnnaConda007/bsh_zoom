@@ -10,3 +10,9 @@ npm run build
 
 # запустить версию после сборки 
 npm run preview
+
+# форматирование файлов со стилями 
+npm run styles-fix
+
+# запуск eslint 
+npm run lint
