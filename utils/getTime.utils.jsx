@@ -1,4 +1,7 @@
 import moment from 'moment';
+//import { DateTime } from 'luxon';
+
+import {} from 'luxon';
 const getfixAuthorizationTime = async () => {
 	let currentTime;
 	try {
@@ -13,3 +16,9 @@ const getfixAuthorizationTime = async () => {
 	return currentTime;
 };
 export default getfixAuthorizationTime;
+
+/*
+    const dateTime = DateTime.fromISO(data.datetime);
+    const timestamp = Math.floor(dateTime.toSeconds());
+    currentTime = timestamp || Math.floor(DateTime.local().toSeconds());
+*/
