@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 //import { Redirect } from 'react-router-dom'; вызывает ошибку
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
-
+//*************
 function Authorization() {
 	let currentTime;
 	const navigate = useNavigate();
@@ -61,7 +61,7 @@ function Authorization() {
 			.then((data) => {
 				const dateTime = moment(data.datetime);
 				const timestamp = Math.floor(dateTime.valueOf() / 1000);
-				currentTime = timestamp || Math.floor(Date.now() / 1000);// если АПИ перестанет работать, сработает Date.now(). Так будет более верно ?
+				currentTime = timestamp || Math.floor(Date.now() / 1000); // если АПИ перестанет работать, сработает Date.now(). Так будет более верно ?
 				console.log(currentTime);
 			})
 			.catch((error) => {
