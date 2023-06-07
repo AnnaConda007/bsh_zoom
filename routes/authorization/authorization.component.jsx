@@ -1,10 +1,17 @@
 import { Button, Form, FormControl } from 'react-bootstrap';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 //import { Redirect } from 'react-router-dom'; вызывает ошибку
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 
 function Authorization() {
+	let currentTime;
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		getfixAuthorizationTime();
+	}, []);
+
 	const formValueDefault = {
 		email: 'user@mail.ru',
 		password: '111111',
@@ -15,6 +22,7 @@ function Authorization() {
 		const { name, value } = e.target;
 		setFormValue({ ...formValue, [name]: value });
 	};
+
 	const sendAuthorizationData = async () => {
 		try {
 			const apiKey = 'AIzaSyB4c4RDOCAaTXro1HTbNH857drwGWX-K20';
@@ -47,8 +55,21 @@ function Authorization() {
 		}
 	};
 
-	const fixAuthorizationTime = async () => {
-		const currentTime = Math.floor(Date.now() / 1000);
+	const getfixAuthorizationTime = () => {
+		fetch('http://worldtimeapi.org/api/timezone/Russia/Moscow')
+			.then((response) => response.json())
+			.then((data) => {
+				const dateTime = moment(data.datetime);
+				const timestamp = Math.floor(dateTime.valueOf() / 1000);
+				currentTime = timestamp || Math.floor(Date.now() / 1000);
+				console.log(currentTime);
+			})
+			.catch((error) => {
+				console.error('Ошибка при обращении к API,опредяляющему точное время :', error);
+			});
+	};
+
+	const sendFixAuthorizationTime = async () => {
 		await fetch('https://bsh-app-3e342-default-rtdb.firebaseio.com/authorization/.json', {
 			method: 'PATCH',
 			body: JSON.stringify({ email, currentTime }),
@@ -61,9 +82,10 @@ function Authorization() {
 	const hundleSubmitAuthorization = async (e) => {
 		e.preventDefault();
 		await sendAuthorizationData();
-		await fixAuthorizationTime();
+		await sendFixAuthorizationTime();
 		navigate('/');
 	};
+
 	return (
 		<Form className='d-flex flex-column align-items-center w-50' onSubmit={hundleSubmitAuthorization}>
 			<FormControl placeholder='Email' onChange={changeInput} value={email} name='email' type='email' />
