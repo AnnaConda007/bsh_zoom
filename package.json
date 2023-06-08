@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run lint -- --fix && vite build",
-    "lint": "eslint src --ext js,jsx",
+    "build": "vite build",
+    "lint": "eslint src --ext .js, .jsx",
+    "lint-fix":"eslint src --fix --ext .js,.jsx",
     "preview": "vite preview",
     "styles-fix": "npx stylelint \"**/*.scss\" --fix"
   },
