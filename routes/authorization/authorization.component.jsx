@@ -1,4 +1,4 @@
-import AuthorizationForm from '../../src/components/authorizationForm/authorizationForm.component';
+import AuthorizationForm from '../../src/components/authorizationform/authorizationform.component';
 function Authorization() {
 	return <AuthorizationForm />;
 }

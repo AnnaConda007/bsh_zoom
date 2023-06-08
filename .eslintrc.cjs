@@ -7,7 +7,7 @@ module.exports = {
 		'plugin:react/jsx-runtime',
 		'plugin:react-hooks/recommended',
 		'plugin:jsx-a11y/recommended',
-		'simple-import-sort',// если удалит, то весь код красный
+		'plugin:eslint-simple-import-sort', // если удалит, то весь код красный
 	],
 	parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
 	settings: { react: { version: '18.2' } },
