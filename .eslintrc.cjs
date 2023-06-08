@@ -7,7 +7,6 @@ module.exports = {
 		'plugin:react/jsx-runtime',
 		'plugin:react-hooks/recommended',
 		'plugin:jsx-a11y/recommended',
-		'simple-import-sort',
 	],
 	parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
 	settings: { react: { version: '18.2' } },
@@ -21,8 +20,6 @@ module.exports = {
 		'react/react-in-jsx-scope': 'off',
 		'jsx-a11y/accessible-emoji': 'off',
 		'react/prop-types': 'off',
-		'simple-import-sort/imports': 'error',
-		'simple-import-sort/exports': 'error',
 		'jsx-a11y/anchor-is-valid': [
 			'error',
 			{
