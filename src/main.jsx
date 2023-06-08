@@ -12,7 +12,7 @@ import App from './App.jsx';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#9a1ac1', // ваш цвет по умолчанию
+      main: '#9a1ac1',
     },
   },
 });
