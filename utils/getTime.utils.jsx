@@ -9,7 +9,6 @@ const getfixAuthorizationTime = async () => {
 		const dateTime = DateTime.fromISO(data.datetime);
 		const timestamp = Math.floor(dateTime.toSeconds());
 		currentTime = timestamp || Math.floor(DateTime.local().toSeconds());
-		console.log(currentTime);
 	} catch (error) {
 		console.error('Ошибка при обращении к API,опредяляющему точное время :', error);
 	}

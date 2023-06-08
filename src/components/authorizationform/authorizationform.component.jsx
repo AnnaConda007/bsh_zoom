@@ -16,8 +16,8 @@ function AuthorizationForm() {
 	}, []);
 
 	const formValueDefault = {
-		email: 'user@mail.ru',  // очистить
-		password: '111111',     // очистить
+		email: 'user@mail.ru', // очистить
+		password: '111111', // очистить
 	};
 	const [formValue, setFormValue] = useState(formValueDefault);
 	let { email, password } = formValue;
@@ -43,7 +43,6 @@ function AuthorizationForm() {
 			} else {
 				const data = await response.json();
 				const errorMessage = data.error.message;
-				console.log(errorMessage);
 				switch (errorMessage) {
 					case 'INVALID_PASSWORD':
 						setError('Неверный пароль');
