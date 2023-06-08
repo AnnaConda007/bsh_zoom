@@ -1,3 +1,9 @@
+$primary: #9a1ac1;
+
+$theme-colors: (
+  "primary": $primary,
+);
+@import 'node_modules/bootstrap/scss/bootstrap';
 * {
   margin: 0;
   padding: 0;
