@@ -19,6 +19,7 @@
 		"jsx-a11y/accessible-emoji": "off",
 		"react/prop-types": "off",
 		"simple-import-sort/imports": "error",
+		 "semi": ["error", "never"],
 		"simple-import-sort/exports": "error",
 		"jsx-a11y/anchor-is-valid": [
 			"error",
