@@ -7,11 +7,13 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint src --ext .js, .jsx",
-    "lint-fix":"eslint src --fix --ext .js,.jsx",
+    "lint-fix": "eslint src --fix --ext .js,.jsx",
     "preview": "vite preview",
     "styles-fix": "npx stylelint \"**/*.scss\" --fix"
   },
   "dependencies": {
+    "@mui/x-date-pickers": "^6.7.0",
+    "DatePicker": "^2.0.0",
     "luxon": "^3.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
