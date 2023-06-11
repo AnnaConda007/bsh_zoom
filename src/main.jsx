@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.styles.scss';
 
 import { ThemeProvider } from '@mui/material/styles';
