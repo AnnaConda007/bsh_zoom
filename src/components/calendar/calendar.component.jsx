@@ -1,13 +1,17 @@
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'; //пакет методов для выбора датыi
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'; // компонент для вызова календаря и выбора даты
-import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker'; // сам календарь
+import * as React from 'react';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const Calendar = () => {
 	return (
-		<>
-			<DatePicker label='Basic date picker' />
-			<p>текст, пропадающий при добавлении DatePicker </p>
-		</>
+		<LocalizationProvider dateAdapter={AdapterDayjs}>
+			<DemoContainer components={['DatePicker']}>
+				<DatePicker label='Basic date picker' />
+			</DemoContainer>
+		</LocalizationProvider>
 	);
 };
+
 export default Calendar;
