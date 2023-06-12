@@ -2,11 +2,13 @@ import { TextField, FormControl } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { useState, useEffect } from 'react';
+import { useState, useRef } from 'react';
 
 const ToDoBox = () => {
 	const [addTaskInput, setAddTaskInput] = useState('');
 	const [tasks, setTasks] = useState([]);
+	const [isEditing, setIsEditing] = useState(null);
+	const textFieldRef = useRef(null);
 
 	const handleAddTaskBtn = () => {
 		if (addTaskInput === '') return;
@@ -21,10 +23,18 @@ const ToDoBox = () => {
 	};
 
 	const handleTaskInputChange = (index, value) => {
+		if (!isEditing) return;
 		const updatedTasks = [...tasks];
 		updatedTasks[index] = value;
 		setTasks(updatedTasks);
 		console.log(tasks);
+	};
+
+	const handleEditClick = () => {
+		setIsEditing(!isEditing);
+		if (!isEditing && textFieldRef.current) {
+			textFieldRef.current.focus();
+		}
 	};
 
 	return (
@@ -38,7 +48,11 @@ const ToDoBox = () => {
 						}}
 						value={addTaskInput}
 						InputProps={{
-							endAdornment: <AddCircleOutlineIcon onClick={handleAddTaskBtn} />,
+							endAdornment: (
+								<button>
+									<AddCircleOutlineIcon onClick={handleAddTaskBtn} />
+								</button>
+							),
 						}}
 					/>
 				</div>
@@ -47,17 +61,18 @@ const ToDoBox = () => {
 						{tasks.map((task, index) => (
 							<TextField
 								key={index}
-								value={task} 
+								value={task}
 								onChange={(e) => handleTaskInputChange(index, e.target.value)}
+								inputRef={textFieldRef}
 								InputProps={{
 									endAdornment: (
 										<div>
-											<DeleteForeverIcon />
-											<ModeEditIcon
-												onClick={() => {
-													console.log('Edit task:', task);
-												}}
-											/>
+											<button>
+												<DeleteForeverIcon />
+											</button>
+											<button>
+												<ModeEditIcon onClick={handleEditClick} />
+											</button>
 										</div>
 									),
 								}}

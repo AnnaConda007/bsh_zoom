@@ -21,3 +21,12 @@ body{
   align-items: center;
   justify-content: center; 
 }
+
+button{
+  background-color: transparent;
+  border: none;
+}
+
+button:active{
+  transform: scale(0.8);
+}
