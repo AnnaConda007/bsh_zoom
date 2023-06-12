@@ -27,7 +27,7 @@ const Calendar = () => {
 			>
 				<Box
 					sx={{
-						backgroundColor: 'pink',
+						backgroundColor: 'rgb(126, 120, 252)',
 						height: '100%',
 						display: 'flex',
 						alignItems: 'center',
