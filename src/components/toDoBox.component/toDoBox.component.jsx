@@ -27,7 +27,6 @@ const ToDoBox = () => {
 		const updatedTasks = [...tasks];
 		updatedTasks[index] = value;
 		setTasks(updatedTasks);
-		console.log(tasks);
 	};
 
 	const handleEditClick = () => {
@@ -35,6 +34,7 @@ const ToDoBox = () => {
 		if (!isEditing && textFieldRef.current) {
 			textFieldRef.current.focus();
 		}
+		console.log(tasks);
 	};
 
 	return (
