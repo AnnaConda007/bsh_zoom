@@ -1,4 +1,4 @@
-  {
+{
   "name": "bsh_zoom",
   "private": true,
   "version": "0.0.0",
@@ -12,6 +12,7 @@
     "styles-fix": "npx stylelint \"**/*.scss\" --fix"
   },
   "dependencies": {
+    "@mui/icons-material": "^5.11.16",
     "@mui/x-date-pickers": "^6.7.0",
     "DatePicker": "^2.0.0",
     "luxon": "^3.3.0",
