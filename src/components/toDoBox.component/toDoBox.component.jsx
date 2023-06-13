@@ -2,19 +2,20 @@ import { TextField, FormControl } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { useState, useRef } from 'react';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CancelIcon from '@mui/icons-material/Cancel';
+import { useState } from 'react';
 
 const ToDoBox = () => {
 	const [addTaskInput, setAddTaskInput] = useState('');
 	const [tasks, setTasks] = useState([]);
-	const [isEditing, setIsEditing] = useState(null);
-	const inputRefs = useRef([]);
+	const [isEditingIndex, setisEditingIndex] = useState(null);
+	const [editingValue, setEditingValue] = useState('');
 
 	const handleAddTaskBtn = () => {
 		if (addTaskInput === '') return;
 		setTasks([...tasks, addTaskInput]);
 		setAddTaskInput('');
-    
 	};
 
 	const handleEnterForAdd = (event) => {
@@ -23,41 +24,30 @@ const ToDoBox = () => {
 		}
 	};
 
-	const handleInputRef = (element, index) => {
-		inputRefs.current[index] = element;
-	};
-
 	const handleEditBtn = (index) => {
-		setIsEditing(index);
-		if (inputRefs.current[index]) {
-			inputRefs.current[index].focus();
-		}
+		setisEditingIndex(index);
+		setEditingValue(tasks[index]);//достаю значение старое
 	};
 
-	const handleTaskInputChange = (index, value) => {
-		if (index !== isEditing) return;
+	const handleTaskInputChange = (value) => {//стало
+		setEditingValue(value);
+	};
+
+	const handleSaveEdit = (index) => {
 		const updatedTasks = [...tasks];
-		updatedTasks[index] = value;
+		updatedTasks[index] = editingValue;
 		setTasks(updatedTasks);
+		setisEditingIndex(null);
 	};
 
-	const handleEnterForEditFinish = (e, index) => {
-		if (e.key === 'Enter') {
-			setIsEditing(null);
-			if (inputRefs.current[index]) {
-				inputRefs.current[index].blur();
-			}
-		}
-	};
-
-	const handleBlur = () => {
-		setIsEditing(null);
+	const handleCancelEdit = () => {
+		setisEditingIndex(null);
 	};
 
 	const handleDeleteBtn = (index) => {
 		setTasks(tasks.filter((_, i) => i !== index));
-		if (index === isEditing) {
-			setIsEditing(null);
+		if (index === isEditingIndex) {
+			setisEditingIndex(null);
 		}
 	};
 
@@ -82,16 +72,11 @@ const ToDoBox = () => {
 				</div>
 				<div className='to-do-wrap__tasks'>
 					<FormControl>
-						{tasks.map((task, index) => (
+						{tasks.map((taskValue, index) => (
 							<TextField
 								key={index}
-								onKeyDown={(e) => {
-									handleEnterForEditFinish(e, index);
-								}}
-								onBlur={handleBlur} 
-								value={task}
-								inputRef={(element) => handleInputRef(element, index)}
-								onChange={(e) => handleTaskInputChange(index, e.target.value)}
+								value={isEditingIndex === index ? editingValue : taskValue}
+								onChange={(e) => handleTaskInputChange(e.target.value)}
 								type='text'
 								InputProps={{
 									endAdornment: (
@@ -99,9 +84,20 @@ const ToDoBox = () => {
 											<button>
 												<DeleteForeverIcon onClick={() => handleDeleteBtn(index)} />
 											</button>
-											<button>
-												<ModeEditIcon onClick={() => handleEditBtn(index)} />
-											</button>
+											{isEditingIndex === index ? (
+												<>
+													<button>
+														<CheckCircleOutlineIcon onClick={() => handleSaveEdit(index)} />
+													</button>
+													<button>
+														<CancelIcon onClick={handleCancelEdit} />
+													</button>
+												</>
+											) : (
+												<button>
+													<ModeEditIcon onClick={() => handleEditBtn(index)} />
+												</button>
+											)}
 										</div>
 									),
 								}}
