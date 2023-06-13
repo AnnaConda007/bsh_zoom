@@ -2,13 +2,13 @@ import { TextField, FormControl } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 const ToDoBox = () => {
 	const [addTaskInput, setAddTaskInput] = useState('');
 	const [tasks, setTasks] = useState([]);
 	const [isEditing, setIsEditing] = useState(null);
-	const [editIndex, setEditIndex] = useState(null);
+	const inputRefs = useRef([]);
 
 	const handleAddTaskBtn = () => {
 		// добавление новой задачи
@@ -25,7 +25,7 @@ const ToDoBox = () => {
 	};
 
 	const handleTaskInputChange = (index, value) => {
-		// перезаписывание значения инпута при редактирвоании
+		// перезаписывание значения инпута при редактировании
 		if (!isEditing) return;
 		const updatedTasks = [...tasks];
 		updatedTasks[index] = value;
@@ -34,13 +34,18 @@ const ToDoBox = () => {
 
 	const handleEditClick = (index) => {
 		// запуск редактирования
-		setIsEditing(!isEditing); // обновляю состояние - что бы запускалось handleTaskInputChange
-		setEditIndex(index); // обновляю значение, что бы включить автофокус при ререндеринге
-		console.log(tasks);
+		setIsEditing(!isEditing);
+		if (inputRefs.current[index]) {
+			inputRefs.current[index].focus();
+		}
 	};
 
-	const handleDelitClick = (index) => {
+	const handleDeleteClick = (index) => {
 		setTasks(tasks.filter((_, i) => i !== index));
+	};
+
+	const handleInputRef = (element, index) => {
+		inputRefs.current[index] = element;
 	};
 
 	return (
@@ -64,38 +69,27 @@ const ToDoBox = () => {
 				</div>
 				<div className='to-do-wrap__tasks'>
 					<FormControl>
-						{tasks.map((task, index) => {
-							console.log(index === editIndex); // после клика по "редактировать", выводит true(при условии, что введена только одна задача)
-							return (
-								<TextField
-									autoFocus={index === editIndex} // но тут никогда не срабатывает, хоть сравнение и возвращет true
-									key={index}
-									value={task}
-									onChange={(e) => handleTaskInputChange(index, e.target.value)}
-									type='text'
-									InputProps={{
-										endAdornment: (
-											<div>
-												<button>
-													<DeleteForeverIcon
-														onClick={() => {
-															handleDelitClick(index);
-														}}
-													/>
-												</button>
-												<button>
-													<ModeEditIcon
-														onClick={() => {
-															handleEditClick(index);
-														}}
-													/>
-												</button>
-											</div>
-										),
-									}}
-								/>
-							);
-						})}
+						{tasks.map((task, index) => (
+							<TextField
+								key={index}
+								value={task}
+								inputRef={(element) => handleInputRef(element, index)}
+								onChange={(e) => handleTaskInputChange(index, e.target.value)}
+								type='text'
+								InputProps={{
+									endAdornment: (
+										<div>
+											<button>
+												<DeleteForeverIcon onClick={() => handleDeleteClick(index)} />
+											</button>
+											<button>
+												<ModeEditIcon onClick={() => handleEditClick(index)} />
+											</button>
+										</div>
+									),
+								}}
+							/>
+						))}
 					</FormControl>
 				</div>
 			</div>
