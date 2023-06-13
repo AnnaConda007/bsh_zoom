@@ -39,6 +39,10 @@ const ToDoBox = () => {
 		console.log(tasks);
 	};
 
+	const handleDelitClick = (index) => {
+		setTasks(tasks.filter((_, i) => i !== index));
+	};
+
 	return (
 		<>
 			<div className='to-do-wrap'>
@@ -73,7 +77,11 @@ const ToDoBox = () => {
 										endAdornment: (
 											<div>
 												<button>
-													<DeleteForeverIcon />
+													<DeleteForeverIcon
+														onClick={() => {
+															handleDelitClick(index);
+														}}
+													/>
 												</button>
 												<button>
 													<ModeEditIcon
