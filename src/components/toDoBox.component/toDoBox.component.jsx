@@ -11,18 +11,21 @@ const ToDoBox = () => {
 	const [editIndex, setEditIndex] = useState(null);
 
 	const handleAddTaskBtn = () => {
+		// добавление новой задачи
 		if (addTaskInput === '') return;
 		setTasks([...tasks, addTaskInput]);
 		setAddTaskInput('');
 	};
 
 	const handleEnterDown = (event) => {
+		// добавление через энтер
 		if (event.key === 'Enter') {
 			handleAddTaskBtn();
 		}
 	};
 
 	const handleTaskInputChange = (index, value) => {
+		// перезаписывание значения инпута при редактирвоании
 		if (!isEditing) return;
 		const updatedTasks = [...tasks];
 		updatedTasks[index] = value;
@@ -30,8 +33,9 @@ const ToDoBox = () => {
 	};
 
 	const handleEditClick = (index) => {
-		setIsEditing(!isEditing);
-		setEditIndex(index);
+		// запуск редактирования
+		setIsEditing(!isEditing); // обновляю состояние - что бы запускалось handleTaskInputChange
+		setEditIndex(index); // обновляю значение, что бы включить автофокус при ререндеринге
 		console.log(tasks);
 	};
 
@@ -57,10 +61,10 @@ const ToDoBox = () => {
 				<div className='to-do-wrap__tasks'>
 					<FormControl>
 						{tasks.map((task, index) => {
-							console.log(index === editIndex);
+							console.log(index === editIndex); // после клика по "редактировать", выводит true(при условии, что введена только одна задача)
 							return (
 								<TextField
-									autoFocus={index === editIndex}
+									autoFocus={index === editIndex} // но тут никогда не срабатывает, хоть сравнение и возвращет true
 									key={index}
 									value={task}
 									onChange={(e) => handleTaskInputChange(index, e.target.value)}
