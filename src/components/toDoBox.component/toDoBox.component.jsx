@@ -2,13 +2,13 @@ import { TextField, FormControl } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
 const ToDoBox = () => {
 	const [addTaskInput, setAddTaskInput] = useState('');
 	const [tasks, setTasks] = useState([]);
 	const [isEditing, setIsEditing] = useState(null);
-	const textFieldRef = useRef(null);
+	const [editIndex, setEditIndex] = useState(null);
 
 	const handleAddTaskBtn = () => {
 		if (addTaskInput === '') return;
@@ -29,11 +29,9 @@ const ToDoBox = () => {
 		setTasks(updatedTasks);
 	};
 
-	const handleEditClick = () => {
+	const handleEditClick = (index) => {
 		setIsEditing(!isEditing);
-		if (!isEditing && textFieldRef.current) {
-			textFieldRef.current.focus();
-		}
+		setEditIndex(index);
 		console.log(tasks);
 	};
 
@@ -58,26 +56,34 @@ const ToDoBox = () => {
 				</div>
 				<div className='to-do-wrap__tasks'>
 					<FormControl>
-						{tasks.map((task, index) => (
-							<TextField
-								key={index}
-								value={task}
-								onChange={(e) => handleTaskInputChange(index, e.target.value)}
-								inputRef={textFieldRef}
-								InputProps={{
-									endAdornment: (
-										<div>
-											<button>
-												<DeleteForeverIcon />
-											</button>
-											<button>
-												<ModeEditIcon onClick={handleEditClick} />
-											</button>
-										</div>
-									),
-								}}
-							/>
-						))}
+						{tasks.map((task, index) => {
+							console.log(index === editIndex);
+							return (
+								<TextField
+									autoFocus={index === editIndex}
+									key={index}
+									value={task}
+									onChange={(e) => handleTaskInputChange(index, e.target.value)}
+									type='text'
+									InputProps={{
+										endAdornment: (
+											<div>
+												<button>
+													<DeleteForeverIcon />
+												</button>
+												<button>
+													<ModeEditIcon
+														onClick={() => {
+															handleEditClick(index);
+														}}
+													/>
+												</button>
+											</div>
+										),
+									}}
+								/>
+							);
+						})}
 					</FormControl>
 				</div>
 			</div>
