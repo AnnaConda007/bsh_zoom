@@ -17,10 +17,26 @@ const ToDoBox = () => {
 		setAddTaskInput('');
 	};
 
-	const handleEnterDown = (event) => {
+	const handleEnterForAdd = (event) => {
 		// добавление через энтер
 		if (event.key === 'Enter') {
 			handleAddTaskBtn();
+		}
+	};
+
+	const handleInputRef = (element, index) => {
+		// опрделение активного инпут
+		inputRefs.current[index] = element;
+	};
+
+	const handleEditBtn = (index) => {
+		// запуск редактирования
+		setIsEditing(!isEditing);
+		if (inputRefs.current[index]) {
+			inputRefs.current[index].focus();
+		}
+		if (isEditing) {
+			inputRefs.current[index].blur();
 		}
 	};
 
@@ -32,20 +48,16 @@ const ToDoBox = () => {
 		setTasks(updatedTasks);
 	};
 
-	const handleEditClick = (index) => {
-		// запуск редактирования
-		setIsEditing(!isEditing);
-		if (inputRefs.current[index]) {
-			inputRefs.current[index].focus();
+	const handleEnterForEditFinish = (e, index) => {
+		// снятие фокуса при нажатии на enter
+		if (e.key === 'Enter') {
+			setIsEditing(null);
+			inputRefs.current[index].blur();
 		}
 	};
 
-	const handleDeleteClick = (index) => {
+	const handleDeleteBtn = (index) => {
 		setTasks(tasks.filter((_, i) => i !== index));
-	};
-
-	const handleInputRef = (element, index) => {
-		inputRefs.current[index] = element;
 	};
 
 	return (
@@ -53,7 +65,7 @@ const ToDoBox = () => {
 			<div className='to-do-wrap'>
 				<div className='to-do-wrap__add'>
 					<TextField
-						onKeyDown={handleEnterDown}
+						onKeyDown={handleEnterForAdd}
 						onChange={(e) => {
 							setAddTaskInput(e.target.value);
 						}}
@@ -72,6 +84,9 @@ const ToDoBox = () => {
 						{tasks.map((task, index) => (
 							<TextField
 								key={index}
+								onKeyDown={(e) => {
+									handleEnterForEditFinish(e, index);
+								}}
 								value={task}
 								inputRef={(element) => handleInputRef(element, index)}
 								onChange={(e) => handleTaskInputChange(index, e.target.value)}
@@ -80,10 +95,10 @@ const ToDoBox = () => {
 									endAdornment: (
 										<div>
 											<button>
-												<DeleteForeverIcon onClick={() => handleDeleteClick(index)} />
+												<DeleteForeverIcon onClick={() => handleDeleteBtn(index)} />
 											</button>
 											<button>
-												<ModeEditIcon onClick={() => handleEditClick(index)} />
+												<ModeEditIcon onClick={() => handleEditBtn(index)} />
 											</button>
 										</div>
 									),
