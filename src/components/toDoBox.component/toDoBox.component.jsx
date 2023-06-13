@@ -11,53 +11,54 @@ const ToDoBox = () => {
 	const inputRefs = useRef([]);
 
 	const handleAddTaskBtn = () => {
-		// добавление новой задачи
 		if (addTaskInput === '') return;
 		setTasks([...tasks, addTaskInput]);
 		setAddTaskInput('');
+    
 	};
 
 	const handleEnterForAdd = (event) => {
-		// добавление через энтер
 		if (event.key === 'Enter') {
 			handleAddTaskBtn();
 		}
 	};
 
 	const handleInputRef = (element, index) => {
-		// опрделение активного инпут
 		inputRefs.current[index] = element;
 	};
 
 	const handleEditBtn = (index) => {
-		// запуск редактирования
-		setIsEditing(!isEditing);
+		setIsEditing(index);
 		if (inputRefs.current[index]) {
 			inputRefs.current[index].focus();
-		}
-		if (isEditing) {
-			inputRefs.current[index].blur();
 		}
 	};
 
 	const handleTaskInputChange = (index, value) => {
-		// перезаписывание значения инпута при редактировании
-		if (!isEditing) return;
+		if (index !== isEditing) return;
 		const updatedTasks = [...tasks];
 		updatedTasks[index] = value;
 		setTasks(updatedTasks);
 	};
 
 	const handleEnterForEditFinish = (e, index) => {
-		// снятие фокуса при нажатии на enter
 		if (e.key === 'Enter') {
 			setIsEditing(null);
-			inputRefs.current[index].blur();
+			if (inputRefs.current[index]) {
+				inputRefs.current[index].blur();
+			}
 		}
+	};
+
+	const handleBlur = () => {
+		setIsEditing(null);
 	};
 
 	const handleDeleteBtn = (index) => {
 		setTasks(tasks.filter((_, i) => i !== index));
+		if (index === isEditing) {
+			setIsEditing(null);
+		}
 	};
 
 	return (
@@ -87,6 +88,7 @@ const ToDoBox = () => {
 								onKeyDown={(e) => {
 									handleEnterForEditFinish(e, index);
 								}}
+								onBlur={handleBlur} 
 								value={task}
 								inputRef={(element) => handleInputRef(element, index)}
 								onChange={(e) => handleTaskInputChange(index, e.target.value)}
