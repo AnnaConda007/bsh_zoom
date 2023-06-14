@@ -20,10 +20,29 @@ const theme = createTheme({
 				root: {
 					width: '100%',
 					height: '100%',
+					maxHeight: '100%',
 				},
 				viewTransitionContainer: {
 					width: '100%',
 					height: '100%',
+					'& > div': {
+						height: '100%',
+						'& > div': {
+							height: '100%',
+						},
+					},
+				},
+				'& .css-i5q14k-MuiDayCalendar-header': {
+					justifyContent: 'space-evenly',
+				},
+				'& .css-flbe84-MuiDayCalendar-weekContainer': {
+					justifyContent: 'space-evenly',
+				},
+				'& .css-v20sp3-MuiButtonBase-root-MuiPickersDay-root': {
+					width: '70px',
+					height: '70px',
+					fontWeight: '400',
+					backgroundColor: 'red',
 				},
 				'css-i5q14k-MuiDayCalendar-header': {
 					justifyContent: 'space-evenly',
