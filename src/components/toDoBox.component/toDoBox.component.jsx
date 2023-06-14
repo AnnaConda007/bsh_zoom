@@ -26,11 +26,11 @@ const ToDoBox = () => {
 
 	const handleEditBtn = (index) => {
 		setisEditingIndex(index);
-		setEditingValue(tasks[index]);//достаю значение старое
+		setEditingValue(tasks[index]);
 	};
 
-	const handleTaskInputChange = (value) => {//стало
-		setEditingValue(value);
+	const handleTaskInputChange = (newValue) => {
+		setEditingValue(newValue);
 	};
 
 	const handleSaveEdit = (index) => {
@@ -76,7 +76,11 @@ const ToDoBox = () => {
 							<TextField
 								key={index}
 								value={isEditingIndex === index ? editingValue : taskValue}
-								onChange={(e) => handleTaskInputChange(e.target.value)}
+								onChange={(e) => {
+									if (isEditingIndex === index) {
+										handleTaskInputChange(e.target.value);
+									}
+								}}
 								type='text'
 								InputProps={{
 									endAdornment: (
