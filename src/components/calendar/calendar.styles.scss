@@ -1,0 +1,16 @@
+ .css-15v8kdh-MuiPickersFadeTransitionGroup-root-MuiDateCalendar-viewTransitionContainer {
+    background-color: rebeccapurple;
+    height: 100%;
+
+}
+ю.css-i5q14k-MuiDayCalendar-header {
+    justify-content: space-evenly; // дни календаря вытягиваются во всю ширину 
+}
+
+.css-1cafy48-MuiPickersSlideTransition-root-MuiDayCalendar-slideTransition {  
+    display: block;
+    position: relative;
+    overflow-x: hidden;
+    min-height: 240px; 
+    background-color: red;
+}

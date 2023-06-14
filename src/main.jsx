@@ -14,6 +14,7 @@ const theme = createTheme({
       main: '#9a1ac1',
     },
   },
+  
 });
 
 ReactDOM.createRoot(document.getElementById('root')).render(

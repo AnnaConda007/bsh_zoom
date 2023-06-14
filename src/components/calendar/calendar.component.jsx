@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Modal, Box, TextField, FormControl } from '@mui/material';
+import { Modal, Box, backdropClasses } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-
+import "./calendar.styles.scss"
 import ToDoBox from '../toDoBox.component/toDoBox.component';
 const Calendar = () => {
-	const [open, setOpen] = useState(true);
+	const [open, setOpen] = useState(false);
 
 	const handleDateChange = (date) => {
 		console.log(date);
@@ -39,11 +39,19 @@ const Calendar = () => {
 			</Modal>
 
 			<LocalizationProvider dateAdapter={AdapterDayjs}>
-				<DateCalendar
-					onChange={(data) => {
-						handleDateChange(data);
-					}}
-				/>
+				<div style={{ height: '100%', 	backgroundColor: 'red', width: '100%' }}>
+					<DateCalendar
+						sx={{
+							backgroundColor: 'pink',
+							width: '100%',
+							height: '100%',
+							maxHeight: '100%',
+						}}
+						onChange={(data) => {
+							handleDateChange(data);
+						}}
+					/>
+				</div>
 			</LocalizationProvider>
 		</>
 	);
