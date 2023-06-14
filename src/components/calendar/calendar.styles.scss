@@ -10,10 +10,9 @@
     justify-content: space-evenly; 
 }
 
-.MuiDateCalendar-viewTransitionContainer .css-v20sp3-MuiButtonBase-root-MuiPickersDay-root // эти стили не применяются 
-{/*
-  	width: '70px';
-		height: '70px';
-		font-weight: '400px';*/
-		background-color: 'red'
+.MuiDateCalendar-viewTransitionContainer .css-v20sp3-MuiButtonBase-root-MuiPickersDay-root {
+	width: 70px;
+	height: 70px;
+	font-weight: 400;
+	background-color: red;
 }
