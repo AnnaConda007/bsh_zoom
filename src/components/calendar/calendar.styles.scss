@@ -1,42 +1,22 @@
-.css-cwhad8-MuiDateCalendar-root{// работает только если убрать высоту и ширу в консоли 
-  background-color: aquamarine;
+.css-cwhad8-MuiDateCalendar-root{ 
   width: 100%;
   height: 100%;
 }
 
 
-.MuiDateCalendar-viewTransitionContainer	{ // все кроме цветов переопределяется на значение по умолчанию 
-  background-color: rgb(153, 255, 0);
+.MuiDateCalendar-viewTransitionContainer	{  
   width: 100%;
   height: 100%;
 
 }
 
 .MuiDateCalendar-viewTransitionContainer .css-i5q14k-MuiDayCalendar-header { 
-  -webkit-justify-content: space-evenly; // не применяется, в консоле перечеркнуто 
+    justify-content: space-evenly; 
+}
+
+
+ 
+.MuiDateCalendar-viewTransitionContainer.css-flbe84-MuiDayCalendar-weekContainer { 
     justify-content: space-evenly;
-    background-color: rgb(98, 0, 255);// цвета примняется так как он не задан по умолчанию 
-}
-
-
-
-
-
-/*
-.css-15v8kdh-MuiPickersFadeTransitionGroup-root-MuiDateCalendar-viewTransitionContainer {
-    background-color: rebeccapurple;
-    height: 100%;
-
-}
-.css-i5q14k-MuiDayCalendar-header {
-    justify-content: space-evenly; // дни календаря вытягиваются во всю ширину 
-}
-
-.css-1cafy48-MuiPickersSlideTransition-root-MuiDayCalendar-slideTransition {  
-    display: block;
-    position: relative;
-    overflow-x: hidden;
-    min-height: 240px; 
     background-color: red;
 }
-*/
