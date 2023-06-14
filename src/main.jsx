@@ -25,10 +25,10 @@ const theme = createTheme({
 					width: '100%',
 					height: '100%',
 				},
-				header: {
+				'css-i5q14k-MuiDayCalendar-header': {
 					justifyContent: 'space-evenly',
 				},
-				weekContainer: { 
+				'css-flbe84-MuiDayCalendar-weekContainer': {
 					justifyContent: 'space-evenly',
 				},
 			},
