@@ -31,6 +31,12 @@ const theme = createTheme({
 				'css-flbe84-MuiDayCalendar-weekContainer': {
 					justifyContent: 'space-evenly',
 				},
+				'css-v20sp3-MuiButtonBase-root-MuiPickersDay-root': {
+					width: '70px',
+					height: '70px',
+					fontWeight: '400px',
+					backgroundColor: 'red',
+				},
 			},
 		},
 	},
