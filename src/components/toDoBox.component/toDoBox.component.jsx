@@ -53,8 +53,8 @@ const ToDoBox = () => {
 
 	return (
 		<>
-			<div className='to-do-wrap'>
-				<div className='to-do-wrap__add'>
+			<div style={{ backgroundColor: 'pink', width: '90%', height: '90%' }}>
+				<div>
 					<TextField
 						onKeyDown={handleEnterForAdd}
 						onChange={(e) => {

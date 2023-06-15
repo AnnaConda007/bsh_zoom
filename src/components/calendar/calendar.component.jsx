@@ -10,7 +10,7 @@ import 'dayjs/locale/ru';
 dayjs.locale('ru');
 
 const Calendar = () => {
-	const [open, setOpen] = useState(false);
+	const [open, setOpen] = useState(true);
 
 	const handleDateChange = (date) => {
 		console.log(date);
@@ -28,27 +28,38 @@ const Calendar = () => {
 
 	return (
 		<>
-			<Modal open={open} aria-labelledby='modal-modal-title' aria-describedby='modal-modal-description'>
+			<Modal
+				open={open}
+				aria-labelledby='modal-modal-title'
+				aria-describedby='modal-modal-description'
+				sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+			>
 				<Box
 					sx={{
 						backgroundColor: 'rgb(126, 120, 252)',
+						maxHeight: '600px',
 						height: '100%',
+						maxWidth: '1000px',
+						width: '100%',
 						display: 'flex',
 						alignItems: 'center',
 						justifyContent: 'center',
+						flexWrap: 'wrap',
 					}}
 				>
-					<ToDoBox />
-
-					<Button onClick={handleClose}>Close</Button>
+					<div style={{ width: '100%', backgroundColor: 'red', textAlign: 'right', height: '5%' }}>
+						<Button onClick={handleClose}>Close</Button>
+					</div>
+					<div
+						style={{ height: '95%', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+					>
+						<ToDoBox sx={{ backgroundColor: 'red' }} />
+					</div>
 				</Box>
 			</Modal>
 
 			<LocalizationProvider dateAdapter={AdapterDayjs}>
-				<DateCalendar
-					onChange={handleDateChange}
-					shouldDisableDate={isWeekend}  
-				/>
+				<DateCalendar onChange={handleDateChange} shouldDisableDate={isWeekend} />
 			</LocalizationProvider>
 		</>
 	);
