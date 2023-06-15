@@ -6,7 +6,7 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import './calendar.styles.scss';
 import ToDoBox from '../toDoBox.component/toDoBox.component';
 import dayjs from 'dayjs';
-import 'dayjs/locale/ru'; // Import Russian locale
+import 'dayjs/locale/ru';
 dayjs.locale('ru');
 
 const Calendar = () => {
@@ -19,6 +19,11 @@ const Calendar = () => {
 
 	const handleClose = () => {
 		setOpen(false);
+	};
+
+	const isWeekend = (date) => {
+		const dayOfWeek = dayjs(date).day();
+		return dayOfWeek === 5 || dayOfWeek === 6;
 	};
 
 	return (
@@ -41,9 +46,8 @@ const Calendar = () => {
 
 			<LocalizationProvider dateAdapter={AdapterDayjs}>
 				<DateCalendar
-					onChange={(data) => {
-						handleDateChange(data);
-					}}
+					onChange={handleDateChange}
+					shouldDisableDate={isWeekend}  
 				/>
 			</LocalizationProvider>
 		</>
