@@ -38,6 +38,9 @@ const theme = createTheme({
 								// название дней недели
 								justifyContent: 'space-evenly',
 								backgroundColor: 'blue', //!!!!заменить на primary
+								'& > span': {
+									fontSize: '1rem',
+								},
 							},
 							'& > div:last-child': {
 								// контейнер для дат
@@ -55,6 +58,7 @@ const theme = createTheme({
 										justifyContent: 'space-evenly', // контейнер для дней недели
 										'& > button': {
 											fontWeight: '800',
+											fontSize: '1rem',
 										},
 									},
 								},
