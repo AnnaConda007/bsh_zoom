@@ -53,62 +53,73 @@ const ToDoBox = () => {
 
 	return (
 		<>
-			<div style={{ backgroundColor: 'pink', width: '90%', height: '90%' }}>
-				<div>
-					<TextField
-						onKeyDown={handleEnterForAdd}
-						onChange={(e) => {
-							setAddTaskInput(e.target.value);
-						}}
-						value={addTaskInput}
-						InputProps={{
-							endAdornment: (
-								<button>
-									<AddCircleOutlineIcon onClick={handleAddTaskBtn} />
-								</button>
-							),
-						}}
-					/>
-				</div>
-				<div className='to-do-wrap__tasks'>
-					<FormControl>
-						{tasks.map((taskValue, index) => (
-							<TextField
-								key={index}
-								value={isEditingIndex === index ? editingValue : taskValue}
-								onChange={(e) => {
-									if (isEditingIndex === index) {
-										handleTaskInputChange(e.target.value);
-									}
-								}}
-								type='text'
-								InputProps={{
-									endAdornment: (
-										<div>
-											<button>
-												<DeleteForeverIcon onClick={() => handleDeleteBtn(index)} />
-											</button>
-											{isEditingIndex === index ? (
-												<>
-													<button>
-														<CheckCircleOutlineIcon onClick={() => handleSaveEdit(index)} />
-													</button>
-													<button>
-														<CancelIcon onClick={handleCancelEdit} />
-													</button>
-												</>
-											) : (
+			<div
+				style={{
+					backgroundColor: 'pink',
+					width: '90%',
+					height: '100%',
+					display: 'flex',
+					justifyContent: 'center',
+					alignContent: 'spaseEvenly',
+					flexWrap: 'wrap',
+				}}
+			>
+				<TextField
+					sx={{ width: '100%' }}
+					multiline='true'
+					onKeyDown={handleEnterForAdd}
+					onChange={(e) => {
+						setAddTaskInput(e.target.value);
+					}}
+					value={addTaskInput}
+					InputProps={{
+						endAdornment: (
+							<button>
+								<AddCircleOutlineIcon onClick={handleAddTaskBtn} />
+							</button>
+						),
+					}}
+				/>
+
+				<FormControl sx={{ width: '100%', overflow: 'auto', height: '80%' }}>
+					{tasks.map((taskValue, index) => (
+						<TextField
+							sx={{ width: '100%' }}
+							multiline='true'
+							key={index}
+							value={isEditingIndex === index ? editingValue : taskValue}
+							onChange={(e) => {
+								if (isEditingIndex === index) {
+									handleTaskInputChange(e.target.value);
+								}
+							}}
+							type='text'
+							InputProps={{
+								endAdornment: (
+									<div style={{ display: 'flex' }}>
+										<button>
+											<DeleteForeverIcon onClick={() => handleDeleteBtn(index)} />
+										</button>
+										{isEditingIndex === index ? (
+											<>
 												<button>
-													<ModeEditIcon onClick={() => handleEditBtn(index)} />
+													<CheckCircleOutlineIcon onClick={() => handleSaveEdit(index)} />
 												</button>
-											)}
-										</div>
-									),
-								}}
-							/>
-						))}
-					</FormControl>
-				</div>
+												<button>
+													<CancelIcon onClick={handleCancelEdit} />
+												</button>
+											</>
+										) : (
+											<button>
+												<ModeEditIcon onClick={() => handleEditBtn(index)} />
+											</button>
+										)}
+									</div>
+								),
+							}}
+						/>
+					))}
+				</FormControl>
 			</div>
 		</>
 	);

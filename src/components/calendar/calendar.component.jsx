@@ -53,7 +53,7 @@ const Calendar = () => {
 					<div
 						style={{ height: '95%', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
 					>
-						<ToDoBox sx={{ backgroundColor: 'red' }} />
+						<ToDoBox  />
 					</div>
 				</Box>
 			</Modal>
