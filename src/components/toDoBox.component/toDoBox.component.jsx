@@ -81,7 +81,7 @@ const ToDoBox = () => {
 					}}
 				/>
 
-				<FormControl sx={{ width: '100%', overflow: 'auto', height: '80%' }}>
+				<FormControl sx={{ width: '100%', overflow: 'auto', height: '80%', outline: 'none' }}>
 					{tasks.map((taskValue, index) => (
 						<TextField
 							sx={{ width: '100%' }}
