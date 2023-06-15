@@ -29,31 +29,17 @@ const Calendar = () => {
 	return (
 		<>
 			<Modal
+				className='modal'
 				open={open}
 				aria-labelledby='modal-modal-title'
 				aria-describedby='modal-modal-description'
-				sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
 			>
-				<Box
-					sx={{
-						backgroundColor: 'rgb(126, 120, 252)',
-						maxHeight: '600px',
-						height: '100%',
-						maxWidth: '1000px',
-						width: '100%',
-						display: 'flex',
-						alignItems: 'center',
-						justifyContent: 'center',
-						flexWrap: 'wrap',
-					}}
-				>
-					<div style={{ width: '100%', backgroundColor: 'red', textAlign: 'right', height: '5%' }}>
+				<Box className='modal__box'>
+					<div className='modal__btn-wrap'>
 						<Button onClick={handleClose}>Close</Button>
 					</div>
-					<div
-						style={{ height: '95%', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-					>
-						<ToDoBox  />
+					<div className='modal__ToDoBox'>
+						<ToDoBox />
 					</div>
 				</Box>
 			</Modal>
