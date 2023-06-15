@@ -1,5 +1,4 @@
  .planner{
-  	background-color: pink;
     width: 90%;
 					height: 100%;
 					display: flex;
@@ -15,12 +14,12 @@
  .planner__tasks{
   width: 100%;
    overflow: auto;
-    height: 80%,
+    height: 80%;
  }
 
 
  .planner__task{
-  width: 100%;
+  width: 100%; 
  }
 
  .planner__edit-btns{
