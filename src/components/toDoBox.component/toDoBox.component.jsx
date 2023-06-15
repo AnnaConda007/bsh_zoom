@@ -13,15 +13,9 @@ const ToDoBox = () => {
 	const [editingValue, setEditingValue] = useState('');
 
 	const handleAddTaskBtn = () => {
-		if (addTaskInput === '') return;
+		if (addTaskInput.trim() === '') return;
 		setTasks([...tasks, addTaskInput]);
 		setAddTaskInput('');
-	};
-
-	const handleEnterForAdd = (event) => {
-		if (event.key === 'Enter') {
-			handleAddTaskBtn();
-		}
 	};
 
 	const handleEditBtn = (index) => {
@@ -67,7 +61,6 @@ const ToDoBox = () => {
 				<TextField
 					sx={{ width: '100%' }}
 					multiline='true'
-					onKeyDown={handleEnterForAdd}
 					onChange={(e) => {
 						setAddTaskInput(e.target.value);
 					}}
