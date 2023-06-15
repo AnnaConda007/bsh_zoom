@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Modal, Box } from '@mui/material';
+import { Modal, Box, Button } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
@@ -19,12 +19,7 @@ const Calendar = () => {
 
 	return (
 		<>
-			<Modal
-				open={open}
-				onClose={handleClose}
-				aria-labelledby='modal-modal-title'
-				aria-describedby='modal-modal-description'
-			>
+			<Modal open={open} aria-labelledby='modal-modal-title' aria-describedby='modal-modal-description'>
 				<Box
 					sx={{
 						backgroundColor: 'rgb(126, 120, 252)',
@@ -35,12 +30,14 @@ const Calendar = () => {
 					}}
 				>
 					<ToDoBox />
+
+					<Button onClick={handleClose}>Close</Button>
 				</Box>
 			</Modal>
- 
-			<LocalizationProvider dateAdapter={AdapterDayjs} className='LocalizationProvider'>
+
+			<LocalizationProvider dateAdapter={AdapterDayjs}>
 				<DateCalendar
-					onChange={(data) => {
+ 					onChange={(data) => {
 						handleDateChange(data);
 					}}
 				/>

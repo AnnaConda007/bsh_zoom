@@ -34,10 +34,10 @@ const theme = createTheme({
 						'& > div': {
 							// грид-
 							height: '100%',
-							'& > div:first-child': {
+							'& > div:first-of-type': {
 								// название дней недели
 								justifyContent: 'space-evenly',
-								backgroundColor: 'blue', //!!!!заменить на primary
+								backgroundColor: '#dbdbeb',
 								'& > span': {
 									fontSize: '1rem',
 								},
@@ -46,7 +46,7 @@ const theme = createTheme({
 								// контейнер для дат
 								height: '80%',
 								marginTop: '30px',
-								backgroundColor: 'blue', //!!!!заменить на primary
+								backgroundColor: ' ', //!!!!заменить на primary
 
 								'& > div': {
 									// промежуточный контейнер
