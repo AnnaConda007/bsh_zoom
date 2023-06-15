@@ -5,6 +5,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import './calendar.styles.scss';
 import ToDoBox from '../toDoBox.component/toDoBox.component';
+import CloseIcon from '@mui/icons-material/Close';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 dayjs.locale('ru');
@@ -36,9 +37,13 @@ const Calendar = () => {
 			>
 				<Box className='modal__box'>
 					<div className='modal__btn-wrap'>
-						<Button onClick={handleClose}>Close</Button>
+						<Button onClick={handleClose}>
+							<CloseIcon className='modal__btn' />
+						</Button>
 					</div>
-					<div className='modal__ToDoBox'>
+					<div
+						style={{ height: '95%', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+					>
 						<ToDoBox />
 					</div>
 				</Box>

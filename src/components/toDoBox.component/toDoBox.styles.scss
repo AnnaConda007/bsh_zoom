@@ -4,11 +4,13 @@
 					display: flex;
 					justify-content: center;
 					align-content: 'spaseEvenly';
-					flex-wrap: wrap
+					flex-wrap: wrap; 
  }
 
  .planner__add{
-  width: 100%;
+  width: 100%; 
+  border: 1px solid;
+     
  }
 
  .planner__tasks{
@@ -20,6 +22,7 @@
 
  .planner__task{
   width: 100%; 
+  background-color: beige;
  }
 
  .planner__edit-btns{
