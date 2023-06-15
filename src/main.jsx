@@ -37,13 +37,13 @@ const theme = createTheme({
 							'& > div:first-child': {
 								// название дней недели
 								justifyContent: 'space-evenly',
-								backgroundColor: 'pink',
+								backgroundColor: 'blue', //!!!!заменить на primary
 							},
 							'& > div:last-child': {
 								// контейнер для дат
 								height: '80%',
 								marginTop: '30px',
-								backgroundColor: 'pink',
+								backgroundColor: 'blue', //!!!!заменить на primary
 
 								'& > div': {
 									// промежуточный контейнер
@@ -53,6 +53,9 @@ const theme = createTheme({
 									justifyContent: 'space-between',
 									'& > div': {
 										justifyContent: 'space-evenly', // контейнер для дней недели
+										'& > button': {
+											fontWeight: '800',
+										},
 									},
 								},
 							},
