@@ -9,9 +9,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 dayjs.locale('ru');
+import theme from './theme';
+import { ThemeProvider } from '@mui/material/styles';
 
 const Calendar = () => {
-	const [open, setOpen] = useState(true);
+	const [open, setOpen] = useState(false);
 
 	const handleDateChange = (date) => {
 		console.log(date);
@@ -48,10 +50,11 @@ const Calendar = () => {
 					</div>
 				</Box>
 			</Modal>
-
-			<LocalizationProvider dateAdapter={AdapterDayjs}>
-				<DateCalendar onChange={handleDateChange} shouldDisableDate={isWeekend} />
-			</LocalizationProvider>
+			<ThemeProvider theme={theme}>
+				<LocalizationProvider dateAdapter={AdapterDayjs}>
+					<DateCalendar onChange={handleDateChange} shouldDisableDate={isWeekend} />
+				</LocalizationProvider>
+			</ThemeProvider>
 		</>
 	);
 };
