@@ -21,7 +21,7 @@ const theme = createTheme({
 					//root
 					width: '100%',
 					height: '100%',
-					maxHeight: '90%',
+					maxHeight: '700px',
 					overflow: 'auto',
 				},
 				viewTransitionContainer: {
@@ -37,17 +37,20 @@ const theme = createTheme({
 							'& > div:first-child': {
 								// название дней недели
 								justifyContent: 'space-evenly',
-								marginBottom:"30px"
+								backgroundColor: 'pink',
 							},
 							'& > div:last-child': {
 								// контейнер для дат
-								height: '100%',
+								height: '80%',
+								marginTop: '30px',
+								backgroundColor: 'pink',
+
 								'& > div': {
 									// промежуточный контейнер
 									height: '100%',
-									display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
+									display: 'flex',
+									flexDirection: 'column',
+									justifyContent: 'space-between',
 									'& > div': {
 										justifyContent: 'space-evenly', // контейнер для дней недели
 									},
@@ -55,7 +58,7 @@ const theme = createTheme({
 							},
 						},
 					},
-				} 
+				},
 			},
 		},
 	},
