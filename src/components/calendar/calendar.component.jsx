@@ -5,6 +5,10 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import './calendar.styles.scss';
 import ToDoBox from '../toDoBox.component/toDoBox.component';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ru'; // Import Russian locale
+dayjs.locale('ru');
+
 const Calendar = () => {
 	const [open, setOpen] = useState(false);
 
@@ -37,7 +41,7 @@ const Calendar = () => {
 
 			<LocalizationProvider dateAdapter={AdapterDayjs}>
 				<DateCalendar
- 					onChange={(data) => {
+					onChange={(data) => {
 						handleDateChange(data);
 					}}
 				/>
