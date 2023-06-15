@@ -11,6 +11,7 @@ import 'dayjs/locale/ru';
 dayjs.locale('ru');
 import theme from './theme';
 import { ThemeProvider } from '@mui/material/styles';
+//import { Holidays } from 'date-holidays';   
 
 const Calendar = () => {
 	const [open, setOpen] = useState(false);
