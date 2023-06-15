@@ -55,12 +55,7 @@ const theme = createTheme({
 							},
 						},
 					},
-				} /*
-				'& .css-v20sp3-MuiButtonBase-root-MuiPickersDay-root': {
-					width: '70px',
-					height: '70px',
-					fontWeight: '400',
-				},*/,
+				} 
 			},
 		},
 	},
