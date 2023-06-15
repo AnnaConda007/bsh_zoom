@@ -1,1 +1,28 @@
- 
+ .planner{
+  	background-color: pink;
+    width: 90%;
+					height: 100%;
+					display: flex;
+					justify-content: center;
+					align-content: 'spaseEvenly';
+					flex-wrap: wrap
+ }
+
+ .planner__add{
+  width: 100%;
+ }
+
+ .planner__tasks{
+  width: 100%;
+   overflow: auto;
+    height: 80%,
+ }
+
+
+ .planner__task{
+  width: 100%;
+ }
+
+ .planner__edit-btns{
+  display: flex
+ }

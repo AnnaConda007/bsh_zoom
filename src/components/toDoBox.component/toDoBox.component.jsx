@@ -5,7 +5,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useState } from 'react';
-
+import './toDoBox.styles.scss';
 const ToDoBox = () => {
 	const [addTaskInput, setAddTaskInput] = useState('');
 	const [tasks, setTasks] = useState([]);
@@ -47,19 +47,9 @@ const ToDoBox = () => {
 
 	return (
 		<>
-			<div
-				style={{
-					backgroundColor: 'pink',
-					width: '90%',
-					height: '100%',
-					display: 'flex',
-					justifyContent: 'center',
-					alignContent: 'spaseEvenly',
-					flexWrap: 'wrap',
-				}}
-			>
+			<div className='planner'>
 				<TextField
-					sx={{ width: '100%' }}
+					className='planner__add'
 					multiline='true'
 					onChange={(e) => {
 						setAddTaskInput(e.target.value);
@@ -74,10 +64,10 @@ const ToDoBox = () => {
 					}}
 				/>
 
-				<FormControl sx={{ width: '100%', overflow: 'auto', height: '80%', outline: 'none' }}>
+				<FormControl className='planner__tasks'>
 					{tasks.map((taskValue, index) => (
 						<TextField
-							sx={{ width: '100%' }}
+							className='planner__task'
 							multiline='true'
 							key={index}
 							value={isEditingIndex === index ? editingValue : taskValue}
@@ -89,7 +79,7 @@ const ToDoBox = () => {
 							type='text'
 							InputProps={{
 								endAdornment: (
-									<div style={{ display: 'flex' }}>
+									<div className='planner__edit-btns'>
 										<button>
 											<DeleteForeverIcon onClick={() => handleDeleteBtn(index)} />
 										</button>
