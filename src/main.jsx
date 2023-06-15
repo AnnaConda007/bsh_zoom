@@ -21,64 +21,45 @@ const theme = createTheme({
 					//root
 					width: '100%',
 					height: '100%',
-					maxHeight: '100%',
-					overflow: 'auto', // возможно
+					maxHeight: '90%',
+					overflow: 'auto',
 				},
 				viewTransitionContainer: {
 					// главная обертка для календаря
 					width: '100%',
 					height: '100%',
 					'& > div': {
-						//опасити
+						// общая бертка для названия дней недели и календаря
 						height: '100%',
 						'& > div': {
-							// грид
+							// грид-
 							height: '100%',
 							'& > div:first-child': {
 								// название дней недели
 								justifyContent: 'space-evenly',
-								backgroundColor: 'red',
+								marginBottom:"30px"
 							},
 							'& > div:last-child': {
-								// контейнер для календаря
-								backgroundColor: 'blue',
+								// контейнер для дат
 								height: '100%',
 								'& > div': {
+									// промежуточный контейнер
 									height: '100%',
-									backgroundColor: 'red',
+									display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
 									'& > div': {
-										backgroundColor: 'blue',
-
-										justifyContent: 'space-evenly',
+										justifyContent: 'space-evenly', // контейнер для дней недели
 									},
 								},
 							},
 						},
 					},
 				} /*
-				'& .css-i5q14k-MuiDayCalendar-header': {
-					justifyContent: 'space-evenly',
-				},
-				'& .css-flbe84-MuiDayCalendar-weekContainer': {
-					justifyContent: 'space-evenly',
-				},*/,
 				'& .css-v20sp3-MuiButtonBase-root-MuiPickersDay-root': {
 					width: '70px',
 					height: '70px',
 					fontWeight: '400',
-					backgroundColor: 'red',
-				} /*
-				'css-i5q14k-MuiDayCalendar-header': {
-					justifyContent: 'space-evenly',
-				},
-				'css-flbe84-MuiDayCalendar-weekContainer': {
-					justifyContent: 'space-evenly',
-				},
-				'css-v20sp3-MuiButtonBase-root-MuiPickersDay-root': {
-					width: '70px',
-					height: '70px',
-					fontWeight: '400px',
-					backgroundColor: 'red',
 				},*/,
 			},
 		},
