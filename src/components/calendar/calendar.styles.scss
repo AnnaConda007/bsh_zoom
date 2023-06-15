@@ -1,5 +1,5 @@
  
-
+/*
 .MuiDateCalendar-viewTransitionContainer .css-i5q14k-MuiDayCalendar-header { 
     justify-content: space-evenly; 
 }
@@ -13,15 +13,21 @@
 .MuiDateCalendar-viewTransitionContainer .css-v20sp3-MuiButtonBase-root-MuiPickersDay-root { 
 
 	height: 70px;
-	font-weight: 800;
-	background-color: rgb(186, 184, 215);
+	font-weight: 800; 
 }
 
- .css-1cafy48-MuiPickersSlideTransition-root-MuiDayCalendar-slideTransition{
-  background-color: rgb(4, 255, 0);
+ .css-1cafy48-MuiPickersSlideTransition-root-MuiDayCalendar-slideTransition{ 
   height: 100%;
 
  }
 
 
 
+*/
+
+
+.MuiDateCalendar-viewTransitionContainer .css-v20sp3-MuiButtonBase-root-MuiPickersDay-root { 
+
+	height: 70px;
+	font-weight: 800; 
+}
