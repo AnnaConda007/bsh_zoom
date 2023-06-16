@@ -16,7 +16,15 @@ const Calendar = () => {
 	const [open, setOpen] = useState(false);
 
 	const handleDateChange = (date) => {
-		console.log(date);
+		//	console.log(date);
+/*
+		const pullTask = async () => {
+			const res = await fetch('https://test-f176b-default-rtdb.firebaseio.com/tasks/.json');
+			const resJson = await res.json();
+			const tasks = resJson ? resJson : [];
+			console.log(tasks);
+		};
+		pullTask();*/
 		setOpen(true);
 	};
 

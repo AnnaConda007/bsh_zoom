@@ -8,15 +8,40 @@ import { useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 import './toDoBox.styles.scss';
+import { useEffect } from 'react';
 const ToDoBox = () => {
 	const [addTaskInput, setAddTaskInput] = useState('');
 	const [tasks, setTasks] = useState([]);
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
+	const pullTask = async () => {
+		const res = await fetch('https://test-f176b-default-rtdb.firebaseio.com/tasks/.json');
+		const resJson = await res.json();
+		const tasks = resJson ? resJson : [];
+		setTasks(tasks);
+		console.log(tasks);
+	};
+	useEffect(() => {
+		pullTask();
+	}, []);
 
 	const handleAddTaskBtn = () => {
 		if (addTaskInput.trim() === '') return;
-		setTasks([...tasks, addTaskInput]);
+		const updatedTasks = [...tasks];
+		updatedTasks.push(addTaskInput);
+		setTasks(updatedTasks);
+		const pushTasks = async () => {
+			await fetch('https://test-f176b-default-rtdb.firebaseio.com/tasks/.json', {
+				method: 'PUT',
+				body: JSON.stringify(updatedTasks),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+			console.log(tasks);
+		};
+		pushTasks();
+
 		setAddTaskInput('');
 	};
 
