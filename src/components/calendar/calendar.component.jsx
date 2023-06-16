@@ -44,7 +44,13 @@ const Calendar = () => {
 						</Button>
 					</div>
 					<div
-						style={{ height: '95%', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+						style={{
+							height: '95%',
+							width: '100%',
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'center',
+						}}
 					>
 						<ToDoBox />
 					</div>

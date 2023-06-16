@@ -46,7 +46,7 @@ const ToDoBox = () => {
 			setisEditingIndex(null);
 		}
 	};
-	
+
 	return (
 		<>
 			<div className='planner'>
