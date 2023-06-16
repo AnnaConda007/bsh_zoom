@@ -45,9 +45,11 @@ const theme = createTheme({
 											fontWeight: '800',
 											fontSize: '1rem',
 										},'& > button[aria-colindex="6"]': {
-										 color:"#EA8181"
+										 color:"#e58787"
 									},'& > button[aria-colindex="7"]': {
-										 color:"#EA8181"
+										 color:"#e58787"
+									},'& > button[aria-selected="true"]': {
+										 backgroundColor:"#000000"
 									}
 									},
 								},
