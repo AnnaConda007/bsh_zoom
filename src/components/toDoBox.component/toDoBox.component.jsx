@@ -21,6 +21,16 @@ const ToDoBox = () => {
 		setTasks(tasks);
 		console.log(tasks);
 	};
+	const pushTasks = async (updatedTasks) => {
+		await fetch('https://test-f176b-default-rtdb.firebaseio.com/tasks/.json', {
+			method: 'PUT',
+			body: JSON.stringify(updatedTasks),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+		console.log(tasks);
+	};
 	useEffect(() => {
 		pullTask();
 	}, []);
@@ -30,17 +40,7 @@ const ToDoBox = () => {
 		const updatedTasks = [...tasks];
 		updatedTasks.push(addTaskInput);
 		setTasks(updatedTasks);
-		const pushTasks = async () => {
-			await fetch('https://test-f176b-default-rtdb.firebaseio.com/tasks/.json', {
-				method: 'PUT',
-				body: JSON.stringify(updatedTasks),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			});
-			console.log(tasks);
-		};
-		pushTasks();
+		pushTasks(updatedTasks);
 
 		setAddTaskInput('');
 	};
@@ -66,7 +66,10 @@ const ToDoBox = () => {
 	};
 
 	const handleDeleteBtn = (index) => {
-		setTasks(tasks.filter((_, i) => i !== index));
+		const updatedTasks = tasks.filter((_, i) => i !== index);
+		pushTasks(updatedTasks);
+
+		setTasks(updatedTasks);
 		if (index === isEditingIndex) {
 			setisEditingIndex(null);
 		}
