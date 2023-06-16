@@ -53,7 +53,7 @@ const ToDoBox = () => {
 				<ThemeProvider theme={theme}>
 					<TextField
 						className='planner__add'
-						multiline='true'
+						multiline={true}
 						onChange={(e) => {
 							setAddTaskInput(e.target.value);
 						}}
@@ -72,7 +72,7 @@ const ToDoBox = () => {
 					{tasks.map((taskValue, index) => (
 						<TextField
 							className='planner__task'
-							multiline='true'
+							multiline={true}
 							key={index}
 							value={isEditingIndex === index ? editingValue : taskValue}
 							onChange={(e) => {
