@@ -57,6 +57,8 @@ const ToDoBox = () => {
 	const handleSaveEdit = (index) => {
 		const updatedTasks = [...tasks];
 		updatedTasks[index] = editingValue;
+		pushTasks(updatedTasks);
+
 		setTasks(updatedTasks);
 		setisEditingIndex(null);
 	};
