@@ -21,11 +21,11 @@ const Calendar = () => {
 	const handleClose = () => {
 		setOpen(false);
 	};
-
+/*
 	const isWeekend = (date) => {
 		const dayOfWeek = dayjs(date).day();
 		return dayOfWeek === 6 || dayOfWeek === 0;
-	};
+	};*/
 
 	return (
 		<>
@@ -49,7 +49,7 @@ const Calendar = () => {
 			</Modal>
 			<ThemeProvider theme={theme}>
 				<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
-					<DateCalendar onChange={handleDateChange} shouldDisableDate={isWeekend} />
+					<DateCalendar onChange={handleDateChange} /*shouldDisableDate={isWeekend}*/  />
 				</LocalizationProvider>
 			</ThemeProvider>
 		</>
