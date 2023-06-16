@@ -9,30 +9,16 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 import './toDoBox.styles.scss';
 import { useEffect } from 'react';
+import { pullTask, pushTasks } from '../../../utils/updateTask';
+
 const ToDoBox = () => {
 	const [addTaskInput, setAddTaskInput] = useState('');
 	const [tasks, setTasks] = useState([]);
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
-	const pullTask = async () => {
-		const res = await fetch('https://test-f176b-default-rtdb.firebaseio.com/tasks/.json');
-		const resJson = await res.json();
-		const tasks = resJson ? resJson : [];
-		setTasks(tasks);
-		console.log(tasks);
-	};
-	const pushTasks = async (updatedTasks) => {
-		await fetch('https://test-f176b-default-rtdb.firebaseio.com/tasks/.json', {
-			method: 'PUT',
-			body: JSON.stringify(updatedTasks),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
-		console.log(tasks);
-	};
+ 
 	useEffect(() => {
-		pullTask();
+		pullTask(setTasks);
 	}, []);
 
 	const handleAddTaskBtn = () => {
@@ -41,7 +27,6 @@ const ToDoBox = () => {
 		updatedTasks.push(addTaskInput);
 		setTasks(updatedTasks);
 		pushTasks(updatedTasks);
-
 		setAddTaskInput('');
 	};
 
