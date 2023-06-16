@@ -5,7 +5,9 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useState } from 'react';
-
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './theme';
+import './toDoBox.styles.scss';
 const ToDoBox = () => {
 	const [addTaskInput, setAddTaskInput] = useState('');
 	const [tasks, setTasks] = useState([]);
@@ -13,15 +15,9 @@ const ToDoBox = () => {
 	const [editingValue, setEditingValue] = useState('');
 
 	const handleAddTaskBtn = () => {
-		if (addTaskInput === '') return;
+		if (addTaskInput.trim() === '') return;
 		setTasks([...tasks, addTaskInput]);
 		setAddTaskInput('');
-	};
-
-	const handleEnterForAdd = (event) => {
-		if (event.key === 'Enter') {
-			handleAddTaskBtn();
-		}
 	};
 
 	const handleEditBtn = (index) => {
@@ -53,10 +49,11 @@ const ToDoBox = () => {
 
 	return (
 		<>
-			<div className='to-do-wrap'>
-				<div className='to-do-wrap__add'>
+			<div className='planner'>
+				<ThemeProvider theme={theme}>
 					<TextField
-						onKeyDown={handleEnterForAdd}
+						className='planner__add'
+						multiline='true'
 						onChange={(e) => {
 							setAddTaskInput(e.target.value);
 						}}
@@ -69,46 +66,47 @@ const ToDoBox = () => {
 							),
 						}}
 					/>
-				</div>
-				<div className='to-do-wrap__tasks'>
-					<FormControl>
-						{tasks.map((taskValue, index) => (
-							<TextField
-								key={index}
-								value={isEditingIndex === index ? editingValue : taskValue}
-								onChange={(e) => {
-									if (isEditingIndex === index) {
-										handleTaskInputChange(e.target.value);
-									}
-								}}
-								type='text'
-								InputProps={{
-									endAdornment: (
-										<div>
-											<button>
-												<DeleteForeverIcon onClick={() => handleDeleteBtn(index)} />
-											</button>
-											{isEditingIndex === index ? (
-												<>
-													<button>
-														<CheckCircleOutlineIcon onClick={() => handleSaveEdit(index)} />
-													</button>
-													<button>
-														<CancelIcon onClick={handleCancelEdit} />
-													</button>
-												</>
-											) : (
+				</ThemeProvider>
+
+				<FormControl className='planner__tasks'>
+					{tasks.map((taskValue, index) => (
+						<TextField
+							className='planner__task'
+							multiline='true'
+							key={index}
+							value={isEditingIndex === index ? editingValue : taskValue}
+							onChange={(e) => {
+								if (isEditingIndex === index) {
+									handleTaskInputChange(e.target.value);
+								}
+							}}
+							type='text'
+							InputProps={{
+								endAdornment: (
+									<div className='planner__edit-btns'>
+										<button>
+											<DeleteForeverIcon onClick={() => handleDeleteBtn(index)} />
+										</button>
+										{isEditingIndex === index ? (
+											<>
 												<button>
-													<ModeEditIcon onClick={() => handleEditBtn(index)} />
+													<CheckCircleOutlineIcon onClick={() => handleSaveEdit(index)} />
 												</button>
-											)}
-										</div>
-									),
-								}}
-							/>
-						))}
-					</FormControl>
-				</div>
+												<button>
+													<CancelIcon onClick={handleCancelEdit} />
+												</button>
+											</>
+										) : (
+											<button>
+												<ModeEditIcon onClick={() => handleEditBtn(index)} />
+											</button>
+										)}
+									</div>
+								),
+							}}
+						/>
+					))}
+				</FormControl>
 			</div>
 		</>
 	);

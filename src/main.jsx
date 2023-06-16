@@ -1,27 +1,19 @@
 import './index.styles.scss';
-
 import { ThemeProvider } from '@mui/material/styles';
-import { createTheme } from '@mui/material/styles';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-
+import theme from './theme';
 import App from './App.jsx';
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#9a1ac1',
-    },
-  },
-});
+import { CssBaseline } from '@mui/material';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+	<React.StrictMode>
+		<BrowserRouter>
+			<ThemeProvider theme={theme}>
+				<CssBaseline />
+				<App />
+			</ThemeProvider>
+		</BrowserRouter>
+	</React.StrictMode>
 );
