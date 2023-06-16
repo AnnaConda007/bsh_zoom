@@ -8,7 +8,7 @@ import ToDoBox from '../toDoBox.component/toDoBox.component';
 import CloseIcon from '@mui/icons-material/Close';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
-dayjs.locale('ru');
+//dayjs.locale('ru');
 import theme from './theme';
 import { ThemeProvider } from '@mui/material/styles';
 
@@ -17,14 +17,6 @@ const Calendar = () => {
 
 	const handleDateChange = (date) => {
 		//	console.log(date);
-/*
-		const pullTask = async () => {
-			const res = await fetch('https://test-f176b-default-rtdb.firebaseio.com/tasks/.json');
-			const resJson = await res.json();
-			const tasks = resJson ? resJson : [];
-			console.log(tasks);
-		};
-		pullTask();*/
 		setOpen(true);
 	};
 
@@ -65,7 +57,7 @@ const Calendar = () => {
 				</Box>
 			</Modal>
 			<ThemeProvider theme={theme}>
-				<LocalizationProvider dateAdapter={AdapterDayjs}>
+				<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
 					<DateCalendar onChange={handleDateChange} shouldDisableDate={isWeekend} />
 				</LocalizationProvider>
 			</ThemeProvider>
