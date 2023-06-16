@@ -26,7 +26,8 @@ const theme = createTheme({
 								backgroundColor: '#dbdbeb', //!!!!!!заменить на primary
 								'& > span': {
 									fontSize: '1rem',
-								},
+								},'& > span[aria-label="суббота"]':{	 color:"#e58787"},
+								'& > span[aria-label="воскресенье"]':{	 color:"#e58787"}
 							},
 							'& > div:last-child': {
 								// контейнер для дат
