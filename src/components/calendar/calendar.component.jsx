@@ -26,7 +26,7 @@ const Calendar = () => {
 
 	const isWeekend = (date) => {
 		const dayOfWeek = dayjs(date).day();
-		return dayOfWeek === 5 || dayOfWeek === 6;
+		return dayOfWeek === 6 || dayOfWeek ===0 ;
 	};
 
 	return (
