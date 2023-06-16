@@ -41,14 +41,7 @@ const Calendar = () => {
 							<CloseIcon className='modal__btn' />
 						</Button>
 					</div>
-					<div
-						style={{
-							height: '95%',
-							width: '100%',
-							display: 'flex',
-							alignItems: 'center',
-							justifyContent: 'center',
-						}}
+					<div className='modal__ToDoBox-wrap'
 					>
 						<ToDoBox />
 					</div>
