@@ -3,15 +3,13 @@ import { Modal, Box, Button } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import './calendar.styles.scss';
 import ToDoBox from '../toDoBox.component/toDoBox.component';
 import CloseIcon from '@mui/icons-material/Close';
 import dayjs from 'dayjs';
-import 'dayjs/locale/ru';
-//dayjs.locale('ru');
 import theme from './theme';
 import { ThemeProvider } from '@mui/material/styles';
-
+import 'dayjs/locale/ru';
+import './calendar.styles.scss';
 const Calendar = () => {
 	const [open, setOpen] = useState(false);
 
@@ -26,7 +24,7 @@ const Calendar = () => {
 
 	const isWeekend = (date) => {
 		const dayOfWeek = dayjs(date).day();
-		return dayOfWeek === 6 || dayOfWeek ===0 ;
+		return dayOfWeek === 6 || dayOfWeek === 0;
 	};
 
 	return (
