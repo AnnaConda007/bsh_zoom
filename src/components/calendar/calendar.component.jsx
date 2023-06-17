@@ -21,11 +21,11 @@ const Calendar = () => {
 	const handleClose = () => {
 		setOpen(false);
 	};
-
+/*
 	const isWeekend = (date) => {
 		const dayOfWeek = dayjs(date).day();
 		return dayOfWeek === 6 || dayOfWeek === 0;
-	};
+	};*/
 
 	return (
 		<>
@@ -41,14 +41,7 @@ const Calendar = () => {
 							<CloseIcon className='modal__btn' />
 						</Button>
 					</div>
-					<div
-						style={{
-							height: '95%',
-							width: '100%',
-							display: 'flex',
-							alignItems: 'center',
-							justifyContent: 'center',
-						}}
+					<div className='modal__ToDoBox-wrap'
 					>
 						<ToDoBox />
 					</div>
@@ -56,7 +49,7 @@ const Calendar = () => {
 			</Modal>
 			<ThemeProvider theme={theme}>
 				<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
-					<DateCalendar onChange={handleDateChange} shouldDisableDate={isWeekend} />
+					<DateCalendar onChange={handleDateChange} /*shouldDisableDate={isWeekend}*/  />
 				</LocalizationProvider>
 			</ThemeProvider>
 		</>
