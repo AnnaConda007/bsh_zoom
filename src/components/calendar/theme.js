@@ -26,8 +26,9 @@ const theme = createTheme({
 								backgroundColor: '#dbdbeb', //!!!!!!заменить на primary
 								'& > span': {
 									fontSize: '1rem',
-								},'& > span[aria-label="суббота"]':{	 color:"#e58787"},
-								'& > span[aria-label="воскресенье"]':{	 color:"#e58787"}
+								},
+								'& > span[aria-label="суббота"]': { color: '#e58787' },
+								'& > span[aria-label="воскресенье"]': { color: '#e58787' },
 							},
 							'& > div:last-child': {
 								// контейнер для дат
@@ -45,13 +46,16 @@ const theme = createTheme({
 										'& > button': {
 											fontWeight: '800',
 											fontSize: '1rem',
-										},'& > button[aria-colindex="6"]': {
-										 color:"#e58787"
-									},'& > button[aria-colindex="7"]': {
-										 color:"#e58787"
-									},'& > button[aria-selected="true"]': {
-										 backgroundColor:"#dbdbeb"
-									}
+										},
+										'& > button[aria-colindex="6"]': {
+											color: '#e58787',
+										},
+										'& > button[aria-colindex="7"]': {
+											color: '#e58787',
+										},
+										'& > button[aria-selected="true"]': {
+											backgroundColor: '#dbdbeb',
+										},
 									},
 								},
 							},
@@ -59,7 +63,7 @@ const theme = createTheme({
 					},
 				},
 			},
-		}
+		},
 	},
 });
 export default theme;
