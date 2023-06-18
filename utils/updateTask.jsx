@@ -1,5 +1,5 @@
 const dbUrl = 'https://test-f176b-default-rtdb.firebaseio.com/.json';
-export const pullTask = async (setTasks) => {
+export const pullTask = async (setTasks) => { // сейчас нигде не вызывается 
 	const res = await fetch(dbUrl);
 	const resJson = await res.json();
 	const tasks = resJson ? resJson : [];

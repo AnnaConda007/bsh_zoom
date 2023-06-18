@@ -5,15 +5,18 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import ToDoBox from '../toDoBox.component/toDoBox.component';
 import CloseIcon from '@mui/icons-material/Close';
+import dayjs from 'dayjs';
+
 import 'dayjs/locale/ru';
 import './calendar.styles.scss';
-import { pullTask } from '../../../utils/updateTask';
+
 const Calendar = () => {
 	const [open, setOpen] = useState(false);
 
 	const handleDateClick = (date) => {
-pullTask()
-	//	setOpen(true);
+		const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY');
+		console.log(formattedDate);
+		//	setOpen(true);
 	};
 
 	const handleClose = () => {
@@ -21,7 +24,7 @@ pullTask()
 	};
 	const slotProps = {
 		day: (date) => {
-			return { 
+			return {
 				onClick: () => handleDateClick(date),
 				sx: {
 					backgroundColor: 'red',
