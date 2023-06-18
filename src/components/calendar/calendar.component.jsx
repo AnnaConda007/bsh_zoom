@@ -7,13 +7,13 @@ import ToDoBox from '../toDoBox.component/toDoBox.component';
 import CloseIcon from '@mui/icons-material/Close';
 import 'dayjs/locale/ru';
 import './calendar.styles.scss';
+import { pullTask } from '../../../utils/updateTask';
 const Calendar = () => {
 	const [open, setOpen] = useState(false);
 
 	const handleDateClick = (date) => {
-		console.log(date.currentMonth.$d); //
-
-		setOpen(true);
+pullTask()
+	//	setOpen(true);
 	};
 
 	const handleClose = () => {
