@@ -5,8 +5,6 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useState } from 'react';
-import { ThemeProvider } from '@mui/material/styles';
-import theme from './theme';
 import './toDoBox.styles.scss';
 import { useEffect } from 'react';
 import { pullTask, pushTasks } from '../../../utils/updateTask';
@@ -16,7 +14,7 @@ const ToDoBox = () => {
 	const [tasks, setTasks] = useState([]);
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
- 
+
 	useEffect(() => {
 		pullTask(setTasks);
 	}, []);
@@ -43,7 +41,6 @@ const ToDoBox = () => {
 		const updatedTasks = [...tasks];
 		updatedTasks[index] = editingValue;
 		pushTasks(updatedTasks);
-
 		setTasks(updatedTasks);
 		setisEditingIndex(null);
 	};
@@ -65,23 +62,21 @@ const ToDoBox = () => {
 	return (
 		<>
 			<div className='planner'>
-				<ThemeProvider theme={theme}>
-					<TextField
-						className='planner__add'
-						multiline={true}
-						onChange={(e) => {
-							setAddTaskInput(e.target.value);
-						}}
-						value={addTaskInput}
-						InputProps={{
-							endAdornment: (
-								<button>
-									<AddCircleOutlineIcon onClick={handleAddTaskBtn} />
-								</button>
-							),
-						}}
-					/>
-				</ThemeProvider>
+				<TextField
+					className='planner__add'
+					multiline={true}
+					onChange={(e) => {
+						setAddTaskInput(e.target.value);
+					}}
+					value={addTaskInput}
+					InputProps={{
+						endAdornment: (
+							<button>
+								<AddCircleOutlineIcon onClick={handleAddTaskBtn} />
+							</button>
+						),
+					}}
+				/>
 
 				<FormControl className='planner__tasks'>
 					{tasks.map((taskValue, index) => (
