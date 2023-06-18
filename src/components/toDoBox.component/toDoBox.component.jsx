@@ -4,9 +4,7 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { useState } from 'react';
-import { ThemeProvider } from '@mui/material/styles';
-import theme from './theme';
+import { useState } from 'react'; 
 import './toDoBox.styles.scss';
 import { useEffect } from 'react';
 import { pullTask, pushTasks } from '../../../utils/updateTask';
@@ -65,7 +63,6 @@ const ToDoBox = () => {
 	return (
 		<>
 			<div className='planner'>
-				<ThemeProvider theme={theme}>
 					<TextField
 						className='planner__add'
 						multiline={true}
@@ -81,7 +78,6 @@ const ToDoBox = () => {
 							),
 						}}
 					/>
-				</ThemeProvider>
 
 				<FormControl className='planner__tasks'>
 					{tasks.map((taskValue, index) => (
