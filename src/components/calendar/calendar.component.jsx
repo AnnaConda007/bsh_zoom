@@ -5,9 +5,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import ToDoBox from '../toDoBox.component/toDoBox.component';
 import CloseIcon from '@mui/icons-material/Close';
-import dayjs from 'dayjs';
-import theme from './theme';
-import { ThemeProvider } from '@mui/material/styles';
 import 'dayjs/locale/ru';
 import './calendar.styles.scss';
 const Calendar = () => {
@@ -43,7 +40,7 @@ const Calendar = () => {
 			</Modal>
 			<ThemeProvider theme={theme}>
 				<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
-					<DateCalendar onChange={handleDateChange} />
+					<DateCalendar onChange={handleDateChange} /*shouldDisableDate={isWeekend}*/  />
 				</LocalizationProvider>
 			</ThemeProvider>
 		</>
