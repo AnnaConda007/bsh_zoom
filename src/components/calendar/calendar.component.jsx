@@ -7,9 +7,10 @@ import ToDoBox from '../toDoBox.component/toDoBox.component';
 import CloseIcon from '@mui/icons-material/Close';
 import 'dayjs/locale/ru';
 import './calendar.styles.scss';
+import { pullTask } from '../../../utils/updateTask';
 const Calendar = () => {
 	const [open, setOpen] = useState(false);
-
+const [tasksForDate,setTasksForDate] = useState(null)
 	const handleDateClick = (date) => {
 		//	console.log(date);
 		setOpen(true);
@@ -17,6 +18,7 @@ const Calendar = () => {
 
 	const handleClose = () => {
 		setOpen(false);
+		pullTask(setTasksForDate)
 	};
 
 	const slotProps = {
@@ -46,7 +48,7 @@ const Calendar = () => {
 						</Button>
 					</div>
 					<div className='modal__ToDoBox-wrap'>
-						<ToDoBox />
+						<ToDoBox  tasksForDate={tasksForDate}/>
 					</div>
 				</Box>
 			</Modal>

@@ -4,6 +4,7 @@ export const pullTask = async (setTasks) => {
 	const resJson = await res.json();
 	const tasks = resJson ? resJson : [];
 	setTasks(tasks);
+	console.log(tasks);
 };
 export const pushTasks = async (updatedTasks) => {
 	await fetch(dbUrl, {
