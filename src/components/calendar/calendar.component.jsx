@@ -13,7 +13,7 @@ import './calendar.styles.scss';
 const Calendar = () => {
 	const [open, setOpen] = useState(false);
 
-	const handleDateChange = (date) => {
+	const handleDateClick = (date) => {
 		//	console.log(date);
 		setOpen(true);
 	};
