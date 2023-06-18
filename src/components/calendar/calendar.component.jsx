@@ -22,6 +22,18 @@ const Calendar = () => {
 		setOpen(false);
 	};
 
+	const slotProps = {
+		day: (date) => {
+			return {
+				// Динамические значения на основе даты
+				onClick: () => handleDateClick(date),
+				sx: {
+					backgroundColor: 'red',
+				},
+			};
+		},
+	};
+
 	return (
 		<>
 			<Modal
@@ -43,7 +55,7 @@ const Calendar = () => {
 			</Modal>
 			<ThemeProvider theme={theme}>
 				<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
-					<DateCalendar onChange={handleDateChange} />
+					<DateCalendar slotProps={slotProps} />
 				</LocalizationProvider>
 			</ThemeProvider>
 		</>
