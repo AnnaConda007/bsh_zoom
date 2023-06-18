@@ -10,15 +10,25 @@ import './calendar.styles.scss';
 const Calendar = () => {
 	const [open, setOpen] = useState(false);
 
-	const handleDateChange = (date) => {
-		//	console.log(date);
+	const handleDateClick = (date) => {
+		console.log(date.currentMonth.$d); //
+
 		setOpen(true);
 	};
 
 	const handleClose = () => {
 		setOpen(false);
 	};
-
+	const slotProps = {
+		day: (date) => {
+			return { 
+				onClick: () => handleDateClick(date),
+				sx: {
+					backgroundColor: 'red',
+				},
+			};
+		},
+	};
 	return (
 		<>
 			<Modal
@@ -38,11 +48,9 @@ const Calendar = () => {
 					</div>
 				</Box>
 			</Modal>
-			<ThemeProvider theme={theme}>
-				<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
-					<DateCalendar onChange={handleDateChange} /*shouldDisableDate={isWeekend}*/  />
-				</LocalizationProvider>
-			</ThemeProvider>
+			<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
+				<DateCalendar slotProps={slotProps} />
+			</LocalizationProvider>
 		</>
 	);
 };
