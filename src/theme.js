@@ -20,7 +20,7 @@ const theme = createTheme({
           width: '100%',
           height: '100%',
           '& > div': {
-            // общая бертка для названия дней недели и календаря
+            // общая обертка для названия дней недели и календаря
             height: '100%',
             '& > div': {
               // грид-
@@ -71,7 +71,7 @@ const theme = createTheme({
     },
     MuiTextField: {
       styleOverrides: {
-        root: {
+        root: { // обводка вокруг input для ввода задач
           '& > div': {
             border: '1px solid',
           },
