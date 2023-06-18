@@ -4,24 +4,26 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { useState } from 'react'; 
+import { useState } from 'react';
 import './toDoBox.styles.scss';
 import { useEffect } from 'react';
 import { pullTask, pushTasks } from '../../../utils/updateTask';
 
-const ToDoBox = () => {
+const ToDoBox = (task) => {
 	const [addTaskInput, setAddTaskInput] = useState('');
 	const [tasks, setTasks] = useState([]);
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
-
+	const [tasksForDate, setTasksForDate] = useState(task);
+	
 	useEffect(() => {
 		pullTask(setTasks);
+		console.log('tasksForDate', tasksForDate);
 	}, []);
 
 	const handleAddTaskBtn = () => {
 		if (addTaskInput.trim() === '') return;
-		const updatedTasks = [...tasks];
+		const updatedTasks = [...tasksForDate];
 		updatedTasks.push(addTaskInput);
 		setTasks(updatedTasks);
 		pushTasks(updatedTasks);
@@ -63,21 +65,21 @@ const ToDoBox = () => {
 	return (
 		<>
 			<div className='planner'>
-					<TextField
-						className='planner__add'
-						multiline={true}
-						onChange={(e) => {
-							setAddTaskInput(e.target.value);
-						}}
-						value={addTaskInput}
-						InputProps={{
-							endAdornment: (
-								<button>
-									<AddCircleOutlineIcon onClick={handleAddTaskBtn} />
-								</button>
-							),
-						}}
-					/>
+				<TextField
+					className='planner__add'
+					multiline={true}
+					onChange={(e) => {
+						setAddTaskInput(e.target.value);
+					}}
+					value={addTaskInput}
+					InputProps={{
+						endAdornment: (
+							<button>
+								<AddCircleOutlineIcon onClick={handleAddTaskBtn} />
+							</button>
+						),
+					}}
+				/>
 
 				<FormControl className='planner__tasks'>
 					{tasks.map((taskValue, index) => (
