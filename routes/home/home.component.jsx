@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import getfixAuthorizationTime from '../../utils/getTime.utils';
+import Calendar from '../../src/components/calendar/calendar.component';
 const Home = () => {
 	const navigate = useNavigate();
-	const autosaveTime = 5; //6048000
+	const autosaveTime = 604800000; //неделя
 	const authorizationTime = parseInt(localStorage.getItem('authorizationTime'));
 	const [currentTime, setCurrentTime] = useState(null);
 	useEffect(() => {
@@ -20,6 +21,10 @@ const Home = () => {
 		}
 	}, [currentTime]);
 
-	return <p>календарь</p>;
+	return (
+		<>
+			<Calendar />
+		</>
+	);
 };
 export default Home;

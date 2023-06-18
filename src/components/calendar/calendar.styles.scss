@@ -1,0 +1,38 @@
+.modal {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.modal__box {
+	background-color: #dbdbeb;
+	max-height: 650px;
+	height: 100%;
+	max-width: 1200px;
+	width: 100%;
+}
+.modal__btn-wrap {
+	width: 100%;
+	text-align: right;
+	height: 5%;
+}
+
+.modal__ToDoBox-wrap {
+	height: 95%;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.modal__ToDoBox {
+	height: 95%;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.modal__btn {
+	color: black;
+}
