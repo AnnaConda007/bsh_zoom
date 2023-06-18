@@ -71,7 +71,7 @@ const theme = createTheme({
     },
     MuiTextField: {
       styleOverrides: {
-       root: { // обводка вокруг input для ввода задач
+       root: {  
           '& > div': {
             border: '1px solid',
           },
