@@ -3,23 +3,15 @@ import { Modal, Box, Button, Badge } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import ToDoBox from '../toDoBox.component/toDoBox.component';
+import { PickersDay } from '@mui/x-date-pickers';
 import CloseIcon from '@mui/icons-material/Close';
 import dayjs from 'dayjs';
 import { pullTask } from '../../../utils/updateTask';
+import ToDoBox from '../toDoBox.component/toDoBox.component';
 import 'dayjs/locale/ru';
 import './calendar.styles.scss';
-import { PickersDay } from '@mui/x-date-pickers';
-import { sx } from './sx-style';
-function ServerDay(props) {
-	const { day, isDateInArray, ...other } = props;
+import { pickersDay } from './pickersDay-style';
 
-	return (
-		<Badge key={day.toString()} overlap='circular' badgeContent={isDateInArray ? '🌚' : undefined}>
-			<PickersDay {...other} day={day} sx={sx} />
-		</Badge>
-	);
-}
 const Calendar = () => {
 	const [openModal, setOpenModal] = useState(false);
 	const [tasksForSelectedDate, setTasksForSelectedDate] = useState([]);
@@ -32,7 +24,7 @@ const Calendar = () => {
 		};
 		fetchData();
 	}, []);
-	console.log(dates);
+
 	const handleDateClick = async (date) => {
 		const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY');
 		const fetchData = await pullTask(formattedDate);
@@ -53,6 +45,14 @@ const Calendar = () => {
 				isDateInArray,
 			};
 		},
+	};
+	const ServerDay = (props) => {
+		const { day, isDateInArray, ...other } = props;
+		return (
+			<Badge key={day.toString()} overlap='circular' badgeContent={isDateInArray ? '🌚' : undefined}>
+				<PickersDay {...other} day={day} sx={pickersDay} />
+			</Badge>
+		);
 	};
 	return (
 		<>

@@ -1,4 +1,4 @@
-export const sx = {
+export const pickersDay = {
   fontWeight: '800',
 					fontSize: '1rem',
 					'&[aria-colindex="6"]': {
