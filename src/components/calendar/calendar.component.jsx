@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Modal, Box, Button, Badge } from '@mui/material';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import { PickersDay } from '@mui/x-date-pickers';
+import { LocalizationProvider, DateCalendar, PickersDay } from '@mui/x-date-pickers';
 import CloseIcon from '@mui/icons-material/Close';
 import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
 import { pullTask } from '../../../utils/updateTask';
 import ToDoBox from '../toDoBox.component/toDoBox.component';
-import 'dayjs/locale/ru';
 import './calendar.styles.scss';
 import { pickersDay } from './pickersDay-style';
 
