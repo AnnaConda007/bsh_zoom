@@ -9,7 +9,8 @@ export const pullTask = async (formattedDate) => {
 	allTasks = resJson || {};
 	selectedDate = formattedDate ? formattedDate : [];
 	taskForDate = allTasks[selectedDate] || [];
-	return taskForDate;
+	const datesArray = Object.keys(allTasks);
+		return { taskForDate, datesArray };
 };
 
 export const pushTasks = async (updatedTasks) => {

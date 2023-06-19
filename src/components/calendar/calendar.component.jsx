@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal, Box, Button } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -14,11 +14,20 @@ const Calendar = () => {
 	const [openModal, setOpenModal] = useState(false);
 	const [tasksForSelectedDate, setTasksForSelectedDate] = useState([]);
 
+	useEffect(() => {
+		const fetchData = async () => {
+			const {  datesArray } = await pullTask();
+			console.log('datesArray', datesArray);
+		};
+
+		fetchData();
+	}, []);
 	const handleDateClick = async (date) => {
 		const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY');
-		const fetchTasks = await pullTask(formattedDate);
+		const fetchData = await pullTask(formattedDate);
+		const { taskForDate } = fetchData;
 		setOpenModal(true);
-		setTasksForSelectedDate(fetchTasks);
+		setTasksForSelectedDate(taskForDate);
 	};
 
 	const handleClose = () => {
