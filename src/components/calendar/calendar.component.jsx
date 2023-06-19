@@ -6,17 +6,20 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import ToDoBox from '../toDoBox.component/toDoBox.component';
 import CloseIcon from '@mui/icons-material/Close';
 import dayjs from 'dayjs';
-
+import { pullTask } from '../../../utils/updateTask';
 import 'dayjs/locale/ru';
 import './calendar.styles.scss';
 
 const Calendar = () => {
 	const [open, setOpen] = useState(false);
-
-	const handleDateClick = (date) => {
+	const [taskForData, setTaskForData] = useState([]);
+	const handleDateClick = async (date) => {
 		const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY');
-		console.log(formattedDate);
-		//	setOpen(true);
+		//console.log(formattedDate);
+		const tasks = await pullTask(formattedDate);
+		 setOpen(true);
+		setTaskForData(tasks);
+		//console.log('test,', tasks);
 	};
 
 	const handleClose = () => {
@@ -47,7 +50,7 @@ const Calendar = () => {
 						</Button>
 					</div>
 					<div className='modal__ToDoBox-wrap'>
-						<ToDoBox />
+						<ToDoBox taskForData={taskForData} />
 					</div>
 				</Box>
 			</Modal>
