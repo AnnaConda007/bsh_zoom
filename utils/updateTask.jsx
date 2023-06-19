@@ -7,7 +7,7 @@ export const pullTask = async (formattedDate) => {
 	const res = await fetch(dataBaseUrl);
 	const resJson = await res.json();
 	allTasks = resJson || {};
-	selectedDate = formattedDate;
+	selectedDate = formattedDate ? formattedDate : [];
 	taskForDate = allTasks[selectedDate] || [];
 	return taskForDate;
 };
