@@ -1,24 +1,34 @@
-import { useState } from 'react';
-import { Modal, Box, Button } from '@mui/material';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { useEffect, useState } from 'react';
+import { Modal, Box, Button, Badge } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import ToDoBox from '../toDoBox.component/toDoBox.component';
+import { LocalizationProvider, DateCalendar, PickersDay } from '@mui/x-date-pickers';
 import CloseIcon from '@mui/icons-material/Close';
 import dayjs from 'dayjs';
-import { pullTask } from '../../../utils/updateTask';
 import 'dayjs/locale/ru';
+import { pullTask } from '../../../utils/updateTask';
+import ToDoBox from '../toDoBox.component/toDoBox.component';
 import './calendar.styles.scss';
+import { pickersDay } from './pickersDay-style';
 
 const Calendar = () => {
 	const [openModal, setOpenModal] = useState(false);
 	const [tasksForSelectedDate, setTasksForSelectedDate] = useState([]);
+	const [dates, setDates] = useState([]);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const { datesArray } = await pullTask();
+			setDates(datesArray);
+		};
+		fetchData();
+	}, []);
 
 	const handleDateClick = async (date) => {
 		const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY');
-		const fetchTasks = await pullTask(formattedDate);
+		const fetchData = await pullTask(formattedDate);
+		const { taskForDate } = fetchData;
 		setOpenModal(true);
-		setTasksForSelectedDate(fetchTasks);
+		setTasksForSelectedDate(taskForDate);
 	};
 
 	const handleClose = () => {
@@ -26,10 +36,21 @@ const Calendar = () => {
 	};
 	const slotProps = {
 		day: (date) => {
+			const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY');
+			const isDateInArray = dates.includes(formattedDate);
 			return {
 				onClick: () => handleDateClick(date),
+				isDateInArray,
 			};
 		},
+	};
+	const ServerDay = (props) => {
+		const { day, isDateInArray, ...other } = props;
+		return (
+			<Badge key={day.toString()} overlap='circular' badgeContent={isDateInArray ? '🟢' : undefined}>
+				<PickersDay {...other} day={day} sx={pickersDay} />
+			</Badge>
+		);
 	};
 	return (
 		<>
@@ -51,7 +72,7 @@ const Calendar = () => {
 				</Box>
 			</Modal>
 			<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
-				<DateCalendar slotProps={slotProps} />
+				<DateCalendar slots={{ day: ServerDay }} slotProps={slotProps} />
 			</LocalizationProvider>
 		</>
 	);
