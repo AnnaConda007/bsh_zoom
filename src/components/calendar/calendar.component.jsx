@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Modal, Box, Button } from '@mui/material';
+import { Modal, Box, Button, Badge } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
@@ -9,7 +9,16 @@ import dayjs from 'dayjs';
 import { pullTask } from '../../../utils/updateTask';
 import 'dayjs/locale/ru';
 import './calendar.styles.scss';
+import { PickersDay } from '@mui/x-date-pickers';
 
+function ServerDay(props) {
+	const { day, isDateInArray, ...other } = props;
+	return (
+		<Badge key={day.toString()} overlap='circular' badgeContent={isDateInArray ? '🌚' : undefined}>
+			<PickersDay {...other} day={day} />
+		</Badge>
+	);
+}
 const Calendar = () => {
 	const [openModal, setOpenModal] = useState(false);
 	const [tasksForSelectedDate, setTasksForSelectedDate] = useState([]);
@@ -36,8 +45,11 @@ const Calendar = () => {
 	};
 	const slotProps = {
 		day: (date) => {
+			const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY');
+			const isDateInArray = dates.includes(formattedDate);
 			return {
 				onClick: () => handleDateClick(date),
+				isDateInArray,
 			};
 		},
 	};
@@ -61,7 +73,7 @@ const Calendar = () => {
 				</Box>
 			</Modal>
 			<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
-				<DateCalendar slotProps={slotProps} />
+				<DateCalendar  slots={{ day: ServerDay }}  slotProps={slotProps} />
 			</LocalizationProvider>
 		</>
 	);
