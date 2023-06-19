@@ -13,15 +13,16 @@ import './calendar.styles.scss';
 const Calendar = () => {
 	const [openModal, setOpenModal] = useState(false);
 	const [tasksForSelectedDate, setTasksForSelectedDate] = useState([]);
+	const [dates, setDates] = useState([]);
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const {  datesArray } = await pullTask();
-			console.log('datesArray', datesArray);
+			const { datesArray } = await pullTask();
+			setDates(datesArray);
 		};
-
 		fetchData();
 	}, []);
+	console.log(dates);
 	const handleDateClick = async (date) => {
 		const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY');
 		const fetchData = await pullTask(formattedDate);
