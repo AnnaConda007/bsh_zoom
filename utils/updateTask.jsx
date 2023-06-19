@@ -6,7 +6,7 @@ export const pullTask = async (formattedDate) => {
 	// сейчас нигде не вызывается
 	const res = await fetch(dbUrl);
 	const resJson = await res.json();
-	tasks = resJson ? resJson : [];
+	tasks = resJson || {}; // Проверка наличия данных в базе
 	date = formattedDate;
 	taskForDate = tasks[date] || [];
 	//	setTasks(taskForDate);
@@ -23,5 +23,3 @@ export const pushTasks = async (updatedTasks) => {
 		},
 	});
 };
-
-
