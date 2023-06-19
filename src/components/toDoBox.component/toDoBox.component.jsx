@@ -8,12 +8,11 @@ import { useState } from 'react';
 import './toDoBox.styles.scss';
 import { pushTasks } from '../../../utils/updateTask';
 
-const ToDoBox = ({ taskForData }) => {
+const ToDoBox = ({ tasksForSelectedDate }) => {
 	const [addTaskInput, setAddTaskInput] = useState('');
-	const [tasks, setTasks] = useState(taskForData);
+	const [tasks, setTasks] = useState(tasksForSelectedDate);
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
-
 
 	const handleAddTaskBtn = () => {
 		if (addTaskInput.trim() === '') return;

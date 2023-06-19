@@ -11,27 +11,23 @@ import 'dayjs/locale/ru';
 import './calendar.styles.scss';
 
 const Calendar = () => {
-	const [open, setOpen] = useState(false);
-	const [taskForData, setTaskForData] = useState([]);
+	const [openModal, setOpenModal] = useState(false);
+	const [tasksForSelectedDate, setTasksForSelectedDate] = useState([]);
+
 	const handleDateClick = async (date) => {
 		const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY');
-		//console.log(formattedDate);
-		const tasks = await pullTask(formattedDate);
-		 setOpen(true);
-		setTaskForData(tasks);
-		//console.log('test,', tasks);
+		const fetchTasks = await pullTask(formattedDate);
+		setOpenModal(true);
+		setTasksForSelectedDate(fetchTasks);
 	};
 
 	const handleClose = () => {
-		setOpen(false);
+		setOpenModal(false);
 	};
 	const slotProps = {
 		day: (date) => {
 			return {
 				onClick: () => handleDateClick(date),
-				sx: {
-					backgroundColor: 'red',
-				},
 			};
 		},
 	};
@@ -39,7 +35,7 @@ const Calendar = () => {
 		<>
 			<Modal
 				className='modal'
-				open={open}
+				open={openModal}
 				aria-labelledby='modal-modal-title'
 				aria-describedby='modal-modal-description'
 			>
@@ -50,7 +46,7 @@ const Calendar = () => {
 						</Button>
 					</div>
 					<div className='modal__ToDoBox-wrap'>
-						<ToDoBox taskForData={taskForData} />
+						<ToDoBox tasksForSelectedDate={tasksForSelectedDate} />
 					</div>
 				</Box>
 			</Modal>
