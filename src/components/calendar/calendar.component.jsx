@@ -49,7 +49,7 @@ const Calendar = () => {
 	const ServerDay = (props) => {
 		const { day, isDateInArray, ...other } = props;
 		return (
-			<Badge key={day.toString()} overlap='circular' badgeContent={isDateInArray ? '🌚' : undefined}>
+			<Badge key={day.toString()} overlap='circular' badgeContent={isDateInArray ? '🟢' : undefined}>
 				<PickersDay {...other} day={day} sx={pickersDay} />
 			</Badge>
 		);
