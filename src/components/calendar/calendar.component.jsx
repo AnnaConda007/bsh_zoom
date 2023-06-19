@@ -13,9 +13,26 @@ import { PickersDay } from '@mui/x-date-pickers';
 
 function ServerDay(props) {
 	const { day, isDateInArray, ...other } = props;
+
 	return (
 		<Badge key={day.toString()} overlap='circular' badgeContent={isDateInArray ? '🌚' : undefined}>
-			<PickersDay {...other} day={day} />
+			<PickersDay
+				{...other}
+				day={day}
+				sx={{
+					fontWeight: '800',
+					fontSize: '1rem',
+					'&[aria-colindex="6"]': {
+						color: '#e58787',
+					},
+					'&[aria-colindex="7"]': {
+						color: '#e58787',
+					},
+					'&[aria-selected="true"]': {
+						backgroundColor: '#dbdbeb',
+					},
+				}}
+			/>
 		</Badge>
 	);
 }
@@ -73,7 +90,7 @@ const Calendar = () => {
 				</Box>
 			</Modal>
 			<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
-				<DateCalendar  slots={{ day: ServerDay }}  slotProps={slotProps} />
+				<DateCalendar slots={{ day: ServerDay }} slotProps={slotProps} />
 			</LocalizationProvider>
 		</>
 	);
