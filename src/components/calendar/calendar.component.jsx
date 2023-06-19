@@ -10,29 +10,13 @@ import { pullTask } from '../../../utils/updateTask';
 import 'dayjs/locale/ru';
 import './calendar.styles.scss';
 import { PickersDay } from '@mui/x-date-pickers';
-
+import { sx } from './sx-style';
 function ServerDay(props) {
 	const { day, isDateInArray, ...other } = props;
 
 	return (
 		<Badge key={day.toString()} overlap='circular' badgeContent={isDateInArray ? '🌚' : undefined}>
-			<PickersDay
-				{...other}
-				day={day}
-				sx={{
-					fontWeight: '800',
-					fontSize: '1rem',
-					'&[aria-colindex="6"]': {
-						color: '#e58787',
-					},
-					'&[aria-colindex="7"]': {
-						color: '#e58787',
-					},
-					'&[aria-selected="true"]': {
-						backgroundColor: '#dbdbeb',
-					},
-				}}
-			/>
+			<PickersDay {...other} day={day} sx={sx} />
 		</Badge>
 	);
 }
