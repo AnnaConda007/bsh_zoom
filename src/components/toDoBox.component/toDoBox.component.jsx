@@ -82,33 +82,37 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 						onChange={(e) => {
 							fullnessValueForTask(e.target.value);
 						}}
-						value={taskValue} 
+						value={taskValue}
+						InputProps={{
+							endAdornment: (
+								<div className='add__time'>
+									<LocalizationProvider dateAdapter={AdapterDayjs}>
+										<TimePicker
+											label='c'
+											ampm={false}
+											className='add__start-time --timePicker'
+											value={timeStart}
+											onChange={(time) => {
+												fullnessTimeForTask(time, 'timeStart');
+											}}
+										/>
+										<TimePicker
+											label='до'
+											value={timeEnd}
+											ampm={false}
+											className='add__end-time --timePicker'
+											onChange={(time) => {
+												fullnessTimeForTask(time, 'timeEnd');
+											}}
+										/>
+									</LocalizationProvider>
+								</div>
+							),
+						}}
 					/>
-					<div className='add__time'>
-						<LocalizationProvider dateAdapter={AdapterDayjs}>
-							<TimePicker
-								label='c'
-								ampm={false}
-								className='add__start-time --timePicker'
-								value={timeStart}
-								onChange={(time) => {
-									fullnessTimeForTask(time, 'timeStart');
-								}}
-							/>
-							<TimePicker
-								label='до'
-								value={timeEnd}
-								ampm={false}
-								className='add__end-time --timePicker'
-								onChange={(time) => {
-									fullnessTimeForTask(time, 'timeEnd');
-								}}
-							/>
-						</LocalizationProvider>
-					</div>
 					<button>
-									<AddCircleOutlineIcon onClick={handleAddTaskBtn} />
-								</button>
+						<AddCircleOutlineIcon onClick={handleAddTaskBtn} />
+					</button>
 				</div>
 
 				<FormControl className='planner__tasks'>
