@@ -7,6 +7,9 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { useState } from 'react';
 import './toDoBox.styles.scss';
 import { pushTasks } from '../../../utils/updateTask';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 
 const ToDoBox = ({ tasksForSelectedDate }) => {
 	const [addTaskInput, setAddTaskInput] = useState('');
@@ -57,6 +60,9 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 	return (
 		<>
 			<div className='planner'>
+				<LocalizationProvider dateAdapter={AdapterDayjs}>
+					<TimePicker label='Basic time picker' />
+				</LocalizationProvider>
 				<TextField
 					className='planner__add'
 					multiline={true}
