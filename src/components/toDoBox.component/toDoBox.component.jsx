@@ -88,7 +88,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 								<div className='add__time'>
 									<LocalizationProvider dateAdapter={AdapterDayjs}>
 										<TimePicker
-											label='c'
+											label='начало'
 											ampm={false}
 											className='add__start-time --timePicker'
 											value={timeStart}
@@ -97,7 +97,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 											}}
 										/>
 										<TimePicker
-											label='до'
+											label='конец'
 											value={timeEnd}
 											ampm={false}
 											className='add__end-time --timePicker'
