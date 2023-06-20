@@ -34,7 +34,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 	};
 
 	const handleAddTaskBtn = () => {
-		if (taskValue.trim() === '') return;
+		if (taskValue.trim() === '' || timeStart === '' || timeEnd === '') return;
 		const updatedTasks = [...pulledTasks];
 		updatedTasks.push(newTaskObj);
 		setPulledTasks(updatedTasks);
