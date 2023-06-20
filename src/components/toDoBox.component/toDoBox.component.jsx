@@ -13,7 +13,7 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 
 const ToDoBox = ({ tasksForSelectedDate }) => {
 	const defaultTask = { task: '', timeStart: '', timeEnd: '' };
-	const [addTaskInput, setAddTaskInput] = useState('');
+	const [addTaskInput, setAddTaskInput] = useState(defaultTask.task);
 	const [newTask, setNewTask] = useState(defaultTask);
 	const [tasks, setTasks] = useState(tasksForSelectedDate);
 	const [isEditingIndex, setisEditingIndex] = useState(null);
@@ -33,7 +33,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 		}));
 	};
 
-	console.log(newTask);
+
 
 	const handleAddTaskBtn = () => {
 		if (addTaskInput.trim() === '') return;
@@ -41,8 +41,8 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 		updatedTasks.push(newTask);
 		setTasks(updatedTasks);
 		pushTasks(updatedTasks);
-		setAddTaskInput('');
-	};
+		setNewTask(defaultTask)
+ 	};
 
 	const handleEditBtn = (index) => {
 		setisEditingIndex(index);
@@ -100,12 +100,14 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 								label='c'
 								ampm={false}
 								className='add__start-time --timePicker'
+								value={defaultTask.timeStart}
 								onChange={(time) => {
 									fullnessTimeForTask(time, 'timeStart');
 								}}
 							/>
 							<TimePicker
 								label='до'
+									value={defaultTask.timeEnd}
 								ampm={false}
 								className='add__end-time --timePicker'
 								onChange={(time) => {
@@ -155,8 +157,8 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 							/>
 							<div className='add__time'>
 								<LocalizationProvider dateAdapter={AdapterDayjs}>
-									<TimePicker label='c' ampm={false} className='add__start-time --timePicker' orientation='landscape' />
-									<TimePicker label='до' ampm={false} className='add__end-time --timePicker' />
+									<TimePicker label='c' ampm={false} className='add__start-time --timePicker' orientation='landscape'  value={task.timeStart}/>
+									<TimePicker label='до' ampm={false} className='add__end-time --timePicker' value={task.timeEnd} />
 								</LocalizationProvider>
 							</div>
 						</div>
