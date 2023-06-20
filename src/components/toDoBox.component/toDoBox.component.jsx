@@ -85,13 +85,12 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 				</div>
 
 				<FormControl className='planner__tasks'>
-					{tasks.map((taskValue, index) => (
-						<div className='planner__textField-wrap --added'>
+					{tasks.map((task, index) => (
+						<div className='planner__textField-wrap --added' key={`${index}-${task.timeStart} ${task.timeEnd}`}>
 							<TextField
 								className='planner__textField'
 								multiline={true}
-								key={index}
-								value={isEditingIndex === index ? editingValue : taskValue}
+								value={isEditingIndex === index ? editingValue : task.task}
 								onChange={(e) => {
 									if (isEditingIndex === index) {
 										handleTaskInputChange(e.target.value);

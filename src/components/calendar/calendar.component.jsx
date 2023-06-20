@@ -11,7 +11,7 @@ import './calendar.styles.scss';
 import { pickersDay } from './pickersDay-style';
 
 const Calendar = () => {
-	const [openModal, setOpenModal] = useState(true);
+	const [openModal, setOpenModal] = useState(false);
 	const [tasksForSelectedDate, setTasksForSelectedDate] = useState([]);
 	const [dates, setDates] = useState([]);
 
