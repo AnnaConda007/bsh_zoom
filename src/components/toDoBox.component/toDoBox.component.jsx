@@ -12,19 +12,32 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 
 const ToDoBox = ({ tasksForSelectedDate }) => {
+	const defaultTask = { task: '', timeStart: '', timeEnd: '' };
 	const [addTaskInput, setAddTaskInput] = useState('');
+	const [newTask, setNewTask] = useState(defaultTask);
 	const [tasks, setTasks] = useState(tasksForSelectedDate);
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
 
+	const fullnessTimeForTask = (selectedTime, timeKey) => {
+		setNewTask((prevTask) => ({
+			...prevTask,
+			[timeKey]: selectedTime,
+		}));
+	};
+	const fullnessValueForTask = (value) => {
+		setAddTaskInput(value);
+		setNewTask((prevTask) => ({
+			...prevTask,
+			task: addTaskInput,
+		}));
+	};
+
+	console.log(newTask);
+
 	const handleAddTaskBtn = () => {
 		if (addTaskInput.trim() === '') return;
 		const updatedTasks = [...tasks];
-		const newTask ={
-			task:addTaskInput,
-			timeEnd:"***",
-			timeStart: "***"
-		}
 		updatedTasks.push(newTask);
 		setTasks(updatedTasks);
 		pushTasks(updatedTasks);
@@ -70,7 +83,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 						className='planner__textField'
 						multiline={true}
 						onChange={(e) => {
-							setAddTaskInput(e.target.value);
+							fullnessValueForTask(e.target.value);
 						}}
 						value={addTaskInput}
 						InputProps={{
@@ -83,8 +96,22 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 					/>
 					<div className='add__time'>
 						<LocalizationProvider dateAdapter={AdapterDayjs}>
-							<TimePicker label='c' ampm={false} className='add__start-time --timePicker' orientation='landscape' />
-							<TimePicker label='до' ampm={false} className='add__end-time --timePicker' />
+							<TimePicker
+								label='c'
+								ampm={false}
+								className='add__start-time --timePicker'
+								onChange={(time) => {
+									fullnessTimeForTask(time, 'timeStart');
+								}}
+							/>
+							<TimePicker
+								label='до'
+								ampm={false}
+								className='add__end-time --timePicker'
+								onChange={(time) => {
+									fullnessTimeForTask(time, 'timeEnd');
+								}}
+							/>
 						</LocalizationProvider>
 					</div>
 				</div>
