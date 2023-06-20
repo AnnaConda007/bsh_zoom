@@ -82,14 +82,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 						onChange={(e) => {
 							fullnessValueForTask(e.target.value);
 						}}
-						value={taskValue}
-						InputProps={{
-							endAdornment: (
-								<button>
-									<AddCircleOutlineIcon onClick={handleAddTaskBtn} />
-								</button>
-							),
-						}}
+						value={taskValue} 
 					/>
 					<div className='add__time'>
 						<LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -113,6 +106,9 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 							/>
 						</LocalizationProvider>
 					</div>
+					<button>
+									<AddCircleOutlineIcon onClick={handleAddTaskBtn} />
+								</button>
 				</div>
 
 				<FormControl className='planner__tasks'>
