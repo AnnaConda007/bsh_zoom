@@ -20,7 +20,12 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 	const handleAddTaskBtn = () => {
 		if (addTaskInput.trim() === '') return;
 		const updatedTasks = [...tasks];
-		updatedTasks.push(addTaskInput);
+		const newTask ={
+			task:addTaskInput,
+			timeEnd:"***",
+			timeStart: "***"
+		}
+		updatedTasks.push(newTask);
 		setTasks(updatedTasks);
 		pushTasks(updatedTasks);
 		setAddTaskInput('');
@@ -28,7 +33,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 
 	const handleEditBtn = (index) => {
 		setisEditingIndex(index);
-		setEditingValue(tasks[index]);
+		setEditingValue(tasks[index].task);
 	};
 
 	const handleTaskInputChange = (newValue) => {
@@ -37,7 +42,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 
 	const handleSaveEdit = (index) => {
 		const updatedTasks = [...tasks];
-		updatedTasks[index] = editingValue;
+		updatedTasks[index].task = editingValue;
 		pushTasks(updatedTasks);
 		setTasks(updatedTasks);
 		setisEditingIndex(null);

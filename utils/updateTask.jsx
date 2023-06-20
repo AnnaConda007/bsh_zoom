@@ -14,7 +14,7 @@ export const pullTask = async (formattedDate) => {
 };
 
 export const pushTasks = async (updatedTasks) => {
-	allTasks[selectedDate] = updatedTasks;
+	resJson[selectedDate] = updatedTasks;
 	await fetch(dataBaseUrl, {
 		method: 'PUT',
 		body: JSON.stringify(resJson),
