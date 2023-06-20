@@ -60,7 +60,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 	return (
 		<>
 			<div className='planner'>
-				<div className='planner__add add'>
+				<div className='planner__textField-wrap --add'>
 					<TextField
 						className='planner__textField'
 						multiline={true}
@@ -86,9 +86,9 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 
 				<FormControl className='planner__tasks'>
 					{tasks.map((taskValue, index) => (
-						<div className='planner__add add'>
+						<div className='planner__textField-wrap --added'>
 							<TextField
-								className='planner__task'
+								className='planner__textField'
 								multiline={true}
 								key={index}
 								value={isEditingIndex === index ? editingValue : taskValue}
