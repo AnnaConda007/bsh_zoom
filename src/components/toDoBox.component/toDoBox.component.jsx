@@ -13,9 +13,9 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 
 const ToDoBox = ({ tasksForSelectedDate }) => {
 	const defaultTask = { task: '', timeStart: '', timeEnd: '' };
-	const [addTaskInput, setAddTaskInput] = useState(defaultTask.task);
 	const [newTask, setNewTask] = useState(defaultTask);
 	const [tasks, setTasks] = useState(tasksForSelectedDate);
+
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
 
@@ -26,17 +26,16 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 		}));
 	};
 	const fullnessValueForTask = (value) => {
-		setAddTaskInput(value);
 		setNewTask((prevTask) => ({
 			...prevTask,
-			task: addTaskInput,
+			task: value,
 		}));
 	};
 
 
 
 	const handleAddTaskBtn = () => {
-		if (addTaskInput.trim() === '') return;
+		if (newTask.task.trim() === '') return;
 		const updatedTasks = [...tasks];
 		updatedTasks.push(newTask);
 		setTasks(updatedTasks);
@@ -85,7 +84,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 						onChange={(e) => {
 							fullnessValueForTask(e.target.value);
 						}}
-						value={addTaskInput}
+						value={newTask.task}
 						InputProps={{
 							endAdornment: (
 								<button>
@@ -100,14 +99,14 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 								label='c'
 								ampm={false}
 								className='add__start-time --timePicker'
-								value={defaultTask.timeStart}
+								value={newTask.timeStart}
 								onChange={(time) => {
 									fullnessTimeForTask(time, 'timeStart');
 								}}
 							/>
 							<TimePicker
 								label='до'
-									value={defaultTask.timeEnd}
+									value={newTask.timeEnd}
 								ampm={false}
 								className='add__end-time --timePicker'
 								onChange={(time) => {
