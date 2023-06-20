@@ -60,62 +60,75 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 	return (
 		<>
 			<div className='planner'>
-				<LocalizationProvider dateAdapter={AdapterDayjs}>
-					<TimePicker label='Basic time picker' />
-				</LocalizationProvider>
-				<TextField
-					className='planner__add'
-					multiline={true}
-					onChange={(e) => {
-						setAddTaskInput(e.target.value);
-					}}
-					value={addTaskInput}
-					InputProps={{
-						endAdornment: (
-							<button>
-								<AddCircleOutlineIcon onClick={handleAddTaskBtn} />
-							</button>
-						),
-					}}
-				/>
+				<div className='planner__add add'>
+					<TextField
+						className='planner__textField'
+						multiline={true}
+						onChange={(e) => {
+							setAddTaskInput(e.target.value);
+						}}
+						value={addTaskInput}
+						InputProps={{
+							endAdornment: (
+								<button>
+									<AddCircleOutlineIcon onClick={handleAddTaskBtn} />
+								</button>
+							),
+						}}
+					/>
+					<div className='add__time'>
+						<LocalizationProvider dateAdapter={AdapterDayjs}>
+							<TimePicker label='c' ampm={false} className='add__start-time --timePicker' orientation='landscape' />
+							<TimePicker label='до' ampm={false} className='add__end-time --timePicker' />
+						</LocalizationProvider>
+					</div>
+				</div>
 
 				<FormControl className='planner__tasks'>
 					{tasks.map((taskValue, index) => (
-						<TextField
-							className='planner__task'
-							multiline={true}
-							key={index}
-							value={isEditingIndex === index ? editingValue : taskValue}
-							onChange={(e) => {
-								if (isEditingIndex === index) {
-									handleTaskInputChange(e.target.value);
-								}
-							}}
-							type='text'
-							InputProps={{
-								endAdornment: (
-									<div className='planner__edit-btns'>
-										<button>
-											<DeleteForeverIcon onClick={() => handleDeleteBtn(index)} />
-										</button>
-										{isEditingIndex === index ? (
-											<>
-												<button>
-													<CheckCircleOutlineIcon onClick={() => handleSaveEdit(index)} />
-												</button>
-												<button>
-													<CancelIcon onClick={handleCancelEdit} />
-												</button>
-											</>
-										) : (
+						<div className='planner__add add'>
+							<TextField
+								className='planner__task'
+								multiline={true}
+								key={index}
+								value={isEditingIndex === index ? editingValue : taskValue}
+								onChange={(e) => {
+									if (isEditingIndex === index) {
+										handleTaskInputChange(e.target.value);
+									}
+								}}
+								type='text'
+								InputProps={{
+									endAdornment: (
+										<div className='planner__edit-btns'>
 											<button>
-												<ModeEditIcon onClick={() => handleEditBtn(index)} />
+												<DeleteForeverIcon onClick={() => handleDeleteBtn(index)} />
 											</button>
-										)}
-									</div>
-								),
-							}}
-						/>
+											{isEditingIndex === index ? (
+												<>
+													<button>
+														<CheckCircleOutlineIcon onClick={() => handleSaveEdit(index)} />
+													</button>
+													<button>
+														<CancelIcon onClick={handleCancelEdit} />
+													</button>
+												</>
+											) : (
+												<button>
+													<ModeEditIcon onClick={() => handleEditBtn(index)} />
+												</button>
+											)}
+										</div>
+									),
+								}}
+							/>
+							<div className='add__time'>
+								<LocalizationProvider dateAdapter={AdapterDayjs}>
+									<TimePicker label='c' ampm={false} className='add__start-time --timePicker' orientation='landscape' />
+									<TimePicker label='до' ampm={false} className='add__end-time --timePicker' />
+								</LocalizationProvider>
+							</div>
+						</div>
 					))}
 				</FormControl>
 			</div>

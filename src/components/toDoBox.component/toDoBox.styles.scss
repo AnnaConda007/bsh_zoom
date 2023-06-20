@@ -7,7 +7,21 @@
   flex-wrap: wrap;
 }
 
-.planner__add {
+.planner__add{
+  width: 100%;
+  display: flex;
+}
+
+.add__time{
+    width: 30%;
+}
+
+.--timePicker{
+  width: 50%;
+}
+
+
+.planner__textField {
   width: 100%;
   border: 1px solid;
 }
