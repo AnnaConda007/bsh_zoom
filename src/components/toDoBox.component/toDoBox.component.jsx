@@ -6,18 +6,13 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useState } from 'react';
 import './toDoBox.styles.scss';
-import { useEffect } from 'react';
-import { pullTask, pushTasks } from '../../../utils/updateTask';
+import { pushTasks } from '../../../utils/updateTask';
 
-const ToDoBox = () => {
+const ToDoBox = ({ tasksForSelectedDate }) => {
 	const [addTaskInput, setAddTaskInput] = useState('');
-	const [tasks, setTasks] = useState([]);
+	const [tasks, setTasks] = useState(tasksForSelectedDate);
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
-
-	useEffect(() => {
-		pullTask(setTasks);
-	}, []);
 
 	const handleAddTaskBtn = () => {
 		if (addTaskInput.trim() === '') return;
