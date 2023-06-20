@@ -75,7 +75,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 	return (
 		<>
 			<div className='planner'>
-				<div className='planner__textField-wrap --add'>
+				<div className='planner__textField-wrap planner__textField-wrap--add'>
 					<TextField
 						className='planner__textField'
 						multiline={true}

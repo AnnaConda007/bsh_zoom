@@ -1,35 +1,56 @@
-.planner {
+ .planner {
   width: 90%;
   height: 100%;
   display: flex;
   justify-content: center;
-  align-content: "spaseEvenly";
+  align-content: space-evenly;
   flex-wrap: wrap;
+  background-color: palevioletred;
+
 }
 
-.planner__textField-wrap{
+.planner__textField-wrap {
   width: 100%;
   display: flex;
 }
 
-.add__time{
-    width: 30%;
+.planner__textField-wrap--add {
+  background-color: aqua;
+  flex-grow: 1;
+  max-height: 140px;
+
+  .planner__textField {
+  width: 100%;
+  border: 1px solid;
+  background-color: red;
+  overflow: auto;
 }
 
-.--timePicker{
-  width: 50%;
 }
-
-
 .planner__textField {
   width: 100%;
   border: 1px solid;
 }
 
+
+.add__time {
+  width: 30%;
+}
+
+.--timePicker {
+  width: 50%;
+}
+
+
 .planner__tasks {
   width: 100%;
-  overflow: auto;
   height: 80%;
+  max-height: 500px;
+  overflow: auto;
+  display: flex;
+  align-content: flex-start;
+  align-items: flex-start;
+  background-color: rebeccapurple; 
 }
 
 .planner__task {
