@@ -60,7 +60,7 @@ const Calendar = () => {
 				aria-labelledby='modal-modal-title'
 				aria-describedby='modal-modal-description'
 			>
-				<Box className='modal__box' disableEscapeKeyDown={false}>
+				<Box className='modal__box' >
 					<div className='modal__btn-wrap'>
 						<Button onClick={handleClose}>
 							<CloseIcon className='modal__btn' />
