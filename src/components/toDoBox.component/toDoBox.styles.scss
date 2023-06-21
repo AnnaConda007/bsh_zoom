@@ -4,8 +4,7 @@
   display: flex;
   justify-content: center;
   align-content: space-evenly;
-  flex-wrap: wrap;
-  background-color: palevioletred;
+  flex-wrap: wrap; 
 }
 
 .planner__textField-wrap {  
@@ -28,7 +27,9 @@
 .add__time { 
   width: 30%;
   display: flex; 
-  background-color: aqua;
+  align-items: center;
+  height: 100%;
+  
  
 }
 .planner__textField-wrap--added{
@@ -39,8 +40,7 @@
   height: 80%;
   max-height: 500px;
   overflow: auto;
-  display: flex; 
-  background-color: rebeccapurple;
+  display: flex;  
 }
 
 .planner__edit-btns {
