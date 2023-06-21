@@ -14,7 +14,7 @@ const Calendar = () => {
 	const [openModal, setOpenModal] = useState(false);
 	const [tasksForSelectedDate, setTasksForSelectedDate] = useState([]);
 	const [dates, setDates] = useState([]);
-
+	const login = localStorage.getItem('email');
 	useEffect(() => {
 		const fetchData = async () => {
 			const datesArray = await getDayTask();
@@ -52,7 +52,7 @@ const Calendar = () => {
 		);
 	};
 	return (
-		<>
+		<div className='wrap'>
 			<Modal
 				onClose={handleClose}
 				className='modal'
@@ -60,7 +60,7 @@ const Calendar = () => {
 				aria-labelledby='modal-modal-title'
 				aria-describedby='modal-modal-description'
 			>
-				<Box className='modal__box' >
+				<Box className='modal__box'>
 					<div className='modal__btn-wrap'>
 						<Button onClick={handleClose}>
 							<CloseIcon className='modal__btn' />
@@ -71,10 +71,24 @@ const Calendar = () => {
 					</div>
 				</Box>
 			</Modal>
+			<div className='user-wrap'>
+				<div className='user-wrap__info'>
+					<span>{login}</span>
+					<Button
+						variant='contained'
+						onClick={() => {
+							localStorage.removeItem('authorizationTime');
+						}}
+					>
+						выйти
+					</Button>
+				</div>
+			</div>
+
 			<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
 				<DateCalendar slots={{ day: ServerDay }} slotProps={slotProps} />
 			</LocalizationProvider>
-		</>
+		</div>
 	);
 };
 
