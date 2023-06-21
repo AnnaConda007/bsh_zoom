@@ -11,6 +11,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs from 'dayjs';
+
 const ToDoBox = ({ tasksForSelectedDate }) => {
 	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '' };
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
@@ -18,21 +19,21 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
 
-	const fullnessTimeForTask = (selectedTime, timeKey) => {
+	const fullnessTimeForNewTask = (selectedTime, timeKey) => {
 		setNewTaskObj((prevTask) => ({
 			...prevTask,
 			[timeKey]: selectedTime,
 		}));
 	};
-
-	const fullnessValueForTask = (value) => {
+	
+	const fullnessValueForNewTask = (value) => {
 		setNewTaskObj((prevTask) => ({
 			...prevTask,
 			taskValue: value,
 		}));
 	};
 
-	const upDateTime = (time, index, timeKey) => {
+	const upDateTimeForAddedTask = (time, index, timeKey) => {
 		const updatedTasks = [...pulledTasks];
 		updatedTasks[index][timeKey] = time.toISOString();
 		pushTasks(updatedTasks);
@@ -86,7 +87,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 						className='planner__textField'
 						multiline={true}
 						onChange={(e) => {
-							fullnessValueForTask(e.target.value);
+							fullnessValueForNewTask(e.target.value);
 						}}
 						value={newTaskObj.taskValue}
 						InputProps={{
@@ -99,7 +100,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 											className='add__start-time --timePicker'
 											value={newTaskObj.timeStart}
 											onChange={(time) => {
-												fullnessTimeForTask(time, 'timeStart');
+												fullnessTimeForNewTask(time, 'timeStart');
 											}}
 										/>
 										<TimePicker
@@ -108,7 +109,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 											ampm={false}
 											className='add__end-time --timePicker'
 											onChange={(time) => {
-												fullnessTimeForTask(time, 'timeEnd');
+												fullnessTimeForNewTask(time, 'timeEnd');
 											}}
 										/>
 									</LocalizationProvider>
@@ -168,7 +169,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 											orientation='landscape'
 											value={dayjs(task.timeStart)}
 											onChange={(time) => {
-												upDateTime(time, index, 'timeStart');
+												upDateTimeForAddedTask(time, index, 'timeStart');
 											}}
 										/>
 										<TimePicker
@@ -177,7 +178,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 											className='add__end-time --timePicker'
 											value={dayjs(task.timeEnd)}
 											onChange={(time) => {
-												upDateTime(time, index, 'timeEnd');
+												upDateTimeForAddedTask(time, index, 'timeEnd');
 											}}
 										/>
 									</LocalizationProvider>
