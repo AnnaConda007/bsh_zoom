@@ -1,30 +1,30 @@
 const dataBaseUrl = 'https://test-f176b-default-rtdb.firebaseio.com/.json';
-let taskForDate;
-let resJson;
+
+let AlltasksForDay;
 let selectedDate;
 
 export const pullTask = async (formattedDate) => {
 	const res = await fetch(dataBaseUrl);
-	resJson = await res.json();
-	resJson = resJson ? resJson : {};
+	AlltasksForDay = await res.json();
+	AlltasksForDay = AlltasksForDay ? AlltasksForDay : {};
 	selectedDate = formattedDate;
-	taskForDate = resJson[selectedDate] || []; // маасив объектов для даты
+	const taskForDate = AlltasksForDay[selectedDate] || []; 
 	console.log(taskForDate);
 	return taskForDate;
 };
 
 export const getDayTask = async () => {
 	const res = await fetch(dataBaseUrl);
-	resJson = await res.json();
+	const resJson = await res.json();
 	const datesArray = resJson ? Object.keys(resJson) : [];
 	return datesArray;
 };
 
 export const pushTasks = async (updatedTasks) => {
-	resJson[selectedDate] = updatedTasks;
+	AlltasksForDay[selectedDate] = updatedTasks;
 	await fetch(dataBaseUrl, {
 		method: 'PUT',
-		body: JSON.stringify(resJson),
+		body: JSON.stringify(AlltasksForDay),
 		headers: {
 			'Content-Type': 'application/json',
 		},
