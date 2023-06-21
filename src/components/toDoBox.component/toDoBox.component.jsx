@@ -17,7 +17,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 	const [pulledTasks, setPulledTasks] = useState(tasksForSelectedDate);
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
-const[ index, setindex] =  useState(null);
+
 	const fullnessTimeForTask = (selectedTime, timeKey) => {
 		setNewTaskObj((prevTask) => ({
 			...prevTask,
@@ -30,6 +30,13 @@ const[ index, setindex] =  useState(null);
 			...prevTask,
 			taskValue: value,
 		}));
+	};
+
+	const upDateTime = (time, index, timeKey) => {
+		const updatedTasks = [...pulledTasks];
+		updatedTasks[index][timeKey] = time.toISOString();
+		pushTasks(updatedTasks);
+		setPulledTasks(updatedTasks);
 	};
 
 	const handleAddTaskBtn = () => {
@@ -121,7 +128,7 @@ const[ index, setindex] =  useState(null);
 								<TextField
 									className='planner__textField'
 									multiline={true}
-									value={isEditingIndex === index ? editingValue : task.taskValue} 
+									value={isEditingIndex === index ? editingValue : task.taskValue}
 									onChange={(e) => {
 										if (isEditingIndex === index) {
 											handleTaskInputChange(e.target.value);
@@ -159,16 +166,18 @@ const[ index, setindex] =  useState(null);
 											ampm={false}
 											className='add__start-time --timePicker'
 											orientation='landscape'
-											 value={dayjs(task.timeStart)}  
-											onChange={(time) => { 
+											value={dayjs(task.timeStart)}
+											onChange={(time) => {
+												upDateTime(time, index, 'timeStart');
 											}}
 										/>
 										<TimePicker
 											label='до'
 											ampm={false}
 											className='add__end-time --timePicker'
-									 value={dayjs(task.timeEnd)}  
-											onChange={(time) => { 
+											value={dayjs(task.timeEnd)}
+											onChange={(time) => {
+												upDateTime(time, index, 'timeEnd');
 											}}
 										/>
 									</LocalizationProvider>
