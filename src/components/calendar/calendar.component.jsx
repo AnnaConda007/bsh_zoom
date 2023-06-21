@@ -17,7 +17,7 @@ const Calendar = () => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const  datesArray  = await getDayTask();
+			const datesArray = await getDayTask();
 			setDates(datesArray);
 		};
 		fetchData();
@@ -54,12 +54,13 @@ const Calendar = () => {
 	return (
 		<>
 			<Modal
+				onClose={handleClose}
 				className='modal'
 				open={openModal}
 				aria-labelledby='modal-modal-title'
 				aria-describedby='modal-modal-description'
 			>
-				<Box className='modal__box'>
+				<Box className='modal__box' disableEscapeKeyDown={false}>
 					<div className='modal__btn-wrap'>
 						<Button onClick={handleClose}>
 							<CloseIcon className='modal__btn' />
