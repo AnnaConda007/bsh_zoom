@@ -9,7 +9,7 @@ import { pullTask } from '../../../utils/updateTask';
 import ToDoBox from '../toDoBox.component/toDoBox.component';
 import './calendar.styles.scss';
 import { pickersDay } from './pickersDay-style';
-
+import { getDayTask } from '../../../utils/updateTask';
 const Calendar = () => {
 	const [openModal, setOpenModal] = useState(false);
 	const [tasksForSelectedDate, setTasksForSelectedDate] = useState([]);
@@ -17,7 +17,7 @@ const Calendar = () => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const { datesArray } = await pullTask();
+			const  datesArray  = await getDayTask();
 			setDates(datesArray);
 		};
 		fetchData();
@@ -25,8 +25,7 @@ const Calendar = () => {
 
 	const handleDateClick = async (date) => {
 		const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY');
-		const fetchData = await pullTask(formattedDate);
-		const { taskForDate } = fetchData;
+		const taskForDate = await pullTask(formattedDate);
 		setOpenModal(true);
 		setTasksForSelectedDate(taskForDate);
 	};

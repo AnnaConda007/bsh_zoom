@@ -5,12 +5,18 @@ let selectedDate;
 
 export const pullTask = async (formattedDate) => {
 	const res = await fetch(dataBaseUrl);
-	resJson = await res.json(); //весь объект
-	selectedDate = formattedDate ? formattedDate : [];
+	resJson = await res.json();
+	selectedDate =  formattedDate  
 	taskForDate = resJson[selectedDate] || []; // маасив объектов для даты
-	const datesArray = Object.keys(resJson);
 	console.log(taskForDate);
-	return { taskForDate, datesArray };
+	return taskForDate;
+};
+
+ export const getDayTask = async () => {
+	const res = await fetch(dataBaseUrl);
+	resJson = await res.json();
+	const datesArray = resJson ? Object.keys(resJson) : [];
+	return datesArray;
 };
 
 export const pushTasks = async (updatedTasks) => {
