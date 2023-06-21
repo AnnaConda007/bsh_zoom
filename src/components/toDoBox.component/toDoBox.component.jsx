@@ -14,7 +14,6 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 const ToDoBox = ({ tasksForSelectedDate }) => {
 	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '' };
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
-	const { taskValue, timeStart, timeEnd } = newTaskObj;
 	const [pulledTasks, setPulledTasks] = useState(tasksForSelectedDate);
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
@@ -34,7 +33,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 	};
 
 	const handleAddTaskBtn = () => {
-		if (taskValue.trim() === '' || timeStart === '' || timeEnd === '') return;
+		if (newTaskObj.taskValue.trim() === '' || newTaskObj.timeStart === '' || newTaskObj.timeEnd === '') return;
 		const updatedTasks = [...pulledTasks];
 		updatedTasks.push(newTaskObj);
 		setPulledTasks(updatedTasks);
@@ -82,7 +81,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 						onChange={(e) => {
 							fullnessValueForTask(e.target.value);
 						}}
-						value={taskValue}
+						value={newTaskObj.taskValue}
 						InputProps={{
 							endAdornment: (
 								<div className='add__time'>
@@ -91,14 +90,14 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 											label='начало'
 											ampm={false}
 											className='add__start-time --timePicker'
-											value={timeStart}
+											value={newTaskObj.timeStart}
 											onChange={(time) => {
 												fullnessTimeForTask(time, 'timeStart');
 											}}
 										/>
 										<TimePicker
 											label='конец'
-											value={timeEnd}
+											value={newTaskObj.timeEnd}
 											ampm={false}
 											className='add__end-time --timePicker'
 											onChange={(time) => {
@@ -117,13 +116,12 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 
 				<FormControl className='planner__tasks'>
 					{pulledTasks.map((task, index) => {
-						const { taskValue } = task;
 						return (
 							<div className='planner__textField-wrap --added' key={`${index}-${task.timeStart} ${task.timeEnd}`}>
 								<TextField
 									className='planner__textField'
 									multiline={true}
-									value={isEditingIndex === index ? editingValue : taskValue}
+									value={isEditingIndex === index ? editingValue : task.taskValue} // Здесь исправлено
 									onChange={(e) => {
 										if (isEditingIndex === index) {
 											handleTaskInputChange(e.target.value);
@@ -162,8 +160,25 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 											className='add__start-time --timePicker'
 											orientation='landscape'
 											value={task.timeStart}
+											onChange={(time) => {
+												const updatedTasks = [...pulledTasks];
+												updatedTasks[index].timeStart = time;
+												pushTasks(updatedTasks);
+												setPulledTasks(updatedTasks);
+											}}
 										/>
-										<TimePicker label='до' ampm={false} className='add__end-time --timePicker' value={task.timeEnd} />
+										<TimePicker
+											label='до'
+											ampm={false}
+											className='add__end-time --timePicker'
+											value={task.timeEnd}
+											onChange={(time) => {
+												const updatedTasks = [...pulledTasks];
+												updatedTasks[index].timeEnd = time;
+												pushTasks(updatedTasks);
+												setPulledTasks(updatedTasks);
+											}}
+										/>
 									</LocalizationProvider>
 								</div>
 							</div>
