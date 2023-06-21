@@ -25,7 +25,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 			[timeKey]: selectedTime,
 		}));
 	};
-	
+
 	const fullnessValueForNewTask = (value) => {
 		setNewTaskObj((prevTask) => ({
 			...prevTask,
@@ -125,7 +125,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 				<FormControl className='planner__tasks'>
 					{pulledTasks.map((task, index) => {
 						return (
-							<div className='planner__textField-wrap --added' key={`${index}-${task.timeStart} ${task.timeEnd}`}>
+							<div className='planner__textField-wrap planner__textField-wrap--added' key={`${index}-${task.timeStart} ${task.timeEnd}`}>
 								<TextField
 									className='planner__textField'
 									multiline={true}
@@ -138,50 +138,50 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 									type='text'
 									InputProps={{
 										endAdornment: (
-											<div className='planner__edit-btns'>
-												<button>
-													<DeleteForeverIcon onClick={() => handleDeleteBtn(index)} />
-												</button>
-												{isEditingIndex === index ? (
-													<>
-														<button>
-															<CheckCircleOutlineIcon onClick={() => handleSaveEdit(index)} />
-														</button>
-														<button>
-															<CancelIcon onClick={handleCancelEdit} />
-														</button>
-													</>
-												) : (
-													<button>
-														<ModeEditIcon onClick={() => handleEditBtn(index)} />
-													</button>
-												)}
+											<div className='add__time'>
+												<LocalizationProvider dateAdapter={AdapterDayjs}>
+													<TimePicker
+														label='начало'
+														ampm={false}
+														className='add__start-time --timePicker'
+														orientation='landscape'
+														value={dayjs(task.timeStart)}
+														onChange={(time) => {
+															upDateTimeForAddedTask(time, index, 'timeStart');
+														}}
+													/>
+													<TimePicker
+														label='конец'
+														ampm={false}
+														className='add__end-time --timePicker'
+														value={dayjs(task.timeEnd)}
+														onChange={(time) => {
+															upDateTimeForAddedTask(time, index, 'timeEnd');
+														}}
+													/>
+												</LocalizationProvider>
 											</div>
 										),
 									}}
-								/>
-								<div className='add__time'>
-									<LocalizationProvider dateAdapter={AdapterDayjs}>
-										<TimePicker
-											label='c'
-											ampm={false}
-											className='add__start-time --timePicker'
-											orientation='landscape'
-											value={dayjs(task.timeStart)}
-											onChange={(time) => {
-												upDateTimeForAddedTask(time, index, 'timeStart');
-											}}
-										/>
-										<TimePicker
-											label='до'
-											ampm={false}
-											className='add__end-time --timePicker'
-											value={dayjs(task.timeEnd)}
-											onChange={(time) => {
-												upDateTimeForAddedTask(time, index, 'timeEnd');
-											}}
-										/>
-									</LocalizationProvider>
+								/>{' '}
+								<div className='planner__edit-btns'>
+									<button>
+										<DeleteForeverIcon onClick={() => handleDeleteBtn(index)} />
+									</button>
+									{isEditingIndex === index ? (
+										<>
+											<button>
+												<CheckCircleOutlineIcon onClick={() => handleSaveEdit(index)} />
+											</button>
+											<button>
+												<CancelIcon onClick={handleCancelEdit} />
+											</button>
+										</>
+									) : (
+										<button>
+											<ModeEditIcon onClick={() => handleEditBtn(index)} />
+										</button>
+									)}
 								</div>
 							</div>
 						);
