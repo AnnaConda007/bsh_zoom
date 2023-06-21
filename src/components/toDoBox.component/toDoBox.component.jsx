@@ -10,14 +10,14 @@ import { pushTasks } from '../../../utils/updateTask';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-
+import dayjs from 'dayjs';
 const ToDoBox = ({ tasksForSelectedDate }) => {
 	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '' };
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
 	const [pulledTasks, setPulledTasks] = useState(tasksForSelectedDate);
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
-
+const[ index, setindex] =  useState(null);
 	const fullnessTimeForTask = (selectedTime, timeKey) => {
 		setNewTaskObj((prevTask) => ({
 			...prevTask,
@@ -121,7 +121,7 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 								<TextField
 									className='planner__textField'
 									multiline={true}
-									value={isEditingIndex === index ? editingValue : task.taskValue} // Здесь исправлено
+									value={isEditingIndex === index ? editingValue : task.taskValue} 
 									onChange={(e) => {
 										if (isEditingIndex === index) {
 											handleTaskInputChange(e.target.value);
@@ -159,24 +159,16 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 											ampm={false}
 											className='add__start-time --timePicker'
 											orientation='landscape'
-											value={task.timeStart}
-											onChange={(time) => {
-												const updatedTasks = [...pulledTasks];
-												updatedTasks[index].timeStart = time;
-												pushTasks(updatedTasks);
-												setPulledTasks(updatedTasks);
+											 value={dayjs(task.timeStart)}  
+											onChange={(time) => { 
 											}}
 										/>
 										<TimePicker
 											label='до'
 											ampm={false}
 											className='add__end-time --timePicker'
-											value={task.timeEnd}
-											onChange={(time) => {
-												const updatedTasks = [...pulledTasks];
-												updatedTasks[index].timeEnd = time;
-												pushTasks(updatedTasks);
-												setPulledTasks(updatedTasks);
+									 value={dayjs(task.timeEnd)}  
+											onChange={(time) => { 
 											}}
 										/>
 									</LocalizationProvider>
