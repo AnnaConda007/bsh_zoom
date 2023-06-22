@@ -15,6 +15,7 @@ const Calendar = () => {
 	const [tasksForSelectedDate, setTasksForSelectedDate] = useState([]);
 	const [dates, setDates] = useState([]);
 	const login = localStorage.getItem('email');
+	const [activeDate, setActiveDate] = useState(null);
 	useEffect(() => {
 		const fetchData = async () => {
 			const datesArray = await getDayTask();
@@ -28,6 +29,7 @@ const Calendar = () => {
 		const taskForDate = await pullTask(formattedDate);
 		setOpenModal(true);
 		setTasksForSelectedDate(taskForDate);
+		setActiveDate(date);
 	};
 
 	const handleClose = () => {
@@ -67,7 +69,7 @@ const Calendar = () => {
 						</Button>
 					</div>
 					<div className='modal__ToDoBox-wrap'>
-						<ToDoBox tasksForSelectedDate={tasksForSelectedDate} />
+						<ToDoBox tasksForSelectedDate={tasksForSelectedDate} setDates={setDates} dates={dates} activeDate={activeDate} />
 					</div>
 				</Box>
 			</Modal>

@@ -12,7 +12,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs from 'dayjs';
 
-const ToDoBox = ({ tasksForSelectedDate }) => {
+const ToDoBox = ({ tasksForSelectedDate, dates, setDates, activeDate }) => {
 	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '' };
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
 	const [pulledTasks, setPulledTasks] = useState(tasksForSelectedDate);
@@ -47,6 +47,11 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 		setPulledTasks(updatedTasks);
 		pushTasks(updatedTasks);
 		setNewTaskObj(defaultTask);
+		const formattedDate = dayjs(activeDate.day.$d).format('DD-MM-YYYY');
+		console.log(formattedDate);
+		if (!dates.includes(formattedDate)) {
+			setDates((prevDates) => [...prevDates, formattedDate]);
+		}
 	};
 
 	const handleEditBtn = (index) => {
@@ -76,6 +81,11 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 		setPulledTasks(updatedTasks);
 		if (index === isEditingIndex) {
 			setisEditingIndex(null);
+		}
+		const formattedDate = dayjs(activeDate.day.$d).format('DD-MM-YYYY');
+		console.log(formattedDate);
+		if (dates.includes(formattedDate)) {
+			setDates((prevDates) => prevDates.filter((date) => date !== formattedDate));
 		}
 	};
 
@@ -125,7 +135,10 @@ const ToDoBox = ({ tasksForSelectedDate }) => {
 				<FormControl className='planner__tasks'>
 					{pulledTasks.map((task, index) => {
 						return (
-							<div className='planner__textField-wrap planner__textField-wrap--added' key={`${index}-${task.timeStart} ${task.timeEnd}`}>
+							<div
+								className='planner__textField-wrap planner__textField-wrap--added'
+								key={`${index}-${task.timeStart} ${task.timeEnd}`}
+							>
 								<TextField
 									className='planner__textField'
 									multiline={true}
