@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './toDoBox.styles.scss';
+import styles from './toDoBox.module.scss';
 import AddNewTask from './addNewTask/AddNewTask';
 import AddedTasks from './addedTasks/addedTasks';
 
@@ -8,7 +8,7 @@ const ToDoBox = ({ tasksForSelectedDate, dates, setDates, activeDate }) => {
 
 	return (
 		<>
-			<div className='planner'>
+			<div className={styles.planner}>
 				<AddNewTask
 					tasksForSelectedDate={tasksForSelectedDate}
 					dates={dates}
