@@ -83,7 +83,6 @@ const ToDoBox = ({ tasksForSelectedDate, dates, setDates, activeDate }) => {
 			setisEditingIndex(null);
 		}
 		const formattedDate = dayjs(activeDate.day.$d).format('DD-MM-YYYY');
-		console.log(formattedDate);
 		if (dates.includes(formattedDate)) {
 			setDates((prevDates) => prevDates.filter((date) => date !== formattedDate));
 		}
