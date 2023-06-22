@@ -31,7 +31,8 @@ const ToDoBox = ({ tasksForSelectedDate, dates, setDates, activeDate }) => {
 			...prevTask,
 			taskValue: value,
 		}));
-	};
+	};   
+	
 
 	const upDateTimeForAddedTask = (time, index, timeKey) => {
 		const updatedTasks = [...pulledTasks];
