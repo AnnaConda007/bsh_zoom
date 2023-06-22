@@ -48,7 +48,6 @@ const ToDoBox = ({ tasksForSelectedDate, dates, setDates, activeDate }) => {
 		pushTasks(updatedTasks);
 		setNewTaskObj(defaultTask);
 		const formattedDate = dayjs(activeDate.day.$d).format('DD-MM-YYYY');
-		console.log(formattedDate);
 		if (!dates.includes(formattedDate)) {
 			setDates((prevDates) => [...prevDates, formattedDate]);
 		}
