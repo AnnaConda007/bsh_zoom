@@ -7,14 +7,15 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import { pullTask } from '../../../utils/updateTask';
 import ToDoBox from '../toDoBox.component/toDoBox.component';
+import Header from '../header/header';
 import './calendar.styles.scss';
 import { pickersDay } from './pickersDay-style';
 import { getDayTask } from '../../../utils/updateTask';
+
 const Calendar = () => {
 	const [openModal, setOpenModal] = useState(false);
 	const [tasksForSelectedDate, setTasksForSelectedDate] = useState([]);
 	const [dates, setDates] = useState([]);
-	const login = localStorage.getItem('email');
 	const [activeDate, setActiveDate] = useState(null);
 	useEffect(() => {
 		const fetchData = async () => {
@@ -74,17 +75,7 @@ const Calendar = () => {
 				</Box>
 			</Modal>
 			<div className='user-wrap'>
-				<div className='user-wrap__info'>
-					<span>{login}</span>
-					<Button
-						variant='contained'
-						onClick={() => {
-							localStorage.removeItem('authorizationTime');
-						}}
-					>
-						выйти
-					</Button>
-				</div>
+				<Header/>
 			</div>
 
 			<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
