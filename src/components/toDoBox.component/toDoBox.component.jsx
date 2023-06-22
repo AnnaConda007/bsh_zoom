@@ -1,5 +1,4 @@
 import { TextField, FormControl } from '@mui/material';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -12,46 +11,17 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs from 'dayjs';
 import AddNewTask from './addNewTask/AddNewTask';
+
 const ToDoBox = ({ tasksForSelectedDate, dates, setDates, activeDate }) => {
-	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '' };
-	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
 	const [pulledTasks, setPulledTasks] = useState(tasksForSelectedDate);
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
-
-	const fullnessTimeForNewTask = (selectedTime, timeKey) => {
-		setNewTaskObj((prevTask) => ({
-			...prevTask,
-			[timeKey]: selectedTime,
-		}));
-	};
-
-	const fullnessValueForNewTask = (value) => {
-		setNewTaskObj((prevTask) => ({
-			...prevTask,
-			taskValue: value,
-		}));
-	};   
-	
 
 	const upDateTimeForAddedTask = (time, index, timeKey) => {
 		const updatedTasks = [...pulledTasks];
 		updatedTasks[index][timeKey] = time.toISOString();
 		pushTasks(updatedTasks);
 		setPulledTasks(updatedTasks);
-	};
-
-	const handleAddTaskBtn = () => {
-		if (newTaskObj.taskValue.trim() === '' || newTaskObj.timeStart === '' || newTaskObj.timeEnd === '') return;
-		const updatedTasks = [...pulledTasks];
-		updatedTasks.push(newTaskObj);
-		setPulledTasks(updatedTasks);
-		pushTasks(updatedTasks);
-		setNewTaskObj(defaultTask);
-		const formattedDate = dayjs(activeDate.day.$d).format('DD-MM-YYYY');
-		if (!dates.includes(formattedDate)) {
-			setDates((prevDates) => [...prevDates, formattedDate]);
-		}
 	};
 
 	const handleEditBtn = (index) => {
@@ -91,45 +61,14 @@ const ToDoBox = ({ tasksForSelectedDate, dates, setDates, activeDate }) => {
 	return (
 		<>
 			<div className='planner'>
-				<div className='planner__textField-wrap planner__textField-wrap--add'>
-					<TextField
-						className='planner__textField'
-						multiline={true}
-						onChange={(e) => {
-							fullnessValueForNewTask(e.target.value);
-						}}
-						value={newTaskObj.taskValue}
-						InputProps={{
-							endAdornment: (
-								<div className='add__time'>
-									<LocalizationProvider dateAdapter={AdapterDayjs}>
-										<TimePicker
-											label='начало'
-											ampm={false}
-											className='add__start-time --timePicker'
-											value={newTaskObj.timeStart}
-											onChange={(time) => {
-												fullnessTimeForNewTask(time, 'timeStart');
-											}}
-										/>
-										<TimePicker
-											label='конец'
-											value={newTaskObj.timeEnd}
-											ampm={false}
-											className='add__end-time --timePicker'
-											onChange={(time) => {
-												fullnessTimeForNewTask(time, 'timeEnd');
-											}}
-										/>
-									</LocalizationProvider>
-								</div>
-							),
-						}}
-					/>
-					<button>
-						<AddCircleOutlineIcon onClick={handleAddTaskBtn} />
-					</button>
-				</div>
+				<AddNewTask
+					tasksForSelectedDate={tasksForSelectedDate}
+					dates={dates}
+					setDates={setDates}
+					activeDate={activeDate}
+					pulledTasks={pulledTasks}
+					setPulledTasks={setPulledTasks}
+				/>
 
 				<FormControl className='planner__tasks'>
 					{pulledTasks.map((task, index) => {
