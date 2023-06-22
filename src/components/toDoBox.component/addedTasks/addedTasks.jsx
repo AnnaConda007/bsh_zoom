@@ -5,12 +5,12 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useState } from 'react';
- import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs from 'dayjs';
- 
-const AddedTasks = ({  dates, setDates, activeDate, pulledTasks, setPulledTasks }) => {
+import styles from './addedTasks.module.scss';
+const AddedTasks = ({ dates, setDates, activeDate, pulledTasks, setPulledTasks }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
 
@@ -57,15 +57,13 @@ const AddedTasks = ({  dates, setDates, activeDate, pulledTasks, setPulledTasks 
 
 	return (
 		<>
-			<FormControl className='planner__tasks'>
+			<FormControl className={styles.tasks}>
 				{pulledTasks.map((task, index) => {
 					return (
-						<div
-							className='planner__textField-wrap planner__textField-wrap--added'
-							key={`${index}-${task.timeStart} ${task.timeEnd}`}
-						>
+						<div className={styles.tasks__task} key={`${index}-${task.timeStart} ${task.timeEnd}`}>
 							<TextField
-								className='planner__textField'
+								sx={{ border: '1px solid', borderRadius: '5px' }}
+								className={styles.planner__textField}
 								multiline={true}
 								value={isEditingIndex === index ? editingValue : task.taskValue}
 								onChange={(e) => {
@@ -76,12 +74,11 @@ const AddedTasks = ({  dates, setDates, activeDate, pulledTasks, setPulledTasks 
 								type='text'
 								InputProps={{
 									endAdornment: (
-										<div className='add__time'>
+										<div className={styles.tasks__add__time}>
 											<LocalizationProvider dateAdapter={AdapterDayjs}>
 												<TimePicker
 													label='начало'
 													ampm={false}
-													className='add__start-time --timePicker'
 													orientation='landscape'
 													value={dayjs(task.timeStart)}
 													onChange={(time) => {
@@ -91,7 +88,6 @@ const AddedTasks = ({  dates, setDates, activeDate, pulledTasks, setPulledTasks 
 												<TimePicker
 													label='конец'
 													ampm={false}
-													className='add__end-time --timePicker'
 													value={dayjs(task.timeEnd)}
 													onChange={(time) => {
 														upDateTimeForAddedTask(time, index, 'timeEnd');
@@ -102,7 +98,7 @@ const AddedTasks = ({  dates, setDates, activeDate, pulledTasks, setPulledTasks 
 									),
 								}}
 							/>{' '}
-							<div className='planner__edit-btns'>
+							<div className={styles.tasks_btns}>
 								<button>
 									<DeleteForeverIcon onClick={() => handleDeleteBtn(index)} />
 								</button>
