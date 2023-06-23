@@ -9,8 +9,7 @@ export const pullTask = async (formattedDate) => {
 	AlltasksForDay = AlltasksForDay ? AlltasksForDay : {};
 	selectedDate = formattedDate;
 	const taskForDate = AlltasksForDay[selectedDate] || []; 
-	console.log(taskForDate)
-	return taskForDate;
+ 	return taskForDate;
 };
 
 export const getDayTask = async () => {

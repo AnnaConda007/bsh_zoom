@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
 import { Modal, Box, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import 'dayjs/locale/ru';
 import ToDoBox from '../toDoBox.component/toDoBox.component';
-
+import styles from './modalBox.module.scss';
 const ModalBox = ({ activeDate, setModal, modal, dates, setDates }) => {
 	const handleClose = () => {
 		setModal(false);
@@ -13,18 +12,18 @@ const ModalBox = ({ activeDate, setModal, modal, dates, setDates }) => {
 		<>
 			<Modal
 				onClose={handleClose}
-				className='modal'
+				className={styles.modal}
 				open={modal}
 				aria-labelledby='modal-modal-title'
 				aria-describedby='modal-modal-description'
 			>
-				<Box className='modal__box'>
-					<div className='modal__btn-wrap'>
+				<Box className={styles.box}>
+					<div className={styles.btn_wrap}>
 						<Button onClick={handleClose}>
-							<CloseIcon className='modal__btn' />
+							<CloseIcon className={styles.btn} />
 						</Button>
 					</div>
-					<div className='modal__ToDoBox-wrap'>
+					<div className={styles.ToDoBox}>
 						<ToDoBox activeDate={activeDate} dates={dates} setDates={setDates} />
 					</div>
 				</Box>

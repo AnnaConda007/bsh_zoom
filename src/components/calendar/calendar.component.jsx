@@ -5,7 +5,8 @@ import { LocalizationProvider, DateCalendar, PickersDay } from '@mui/x-date-pick
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import Header from '../header/header';
-import './calendar.styles.scss';
+import styles from './calendar.module.scss';
+
 import { pickersDay } from './pickersDay-style';
 import { getDayTask } from '../../../utils/updateTask';
 import ModalBox from '../ModalBox/modalBox';
@@ -48,7 +49,7 @@ const Calendar = () => {
 		);
 	};
 	return (
-		<div className='wrap'>
+		<div className={styles.wrap}>
 			<ModalBox activeDate={activeDate} modal={modal} setModal={setModal} dates={dates} setDates={setDates} />
 			<Header />
 			<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
