@@ -2,29 +2,9 @@ import { useEffect, useState } from 'react';
 import { Modal, Box, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import 'dayjs/locale/ru';
-import { pullTask } from '../../../utils/updateTask';
 import ToDoBox from '../toDoBox.component/toDoBox.component';
-import { getDayTask } from '../../../utils/updateTask';
 
-const ModalBox = ({ activeDate, setModal, modal }) => {
-	const [tasksForSelectedDate, setTasksForSelectedDate] = useState([]);
-	const [dates, setDates] = useState([]);
-
-	useEffect(() => {
-		const fetchDates = async () => {
-			const datesArray = await getDayTask();
-			setDates(datesArray);
-		};
-		fetchDates();
-
-		const fetchTasks = async () => {
-			const taskForDate = await pullTask(activeDate);
-			setTasksForSelectedDate(taskForDate);
-			console.log("activeDate", activeDate)
-		};
- 		fetchTasks();
-	}, []);
-
+const ModalBox = ({ activeDate, setModal, modal, dates, setDates }) => {
 	const handleClose = () => {
 		setModal(false);
 	};
@@ -45,12 +25,7 @@ const ModalBox = ({ activeDate, setModal, modal }) => {
 						</Button>
 					</div>
 					<div className='modal__ToDoBox-wrap'>
-						<ToDoBox
-							tasksForSelectedDate={tasksForSelectedDate}
-							setDates={setDates}
-							dates={dates}
-							activeDate={activeDate}
-						/>
+						<ToDoBox activeDate={activeDate} dates={dates} setDates={setDates} />
 					</div>
 				</Box>
 			</Modal>

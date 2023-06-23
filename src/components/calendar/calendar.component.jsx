@@ -13,7 +13,8 @@ import ModalBox from '../ModalBox/modalBox';
 const Calendar = () => {
 	const [modal, setModal] = useState(false);
 	const [dates, setDates] = useState([]);
-	const [activeDate, setActiveDate] = useState(null);
+	const [activeDate, setActiveDate] = useState('');
+
 	useEffect(() => {
 		const fetchData = async () => {
 			const datesArray = await getDayTask();
@@ -24,7 +25,7 @@ const Calendar = () => {
 
 	const handleDateClick = async (date) => {
 		const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY');
-		setActiveDate(date);
+		setActiveDate(formattedDate);
 		setModal(true);
 	};
 
@@ -48,7 +49,7 @@ const Calendar = () => {
 	};
 	return (
 		<div className='wrap'>
-			<ModalBox activeDate={activeDate} modal={modal} setModal={setModal} />
+			<ModalBox activeDate={activeDate} modal={modal} setModal={setModal} dates={dates} setDates={setDates} />
 			<Header />
 			<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
 				<DateCalendar slots={{ day: ServerDay }} slotProps={slotProps} />
