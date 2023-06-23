@@ -51,7 +51,7 @@ const AddedTasks = ({ activeDate, pulledTasks, setPulledTasks, dates, setDates }
 			setisEditingIndex(null);
 		}
 
-		if (dates.includes(activeDate)) {
+		if (pulledTasks.length <= 1) {
 			setDates((prevDates) => prevDates.filter((date) => date !== activeDate));
 		}
 	};
