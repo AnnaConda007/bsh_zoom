@@ -73,8 +73,20 @@ function AuthorizationForm() {
 	return (
 		<form className='formAuthorization' onSubmit={hundleSubmitAuthorization}>
 			<FormControl sx={{ width: '100%' }}>
-				<TextField size='small' label='Email' onChange={changeInput} value={email} name='email' type='email' required />
 				<TextField
+					className='input-authorization'
+					size='small'
+					label='Email'
+					onChange={changeInput}
+					value={email}
+					name='email'
+					type='email'
+					autoComplete='off'
+					required
+					sx={{ border: '1px solid' }}
+				/>
+				<TextField
+					className='input-authorization'
 					variant='outlined'
 					size='small'
 					label='Пароль'
@@ -84,7 +96,7 @@ function AuthorizationForm() {
 					type='password'
 					autoComplete='off'
 					required
-					sx={{ marginTop: '10px' }}
+					sx={{ marginTop: '10px', border: '1px solid' }}
 				/>
 			</FormControl>
 			<p className='text-danger'>{error}</p>
