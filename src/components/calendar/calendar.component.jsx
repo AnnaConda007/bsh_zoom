@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react';
-import { Modal, Box, Button, Badge } from '@mui/material';
+import { Badge } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DateCalendar, PickersDay } from '@mui/x-date-pickers';
-import CloseIcon from '@mui/icons-material/Close';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
-import { pullTask } from '../../../utils/updateTask';
-import ToDoBox from '../toDoBox.component/toDoBox.component';
-import './calendar.styles.scss';
+import Header from '../header/header';
+import styles from './calendar.module.scss';
+
 import { pickersDay } from './pickersDay-style';
 import { getDayTask } from '../../../utils/updateTask';
+import ModalBox from '../ModalBox/modalBox';
+
 const Calendar = () => {
-	const [openModal, setOpenModal] = useState(false);
-	const [tasksForSelectedDate, setTasksForSelectedDate] = useState([]);
+	const [modal, setModal] = useState(false);
 	const [dates, setDates] = useState([]);
-	const login = localStorage.getItem('email');
-	const [activeDate, setActiveDate] = useState(null);
+	const [activeDate, setActiveDate] = useState('');
+
 	useEffect(() => {
 		const fetchData = async () => {
 			const datesArray = await getDayTask();
@@ -26,15 +26,10 @@ const Calendar = () => {
 
 	const handleDateClick = async (date) => {
 		const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY');
-		const taskForDate = await pullTask(formattedDate);
-		setOpenModal(true);
-		setTasksForSelectedDate(taskForDate);
-		setActiveDate(date);
+		setActiveDate(formattedDate);
+		setModal(true);
 	};
 
-	const handleClose = () => {
-		setOpenModal(false);
-	};
 	const slotProps = {
 		day: (date) => {
 			const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY');
@@ -54,39 +49,9 @@ const Calendar = () => {
 		);
 	};
 	return (
-		<div className='wrap'>
-			<Modal
-				onClose={handleClose}
-				className='modal'
-				open={openModal}
-				aria-labelledby='modal-modal-title'
-				aria-describedby='modal-modal-description'
-			>
-				<Box className='modal__box'>
-					<div className='modal__btn-wrap'>
-						<Button onClick={handleClose}>
-							<CloseIcon className='modal__btn' />
-						</Button>
-					</div>
-					<div className='modal__ToDoBox-wrap'>
-						<ToDoBox tasksForSelectedDate={tasksForSelectedDate} setDates={setDates} dates={dates} activeDate={activeDate} />
-					</div>
-				</Box>
-			</Modal>
-			<div className='user-wrap'>
-				<div className='user-wrap__info'>
-					<span>{login}</span>
-					<Button
-						variant='contained'
-						onClick={() => {
-							localStorage.removeItem('authorizationTime');
-						}}
-					>
-						выйти
-					</Button>
-				</div>
-			</div>
-
+		<div className={styles.wrap}>
+			<ModalBox activeDate={activeDate} modal={modal} setModal={setModal} dates={dates} setDates={setDates} />
+			<Header />
 			<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
 				<DateCalendar slots={{ day: ServerDay }} slotProps={slotProps} />
 			</LocalizationProvider>
