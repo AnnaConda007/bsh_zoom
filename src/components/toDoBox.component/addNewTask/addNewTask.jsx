@@ -5,9 +5,9 @@ import { pushTasks } from '../../../../utils/updateTask';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import dayjs from 'dayjs';
 import styles from './addNewTask.module.scss';
-const AddNewTask = ({ dates, setDates, activeDate, pulledTasks, setPulledTasks }) => {
+
+const AddNewTask = ({ activeDate, pulledTasks, setPulledTasks, dates, setDates }) => {
 	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '' };
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
 
@@ -32,9 +32,9 @@ const AddNewTask = ({ dates, setDates, activeDate, pulledTasks, setPulledTasks }
 		setPulledTasks(updatedTasks);
 		pushTasks(updatedTasks);
 		setNewTaskObj(defaultTask);
-		const formattedDate = dayjs(activeDate.day.$d).format('DD-MM-YYYY');
-		if (!dates.includes(formattedDate)) {
-			setDates((prevDates) => [...prevDates, formattedDate]);
+
+		if (!dates.includes(activeDate)) {
+			setDates((prevDates) => [...prevDates, activeDate]);
 		}
 	};
 

@@ -10,7 +10,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs from 'dayjs';
 import styles from './addedTasks.module.scss';
-const AddedTasks = ({ dates, setDates, activeDate, pulledTasks, setPulledTasks }) => {
+
+const AddedTasks = ({ activeDate, pulledTasks, setPulledTasks, dates, setDates }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
 
@@ -49,9 +50,9 @@ const AddedTasks = ({ dates, setDates, activeDate, pulledTasks, setPulledTasks }
 		if (index === isEditingIndex) {
 			setisEditingIndex(null);
 		}
-		const formattedDate = dayjs(activeDate.day.$d).format('DD-MM-YYYY');
-		if (dates.includes(formattedDate)) {
-			setDates((prevDates) => prevDates.filter((date) => date !== formattedDate));
+
+		if (pulledTasks.length <= 1) {
+			setDates((prevDates) => prevDates.filter((date) => date !== activeDate));
 		}
 	};
 
