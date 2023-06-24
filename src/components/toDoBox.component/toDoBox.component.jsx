@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styles from './toDoBox.module.scss';
-import AddNewTask from './addNewTask/AddNewTask';
+import AddNewTask from './addNewTask/addNewTask';
 import AddedTasks from './addedTasks/addedTasks';
 import { pullTask } from '../../../utils/updateTask';
 
