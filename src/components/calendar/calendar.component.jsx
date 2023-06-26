@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Badge } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DateCalendar, PickersDay } from '@mui/x-date-pickers';
@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import Header from '../header/header';
 import styles from './calendar.module.scss';
-
+import { ActiveDateContext } from '../../contexts/activeDateContext';
 import { pickersDay } from './pickersDay-style';
 import { getDayTask } from '../../../utils/updateTask';
 import ModalBox from '../ModalBox/modalBox';
@@ -14,7 +14,7 @@ import ModalBox from '../ModalBox/modalBox';
 const Calendar = () => {
 	const [modal, setModal] = useState(false);
 	const [dates, setDates] = useState([]);
-	const [activeDate, setActiveDate] = useState('');
+	const { activeDate, setActiveDate } = useContext(ActiveDateContext);
 
 	useEffect(() => {
 		const fetchData = async () => {
