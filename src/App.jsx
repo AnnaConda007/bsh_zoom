@@ -1,15 +1,16 @@
 import { Route, Routes } from 'react-router-dom';
 import { ActiveDateProvider } from './contexts/activeDateContext';
-import Authorization from '../routes/authorization/authorization.component';
+ import Authorization from '../routes/authorization/authorization.component';
 import Home from '../routes/home/home.component';
-function App() {
+import { Providers } from './contexts/providers';
+ function App() {
 	return (
-		<ActiveDateProvider>
+		<Providers>
 			<Routes>
 				<Route path='/' element={<Home />} />
 				<Route path='authorization' element={<Authorization />} />
 			</Routes>
-		</ActiveDateProvider>
+		</Providers>
 	);
 }
 
