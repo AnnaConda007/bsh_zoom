@@ -10,12 +10,11 @@ import { ActiveDateContext } from '../../contexts/activeDateContext';
 import { pickersDay } from './pickersDay-style';
 import { getDayTask } from '../../../utils/updateTask';
 import ModalBox from '../ModalBox/modalBox';
-
+import { TaggetDatesContext } from '../../contexts/taggedDates';
 const Calendar = () => {
 	const [modal, setModal] = useState(false);
-	const [dates, setDates] = useState([]);
 	const { activeDate, setActiveDate } = useContext(ActiveDateContext);
-
+	const { dates, setDates } = useContext(TaggetDatesContext);
 	useEffect(() => {
 		const fetchData = async () => {
 			const datesArray = await getDayTask();
@@ -50,7 +49,7 @@ const Calendar = () => {
 	};
 	return (
 		<div className={styles.wrap}>
-			<ModalBox modal={modal} setModal={setModal} dates={dates} setDates={setDates} />
+			<ModalBox modal={modal} setModal={setModal} />
 			<Header />
 			<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
 				<DateCalendar slots={{ day: ServerDay }} slotProps={slotProps} />

@@ -1,10 +1,9 @@
  import { ActiveDateProvider } from './activeDateContext';
-import { PulledTaskProvider } from './pulledTaskContext';
-
+ import { TaggetDatesProvider } from './taggedDates';
 export const Providers = ({ children }) => {
 	return (
 		<ActiveDateProvider>
-			<PulledTaskProvider>{children}</PulledTaskProvider>
+			<TaggetDatesProvider>{children}</TaggetDatesProvider>
 		</ActiveDateProvider>
 	);
 };
