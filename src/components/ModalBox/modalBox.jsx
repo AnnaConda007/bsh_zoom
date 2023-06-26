@@ -5,9 +5,7 @@ import ToDoBox from '../toDoBox.component/toDoBox.component';
 import styles from './modalBox.module.scss';
 import { ActiveDateContext } from '../../contexts/activeDateContext';
 import { useContext } from 'react';
-const ModalBox = ({ setModal, modal, dates, setDates }) => {
-	const { activeDate, setActiveDate } = useContext(ActiveDateContext);
-
+const ModalBox = ({ setModal, modal }) => {
 	const handleClose = () => {
 		setModal(false);
 	};
@@ -28,7 +26,7 @@ const ModalBox = ({ setModal, modal, dates, setDates }) => {
 						</Button>
 					</div>
 					<div className={styles.ToDoBox}>
-						<ToDoBox dates={dates} setDates={setDates} />
+						<ToDoBox />
 					</div>
 				</Box>
 			</Modal>

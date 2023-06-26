@@ -11,10 +11,12 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs from 'dayjs';
 import styles from './addedTasks.module.scss';
 import { ActiveDateContext } from '../../../contexts/activeDateContext';
-const AddedTasks = ({ pulledTasks, setPulledTasks, dates, setDates }) => {
+import { TaggetDatesContext } from '../../../contexts/taggedDates';
+const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
 	const { activeDate, setActiveDate } = useContext(ActiveDateContext);
+	const { dates, setDates } = useContext(TaggetDatesContext);
 
 	const upDateTimeForAddedTask = (time, index, timeKey) => {
 		const updatedTasks = [...pulledTasks];

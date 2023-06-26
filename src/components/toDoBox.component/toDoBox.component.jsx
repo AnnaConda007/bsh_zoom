@@ -18,8 +18,8 @@ const ToDoBox = ({ dates, setDates }) => {
 	return (
 		<>
 			<div className={styles.planner}>
-				<AddNewTask pulledTasks={pulledTasks} setPulledTasks={setPulledTasks} dates={dates} setDates={setDates} />
-				<AddedTasks pulledTasks={pulledTasks} setPulledTasks={setPulledTasks} dates={dates} setDates={setDates} />
+				<AddNewTask pulledTasks={pulledTasks} setPulledTasks={setPulledTasks} />
+				<AddedTasks pulledTasks={pulledTasks} setPulledTasks={setPulledTasks} />
 			</div>
 		</>
 	);

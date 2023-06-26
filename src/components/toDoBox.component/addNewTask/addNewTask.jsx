@@ -7,10 +7,13 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import styles from './addNewTask.module.scss';
 import { ActiveDateContext } from '../../../contexts/activeDateContext';
-const AddNewTask = ({  pulledTasks, setPulledTasks, dates, setDates }) => {
+import { TaggetDatesContext } from '../../../contexts/taggedDates';
+
+const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '' };
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
 	const { activeDate, setActiveDate } = useContext(ActiveDateContext);
+	const { dates, setDates } = useContext(TaggetDatesContext);
 
 	const fullnessTimeForNewTask = (selectedTime, timeKey) => {
 		setNewTaskObj((prevTask) => ({
