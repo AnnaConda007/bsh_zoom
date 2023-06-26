@@ -4,16 +4,17 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs from 'dayjs';
 import styles from './addedTasks.module.scss';
-
-const AddedTasks = ({ activeDate, pulledTasks, setPulledTasks, dates, setDates }) => {
+import { ActiveDateContext } from '../../../contexts/activeDateContext';
+const AddedTasks = ({ pulledTasks, setPulledTasks, dates, setDates }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
+	const { activeDate, setActiveDate } = useContext(ActiveDateContext);
 
 	const upDateTimeForAddedTask = (time, index, timeKey) => {
 		const updatedTasks = [...pulledTasks];

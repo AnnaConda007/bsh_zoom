@@ -50,7 +50,7 @@ const Calendar = () => {
 	};
 	return (
 		<div className={styles.wrap}>
-			<ModalBox activeDate={activeDate} modal={modal} setModal={setModal} dates={dates} setDates={setDates} />
+			<ModalBox modal={modal} setModal={setModal} dates={dates} setDates={setDates} />
 			<Header />
 			<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
 				<DateCalendar slots={{ day: ServerDay }} slotProps={slotProps} />

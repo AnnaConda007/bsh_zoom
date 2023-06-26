@@ -3,7 +3,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import 'dayjs/locale/ru';
 import ToDoBox from '../toDoBox.component/toDoBox.component';
 import styles from './modalBox.module.scss';
-const ModalBox = ({ activeDate, setModal, modal, dates, setDates }) => {
+import { ActiveDateContext } from '../../contexts/activeDateContext';
+import { useContext } from 'react';
+const ModalBox = ({ setModal, modal, dates, setDates }) => {
+	const { activeDate, setActiveDate } = useContext(ActiveDateContext);
+
 	const handleClose = () => {
 		setModal(false);
 	};
@@ -24,7 +28,7 @@ const ModalBox = ({ activeDate, setModal, modal, dates, setDates }) => {
 						</Button>
 					</div>
 					<div className={styles.ToDoBox}>
-						<ToDoBox activeDate={activeDate} dates={dates} setDates={setDates} />
+						<ToDoBox dates={dates} setDates={setDates} />
 					</div>
 				</Box>
 			</Modal>
