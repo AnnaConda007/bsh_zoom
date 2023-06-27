@@ -1,15 +1,19 @@
 import { TextField } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { pushTasks } from '../../../../utils/updateTask';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import styles from './addNewTask.module.scss';
+import { ActiveDateContext } from '../../../contexts/activeDateContext';
+import { TaggetDatesContext } from '../../../contexts/taggedDates';
 
-const AddNewTask = ({ activeDate, pulledTasks, setPulledTasks, dates, setDates }) => {
+const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '' };
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
+	const { activeDate, setActiveDate } = useContext(ActiveDateContext);
+	const { dates, setDates } = useContext(TaggetDatesContext);
 
 	const fullnessTimeForNewTask = (selectedTime, timeKey) => {
 		setNewTaskObj((prevTask) => ({

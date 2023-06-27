@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import styles from './toDoBox.module.scss';
 import AddNewTask from './addNewTask/addNewTask';
 import AddedTasks from './addedTasks/addedTasks';
 import { pullTask } from '../../../utils/updateTask';
-
-const ToDoBox = ({ activeDate, dates, setDates }) => {
+import { ActiveDateContext } from '../../contexts/activeDateContext';
+const ToDoBox = () => {
+	const { activeDate, setActiveDate } = useContext(ActiveDateContext);
 	const [pulledTasks, setPulledTasks] = useState([]);
 	useEffect(() => {
 		const fetchTasks = async () => {
@@ -17,20 +18,8 @@ const ToDoBox = ({ activeDate, dates, setDates }) => {
 	return (
 		<>
 			<div className={styles.planner}>
-				<AddNewTask
-					activeDate={activeDate}
-					pulledTasks={pulledTasks}
-					setPulledTasks={setPulledTasks}
-					dates={dates}
-					setDates={setDates}
-				/>
-				<AddedTasks
-					activeDate={activeDate}
-					pulledTasks={pulledTasks}
-					setPulledTasks={setPulledTasks}
-					dates={dates}
-					setDates={setDates}
-				/>
+				<AddNewTask pulledTasks={pulledTasks} setPulledTasks={setPulledTasks} />
+				<AddedTasks pulledTasks={pulledTasks} setPulledTasks={setPulledTasks} />
 			</div>
 		</>
 	);

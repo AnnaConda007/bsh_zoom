@@ -2,8 +2,8 @@ import { Modal, Box, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import 'dayjs/locale/ru';
 import ToDoBox from '../toDoBox.component/toDoBox.component';
-import styles from './modalBox.module.scss';
-const ModalBox = ({ activeDate, setModal, modal, dates, setDates }) => {
+import styles from './modalBox.module.scss'; 
+const ModalBox = ({ setModal, modal }) => {
 	const handleClose = () => {
 		setModal(false);
 	};
@@ -24,7 +24,7 @@ const ModalBox = ({ activeDate, setModal, modal, dates, setDates }) => {
 						</Button>
 					</div>
 					<div className={styles.ToDoBox}>
-						<ToDoBox activeDate={activeDate} dates={dates} setDates={setDates} />
+						<ToDoBox />
 					</div>
 				</Box>
 			</Modal>
