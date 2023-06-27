@@ -4,7 +4,7 @@ import AddNewTask from './addNewTask/addNewTask';
 import AddedTasks from './addedTasks/addedTasks';
 import { pullTask } from '../../../utils/updateTask';
 import { ActiveDateContext } from '../../contexts/activeDateContext';
-const ToDoBox = ({ dates, setDates }) => {
+const ToDoBox = () => {
 	const { activeDate, setActiveDate } = useContext(ActiveDateContext);
 	const [pulledTasks, setPulledTasks] = useState([]);
 	useEffect(() => {
