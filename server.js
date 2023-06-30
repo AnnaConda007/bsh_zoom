@@ -10,7 +10,7 @@ app.use(cors());
 const zoomTokenUrl = 'https://zoom.us/oauth/token';
 
 app.get('/exchangeCode', async (req, res) => {
-    const authorizationCode = req.query.code;
+ /*   const authorizationCode = req.query.code;  даже с закомиченным кодом возвращается токен
     console.log("authorizationCode", authorizationCode);
 
     const data = {
@@ -33,7 +33,7 @@ app.get('/exchangeCode', async (req, res) => {
     } catch (error) {
         console.error('Error exchanging code for access token:', error.response.data);
         res.status(500).send('Error exchanging code for access token');
-    }
+    }*/
 });
 
 
