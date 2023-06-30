@@ -108,12 +108,12 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 									<DeleteForeverIcon
 										onClick={() => {
 											/* handleDeleteBtn(index)*/
-											const clientId = 'wYILEd3tQnCCk4CE6Jihxg';
-											const redirectUri = 'http://localhost:5173/zoom';
+											//		const clientId = 'wYILEd3tQnCCk4CE6Jihxg';
+											//	const redirectUri = 'http://localhost:5173/zoom';
 
-											const authorizeUrl = `https://zoom.us/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
-												redirectUri
-											)}`;
+											const authorizeUrl =
+												'https://zoom.us/oauth/authorize?response_type=code&client_id=wYILEd3tQnCCk4CE6Jihxg&redirect_uri=http%3A%2F%2Flocalhost%3A5173%2Fzoom';
+
 											window.location.href = authorizeUrl;
 										}}
 									/>

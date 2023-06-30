@@ -17,7 +17,7 @@ const ZoomRedirect = () => {
 					console.log('Access token:', response.data.access_token);
 				})
 				.catch((error) => {
-					console.error('Error exchanging code for token:', error);
+					console.error('Error exchanging code for token:', error.response.data);
 				});
 		}
 	}, []);
