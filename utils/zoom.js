@@ -1,6 +1,6 @@
 const clientId = 'wYILEd3tQnCCk4CE6Jihxg';
 const clientSecret = 'NNbxQM8o1zvN6S7GWLobx1u4u0hztbCB';
-const redirectUri = 'http://localhost:5173/bsh-zoom';
+const redirectUri = 'http://localhost:5173/zoom';
 const zoomTokenUrl = 'https://zoom.us/oauth/authorize';
 
 const exchangeCodeForToken = async (code) => {
@@ -35,6 +35,14 @@ const exchangeCodeForToken = async (code) => {
         console.error('Error exchanging code for access token:', error);
         throw new Error('Failed to exchange code for access token');
     }
+
+    			exchangeCodeForToken()
+												.then((accessToken) => {
+													console.log('Access token:', accessToken);
+												})
+												.catch((error) => {
+													console.error('Error:', error);
+												});
 };
 
 export default exchangeCodeForToken;

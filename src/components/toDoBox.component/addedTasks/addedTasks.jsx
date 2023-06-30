@@ -108,13 +108,13 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 									<DeleteForeverIcon
 										onClick={() => {
 											/* handleDeleteBtn(index)*/
-											exchangeCodeForToken()
-												.then((accessToken) => {
-													console.log('Access token:', accessToken);
-												})
-												.catch((error) => {
-													console.error('Error:', error);
-												});
+											const clientId = 'wYILEd3tQnCCk4CE6Jihxg';
+											const redirectUri = 'http://localhost:5173/zoom';
+
+											const authorizeUrl = `https://zoom.us/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
+												redirectUri
+											)}`;
+											window.location.href = authorizeUrl;
 										}}
 									/>
 								</button>
