@@ -1,14 +1,12 @@
 import express from 'express';
 import axios from 'axios';
 import cors from 'cors';
+import {clientId,clientSecret, redirectUri } from "./contains"
 
 const app = express();
 const port = 3000;
 app.use(cors());
-
-const clientId = 'wYILEd3tQnCCk4CE6Jihxg';
-const clientSecret = 'NNbxQM8o1zvN6S7GWLobx1u4u0hztbCB';
-const redirectUri = 'http://localhost:5173/zoom';
+ 
 const zoomTokenUrl = 'https://zoom.us/oauth/token';
 
 app.get('/exchangeCode', async (req, res) => {
