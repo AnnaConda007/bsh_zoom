@@ -12,6 +12,7 @@ import dayjs from 'dayjs';
 import styles from './addedTasks.module.scss';
 import { ActiveDateContext } from '../../../contexts/activeDateContext';
 import { TaggetDatesContext } from '../../../contexts/taggedDates';
+import exchangeCodeForToken from '../../../../utils/zoom';
 const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
@@ -101,10 +102,21 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 										</div>
 									),
 								}}
-							/>{' '}
+							/>
 							<div className={styles.tasks_btns}>
 								<button>
-									<DeleteForeverIcon onClick={() => handleDeleteBtn(index)} />
+									<DeleteForeverIcon
+										onClick={() => {
+											/* handleDeleteBtn(index)*/
+											exchangeCodeForToken()
+												.then((accessToken) => {
+													console.log('Access token:', accessToken);
+												})
+												.catch((error) => {
+													console.error('Error:', error);
+												});
+										}}
+									/>
 								</button>
 								{isEditingIndex === index ? (
 									<>
