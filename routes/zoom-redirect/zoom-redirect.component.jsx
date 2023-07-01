@@ -7,8 +7,9 @@ const ZoomRedirect = () => {
 		const authorizationCode = urlParams.get('code');
 
 		if (authorizationCode) {
-			axios
-				.get('http://localhost:3000/exchangeCode', {
+			console.log(authorizationCode); // +++
+
+			axios.get('http://localhost:3000/exchangeCode', {
 					params: {
 						code: authorizationCode,
 					},

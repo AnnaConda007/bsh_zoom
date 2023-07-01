@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 import styles from './addedTasks.module.scss';
 import { ActiveDateContext } from '../../../contexts/activeDateContext';
 import { TaggetDatesContext } from '../../../contexts/taggedDates';
-import {clientId, redirectUri} from "../../../../contains"
+import { clientId, redirectUri } from '../../../../contains';
 const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
@@ -107,7 +107,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 								<button>
 									<DeleteForeverIcon
 										onClick={() => {
-											/* handleDeleteBtn(index)*/ 
+											/* handleDeleteBtn(index)*/
 
 											const authorizeUrl = `https://zoom.us/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
 												redirectUri

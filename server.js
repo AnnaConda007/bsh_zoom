@@ -2,17 +2,16 @@ import express from 'express';
 import axios from 'axios';
 import cors from 'cors';
  
-import { clientId, clientSecret, redirectUri } from "./contains.js";
+import { clientId, clientSecret, redirectUri, zoomTokenUrl } from "./contains.js";
  
 const app = express();
 const port = 3000;
 app.use(cors());
- 
-const zoomTokenUrl = 'https://zoom.us/oauth/token';
+  
 
 app.get('/exchangeCode', async (req, res) => {
    const authorizationCode = req.query.code;  
-    console.log("authorizationCode", authorizationCode);
+    console.log("выполняется");//  не работает 
 
     const data = {
         grant_type: 'authorization_code',
