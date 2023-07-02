@@ -9,7 +9,8 @@ const ZoomRedirect = () => {
 		if (authorizationCode) {
 			console.log(authorizationCode); // +++
 
-			axios.get('http://localhost:3000/exchangeCode', {
+			axios
+				.get('http://localhost:3000/exchangeCode', {
 					params: {
 						code: authorizationCode,
 					},
@@ -18,7 +19,7 @@ const ZoomRedirect = () => {
 					console.log('Access token:', response.data.access_token);
 				})
 				.catch((error) => {
-					console.error('Error exchanging code for token:', error.response.data);
+					console.error('Error exchanging code for token:', error);
 				});
 		}
 	}, []);
