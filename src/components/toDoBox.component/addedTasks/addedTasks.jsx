@@ -62,6 +62,14 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 		}
 	};
 
+	const handleZoomBtn = (index) => {
+		const authorizeUrl = `https://zoom.us/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
+			redirectUri
+		)}`;
+		window.location.href = authorizeUrl;
+		localStorage.setItem('meetingIndex', index);
+	};
+
 	return (
 		<>
 			<FormControl className={styles.tasks}>
@@ -110,10 +118,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 									<VideocamIcon
 										sx={{ color: 'blue' }}
 										onClick={() => {
-											const authorizeUrl = `https://zoom.us/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
-												redirectUri
-											)}`;
-											window.location.href = authorizeUrl;
+											handleZoomBtn(index);
 										}}
 									/>
 								</button>

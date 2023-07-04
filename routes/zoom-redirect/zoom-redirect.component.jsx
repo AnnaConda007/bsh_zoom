@@ -1,7 +1,10 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import axios from 'axios';
-
+import { pullZoomData } from '../../utils/updateTask'; 
 const ZoomRedirect = () => {
+	const meetingDate = localStorage.getItem('meetingDate') || null;
+	const meetingIndex = localStorage.getItem('meetingIndex') || null;
+
 	useEffect(() => {
 		const urlParams = new URLSearchParams(window.location.search);
 		const authorizationCode = urlParams.get('code');
@@ -14,7 +17,8 @@ const ZoomRedirect = () => {
 				})
 				.then((response) => {
 					const startUrl = response.data.meeting.start_url;
-					window.location.href = startUrl;
+					 	window.location.href = startUrl;
+ 					 	pullZoomData(meetingDate,meetingIndex,startUrl);
 				})
 				.catch((error) => {
 					console.error('Error exchanging code for token:', error);
