@@ -49,7 +49,7 @@ app.get('/exchangeCode', async (req, res) => {
                     },
                 }
             );
-            console.log('Meeting created successfully:', meetingResponse.data);
+            console.log('Meeting created successfully:', meetingResponse.data.start_url);
             res.send({ access_token: accessToken, meeting: meetingResponse.data });
         } catch (error) {
             console.log('Error creating Zoom meeting:', error.response.data);
