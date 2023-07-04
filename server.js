@@ -10,12 +10,7 @@ app.use(cors());
 
 app.get('/exchangeCode', async (req, res) => {
     const authorizationCode = req.query.code;
-
-    if (!authorizationCode) {
-        return res.status(400).send('No authorization code provided');
-    }
-
-    try {
+  try {
         const response = await axios.post('https://zoom.us/oauth/token', null, {
             params: {
                 grant_type: 'authorization_code',
@@ -26,14 +21,11 @@ app.get('/exchangeCode', async (req, res) => {
                 Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
             },
         });
-
         const accessToken = response.data.access_token;
-        console.log('Access token:', accessToken);
-
-        // Создание конференции в Zoom
-        try {
+ 
+         try {
             const meetingResponse = await axios.post(
-                'https://api.zoom.us/v2/users/me/meetings',
+                'https://api.zoom.us/v2/users/me/meetings', // me
                 {
                     topic: 'Test Meeting',
                     type: 1,
@@ -49,8 +41,7 @@ app.get('/exchangeCode', async (req, res) => {
                     },
                 }
             );
-            console.log('Meeting created successfully:', meetingResponse.data.start_url);
-            res.send({ access_token: accessToken, meeting: meetingResponse.data });
+             res.send({ access_token: accessToken, meeting: meetingResponse.data });
         } catch (error) {
             console.log('Error creating Zoom meeting:', error.response.data);
             res.status(500).send('Error creating Zoom meeting');
