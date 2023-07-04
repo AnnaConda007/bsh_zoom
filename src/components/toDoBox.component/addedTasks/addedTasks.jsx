@@ -4,6 +4,7 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
+import VideocamIcon from '@mui/icons-material/Videocam';
 import { useState, useContext } from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -13,6 +14,7 @@ import styles from './addedTasks.module.scss';
 import { ActiveDateContext } from '../../../contexts/activeDateContext';
 import { TaggetDatesContext } from '../../../contexts/taggedDates';
 import { clientId, redirectUri } from '../../../../contains';
+
 const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
@@ -105,15 +107,20 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 							/>
 							<div className={styles.tasks_btns}>
 								<button>
-									<DeleteForeverIcon
+									<VideocamIcon
+										sx={{ color: 'blue' }}
 										onClick={() => {
-											/* handleDeleteBtn(index)*/
-
 											const authorizeUrl = `https://zoom.us/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
 												redirectUri
 											)}`;
-
 											window.location.href = authorizeUrl;
+										}}
+									/>
+								</button>
+								<button>
+									<DeleteForeverIcon
+										onClick={() => {
+											handleDeleteBtn(index);
 										}}
 									/>
 								</button>

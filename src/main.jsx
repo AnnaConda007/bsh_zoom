@@ -8,12 +8,12 @@ import App from './App.jsx';
 import { CssBaseline } from '@mui/material';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-	<React.StrictMode>
+//	<React.StrictMode>
 		<BrowserRouter>
 			<ThemeProvider theme={theme}>
 				<CssBaseline />
 				<App />
 			</ThemeProvider>
 		</BrowserRouter>
-	</React.StrictMode>
+//	</React.StrictMode>
 );
