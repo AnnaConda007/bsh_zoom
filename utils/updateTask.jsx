@@ -5,7 +5,6 @@ let selectedDate;
 
 export const pullTask = async (formattedDate) => {
 	const url = `${dataBaseUrl}/.json`;
-
 	const res = await fetch(url);
 	AlltasksForDay = await res.json();
 	AlltasksForDay = AlltasksForDay ? AlltasksForDay : {};
@@ -25,7 +24,6 @@ export const getDayTask = async () => {
 export const pushTasks = async (updatedTasks) => {
 	AlltasksForDay[selectedDate] = updatedTasks;
 	const url = `${dataBaseUrl}/.json`;
-
 	await fetch(url, {
 		method: 'PUT',
 		body: JSON.stringify(AlltasksForDay),
@@ -59,4 +57,11 @@ export const pullZoomData = async (formattedDate, index, newMeetingUrl) => {
 			}
 
 };
+
+export const getUrlMeeting =  async (formattedDate, index)=>{
+	const url = `${dataBaseUrl}/${formattedDate}/${index}/meetingUrl.json`;
+const res = await fetch(url);
+	const meetingUrl = await res.json(); 
+ 	return meetingUrl;
+}
  
