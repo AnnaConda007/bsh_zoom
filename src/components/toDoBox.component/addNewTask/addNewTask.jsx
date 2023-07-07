@@ -10,7 +10,7 @@ import { ActiveDateContext } from '../../../contexts/activeDateContext';
 import { TaggetDatesContext } from '../../../contexts/taggedDates';
 
 const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
-	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '' };
+	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' };
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
 	const { activeDate, setActiveDate } = useContext(ActiveDateContext);
 	const { dates, setDates } = useContext(TaggetDatesContext);

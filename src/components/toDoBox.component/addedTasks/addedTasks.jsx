@@ -4,6 +4,7 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
+import VideocamIcon from '@mui/icons-material/Videocam';
 import { useState, useContext } from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -12,6 +13,8 @@ import dayjs from 'dayjs';
 import styles from './addedTasks.module.scss';
 import { ActiveDateContext } from '../../../contexts/activeDateContext';
 import { TaggetDatesContext } from '../../../contexts/taggedDates';
+import { clientId, redirectUri } from '../../../../contains';
+
 const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
@@ -59,6 +62,14 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 		}
 	};
 
+	const handleZoomBtn = (index) => {
+		const authorizeUrl = `https://zoom.us/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
+			redirectUri
+		)}`;
+		window.location.href = authorizeUrl;
+		localStorage.setItem('meetingIndex', index);
+	};
+
 	return (
 		<>
 			<FormControl className={styles.tasks}>
@@ -101,10 +112,22 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 										</div>
 									),
 								}}
-							/>{' '}
+							/>
 							<div className={styles.tasks_btns}>
 								<button>
-									<DeleteForeverIcon onClick={() => handleDeleteBtn(index)} />
+									<VideocamIcon
+										sx={{ color: 'blue' }}
+										onClick={() => {
+											handleZoomBtn(index);
+										}}
+									/>
+								</button>
+								<button>
+									<DeleteForeverIcon
+										onClick={() => {
+											handleDeleteBtn(index);
+										}}
+									/>
 								</button>
 								{isEditingIndex === index ? (
 									<>

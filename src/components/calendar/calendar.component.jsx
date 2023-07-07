@@ -11,10 +11,12 @@ import { pickersDay } from './pickersDay-style';
 import { getDayTask } from '../../../utils/updateTask';
 import ModalBox from '../ModalBox/modalBox';
 import { TaggetDatesContext } from '../../contexts/taggedDates';
+import { DateMeetingContext } from '../../contexts/dateMeeting.context';
 const Calendar = () => {
 	const [modal, setModal] = useState(false);
 	const { activeDate, setActiveDate } = useContext(ActiveDateContext);
 	const { dates, setDates } = useContext(TaggetDatesContext);
+
 	useEffect(() => {
 		const fetchData = async () => {
 			const datesArray = await getDayTask();
@@ -27,6 +29,7 @@ const Calendar = () => {
 		const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY');
 		setActiveDate(formattedDate);
 		setModal(true);
+		localStorage.setItem('meetingDate', formattedDate);
 	};
 
 	const slotProps = {
