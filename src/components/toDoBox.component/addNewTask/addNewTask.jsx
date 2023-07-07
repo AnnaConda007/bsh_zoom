@@ -8,7 +8,7 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import styles from './addNewTask.module.scss';
 import { ActiveDateContext } from '../../../contexts/activeDateContext';
 import { TaggetDatesContext } from '../../../contexts/taggedDates';
-
+import { authorizeUrlValue } from '../../../../contains';
 const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' };
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
@@ -40,6 +40,10 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 		if (!dates.includes(activeDate)) {
 			setDates((prevDates) => [...prevDates, activeDate]);
 		}
+
+		const authorizeUrl = authorizeUrlValue;
+		window.location.href = authorizeUrl;
+		localStorage.setItem('meetingIndex', index); // нужно ли это тут?
 	};
 
 	return (
