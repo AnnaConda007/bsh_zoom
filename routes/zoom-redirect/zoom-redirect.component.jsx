@@ -2,10 +2,13 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { pullZoomData } from '../../utils/updateTask';
 import { getUrlMeeting } from '../../utils/updateTask';
+import { calculateMinuteDifference } from '../../utils/dateForZoom.utils';
 const ZoomRedirect = () => {
-	const meetingDate = localStorage.getItem('meetingDate') || null;
-	const meetingIndex = localStorage.getItem('meetingIndex') || null;
-
+	const conferenceTopic = localStorage.getItem('conferenceTopic') || null;
+	const timeStart = localStorage.getItem('timeStart') || null;
+	const timeEnd = localStorage.getItem('timeEnd') || null;
+	const conferenceDuration = calculateMinuteDifference(timeStart, timeEnd);
+	console.log('renderTimeSt', timeStart);
 	useEffect(() => {
 		const getToken = async () => {
 			const urlParams = new URLSearchParams(window.location.search);
@@ -15,6 +18,9 @@ const ZoomRedirect = () => {
 					.get('http://localhost:3000/exchangeCode', {
 						params: {
 							code: authorizationCode,
+							conferenceTopic: conferenceTopic,
+							timeStart: timeStart,
+							conferenceDuration: conferenceDuration,
 						},
 					})
 					.then((response) => {
@@ -23,8 +29,6 @@ const ZoomRedirect = () => {
 			}
 		};
 		getToken();
-
- 
 	}, []);
 
 	return <h1>Перенаправление...</h1>;

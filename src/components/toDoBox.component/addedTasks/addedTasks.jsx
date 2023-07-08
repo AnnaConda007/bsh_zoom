@@ -13,7 +13,6 @@ import dayjs from 'dayjs';
 import styles from './addedTasks.module.scss';
 import { ActiveDateContext } from '../../../contexts/activeDateContext';
 import { TaggetDatesContext } from '../../../contexts/taggedDates';
-import { clientId, redirectUri, authorizeUrlValue } from '../../../../contains';
 
 const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
@@ -62,11 +61,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 		}
 	};
 
-	const handleZoomBtn = (index) => {
-		const authorizeUrl = authorizeUrlValue;
-		window.location.href = authorizeUrl;
-		localStorage.setItem('meetingIndex', index);
-	};
+	const handleZoomBtn = (index) => {};
 
 	return (
 		<>

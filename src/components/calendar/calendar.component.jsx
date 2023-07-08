@@ -29,7 +29,6 @@ const Calendar = () => {
 		const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY');
 		setActiveDate(formattedDate);
 		setModal(true);
-		localStorage.setItem('meetingDate', formattedDate);
 	};
 
 	const slotProps = {

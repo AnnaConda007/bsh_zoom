@@ -9,6 +9,8 @@ import styles from './addNewTask.module.scss';
 import { ActiveDateContext } from '../../../contexts/activeDateContext';
 import { TaggetDatesContext } from '../../../contexts/taggedDates';
 import { authorizeUrlValue } from '../../../../contains';
+import { formatedDataForZoom } from '../../../../utils/dateForZoom.utils';
+
 const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' };
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
@@ -20,6 +22,9 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 			...prevTask,
 			[timeKey]: selectedTime,
 		}));
+		const date = formatedDataForZoom(selectedTime);
+		console.log('усанавливаю время', date);
+		localStorage.setItem(timeKey, date);
 	};
 
 	const fullnessValueForNewTask = (value) => {
@@ -27,6 +32,7 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 			...prevTask,
 			taskValue: value,
 		}));
+		localStorage.setItem('conferenceTopic', value);
 	};
 
 	const handleAddTaskBtn = () => {
@@ -43,7 +49,6 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 
 		const authorizeUrl = authorizeUrlValue;
 		window.location.href = authorizeUrl;
-		localStorage.setItem('meetingIndex', index); // нужно ли это тут?
 	};
 
 	return (

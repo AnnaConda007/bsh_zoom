@@ -1,6 +1,5 @@
 import { DateTime } from 'luxon';
 
-import {} from 'luxon';
 const getfixAuthorizationTime = async () => {
 	let currentTime;
 	try {
