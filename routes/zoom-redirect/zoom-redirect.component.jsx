@@ -1,53 +1,35 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import axios from 'axios';
-import { pullZoomData } from '../../utils/updateTask';
-import { getUrlMeeting } from '../../utils/updateTask';
 import { calculateMinuteDifference } from '../../utils/dateForZoom.utils';
+import { getZoomToken } from '../../utils/zoom.utils';
 const ZoomRedirect = () => {
-	const [accessToken, setAccessToken] = useState('');
-
 	useEffect(() => {
-		const getToken = async () => {
-			const urlParams = new URLSearchParams(window.location.search);
-			const authorizationCode = urlParams.get('code');
-			if (authorizationCode) {
+		const createMeet = async () => {
+			getZoomToken().then((token) => {
+				const accessToken = token;
+				const conferenceTopic = localStorage.getItem('conferenceTopic') || null;
+				const timeStart = localStorage.getItem('timeStart') || null;
+				const timeEnd = localStorage.getItem('timeEnd') || null;
+				const conferenceDuration = calculateMinuteDifference(timeStart, timeEnd);
 				axios
-					.get('http://localhost:3000/exchangeCode', {
+					.get('http://localhost:3000/newConference', {
 						params: {
-							code: authorizationCode,
+							conferenceTopic: conferenceTopic,
+							timeStart: timeStart,
+							conferenceDuration: conferenceDuration,
+							token: accessToken,
 						},
 					})
 					.then((response) => {
-						setAccessToken(response.data.access_token);
+						console.log(response.data.meeting);
 					});
-			}
+			});
+			window.location.href = '/';
 		};
-		getToken();
+		createMeet();
 	}, []);
 
-	useEffect(() => {
-		if (accessToken) {
-			const conferenceTopic = localStorage.getItem('conferenceTopic') || null;
-			const timeStart = localStorage.getItem('timeStart') || null;
-			const timeEnd = localStorage.getItem('timeEnd') || null;
-			const conferenceDuration = calculateMinuteDifference(timeStart, timeEnd);
-			const token = accessToken;
-			axios
-				.get('http://localhost:3000/newConference', {
-					params: {
-						conferenceTopic: conferenceTopic,
-						timeStart: timeStart,
-						conferenceDuration: conferenceDuration,
-						token: token,
-					},
-				})
-				.then((response) => {
-					console.log(response.data.meeting);
-				});
-		}
-	}, [accessToken]);
-
-	return <h1>Перенаправление...</h1>;
+	return <h1>Создание новой конференции zoom...</h1>;
 };
 
 export default ZoomRedirect;

@@ -3,9 +3,9 @@ import styles from './toDoBox.module.scss';
 import AddNewTask from './addNewTask/addNewTask';
 import AddedTasks from './addedTasks/addedTasks';
 import { pullTask } from '../../../utils/updateTask';
-import { ActiveDateContext } from '../../contexts/activeDateContext';
+import { CalendarContext } from '../../contexts/CalendarContext.context';
 const ToDoBox = () => {
-	const { activeDate, setActiveDate } = useContext(ActiveDateContext);
+	const { activeDate, setActiveDate } = useContext(CalendarContext);
 	const [pulledTasks, setPulledTasks] = useState([]);
 	useEffect(() => {
 		const fetchTasks = async () => {

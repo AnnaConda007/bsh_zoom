@@ -32,34 +32,3 @@ export const pushTasks = async (updatedTasks) => {
 		},
 	});
 };
-
-export const pullZoomData = async (formattedDate, index, newMeetingUrl) => {
-	try {
-		const url = `${dataBaseUrl}/${formattedDate}/${index}.json`;
-		const response = await fetch(url, {
-			method: 'PATCH',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				meetingUrl: newMeetingUrl,
-			}),
-		});
-
-		if (!response.ok) {
-			throw new Error('Failed to update meeting URL in array');
-		}
-
-		const result = await response.json();
-		return result;
-	} catch (error) {
-		console.error('Error updating meeting URL in array:', error);
-	}
-};
-
-export const getUrlMeeting = async (formattedDate, index) => {
-	const url = `${dataBaseUrl}/${formattedDate}/${index}/meetingUrl.json`;
-	const res = await fetch(url);
-	const meetingUrl = await res.json();
-	return meetingUrl;
-};

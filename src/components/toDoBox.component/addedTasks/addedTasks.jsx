@@ -11,14 +11,12 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs from 'dayjs';
 import styles from './addedTasks.module.scss';
-import { ActiveDateContext } from '../../../contexts/activeDateContext';
-import { TaggetDatesContext } from '../../../contexts/taggedDates';
+import { CalendarContext } from '../../../contexts/CalendarContext.context';
 
 const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
-	const { activeDate, setActiveDate } = useContext(ActiveDateContext);
-	const { dates, setDates } = useContext(TaggetDatesContext);
+	const { activeDate, setActiveDate, taggedDates, setTaggedDates } = useContext(CalendarContext);
 
 	const upDateTimeForAddedTask = (time, index, timeKey) => {
 		const updatedTasks = [...pulledTasks];
@@ -57,7 +55,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 		}
 
 		if (pulledTasks.length <= 1) {
-			setDates((prevDates) => prevDates.filter((date) => date !== activeDate));
+			setTaggedDates((prevDates) => prevDates.filter((date) => date !== activeDate));
 		}
 	};
 

@@ -1,11 +1,4 @@
-import { ActiveDateProvider } from './activeDateContext';
-import { TaggetDatesProvider } from './taggedDates';
+import { CalendarProvider } from './CalendarContext.context';
 export const Providers = ({ children }) => {
-	return (
-		<ActiveDateProvider>
-			<TaggetDatesProvider>
-				 {children}
-			</TaggetDatesProvider>
-		</ActiveDateProvider>
-	);
+	return <CalendarProvider>{children}</CalendarProvider>;
 };

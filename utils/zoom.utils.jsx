@@ -1,3 +1,26 @@
+import axios from 'axios';
+
+export const getZoomToken = async () => {
+	const urlParams = new URLSearchParams(window.location.search);
+	const authorizationCode = urlParams.get('code');
+	if (authorizationCode) {
+		return axios
+			.get('http://localhost:3000/exchangeCode', {
+				params: {
+					code: authorizationCode,
+				},
+			})
+			.then((response) => {
+				localStorage.setItem('access_token', response.data.access_token);
+				return response.data.access_token;
+			})
+			.catch((error) => {
+				console.error('Error retrieving access token:', error);
+				throw error;
+			});
+	}
+};
+
 export const formatedDataForZoom = (date) => {
 	const inputDate = date;
 	const dateObj = new Date(inputDate);
@@ -16,7 +39,4 @@ export const calculateMinuteDifference = (date1, date2) => {
 	return minutes;
 };
 
-
-export const getListMeeting = ()=>{
-	
-}
+export const getListMeeting = () => {};

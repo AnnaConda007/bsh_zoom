@@ -6,16 +6,14 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import styles from './addNewTask.module.scss';
-import { ActiveDateContext } from '../../../contexts/activeDateContext';
-import { TaggetDatesContext } from '../../../contexts/taggedDates';
+import { CalendarContext } from '../../../contexts/CalendarContext.context';
 import { authorizeUrlValue } from '../../../../contains';
 import { formatedDataForZoom } from '../../../../utils/dateForZoom.utils';
 
 const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' };
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
-	const { activeDate, setActiveDate } = useContext(ActiveDateContext);
-	const { dates, setDates } = useContext(TaggetDatesContext);
+	const { activeDate, setActiveDate, taggedDates, setTaggedDates } = useContext(CalendarContext);
 
 	const fullnessTimeForNewTask = (selectedTime, timeKey) => {
 		setNewTaskObj((prevTask) => ({
@@ -43,12 +41,11 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 		pushTasks(updatedTasks);
 		setNewTaskObj(defaultTask);
 
-		if (!dates.includes(activeDate)) {
-			setDates((prevDates) => [...prevDates, activeDate]);
+		if (!taggedDates.includes(activeDate)) {
+			setTaggedDates((prevDates) => [...prevDates, activeDate]);
 		}
 
-		const authorizeUrl = authorizeUrlValue;
-		window.location.href = authorizeUrl;
+		window.location.href = authorizeUrlValue;
 	};
 
 	return (
