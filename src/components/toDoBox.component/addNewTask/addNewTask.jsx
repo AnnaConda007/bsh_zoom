@@ -8,12 +8,12 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import styles from './addNewTask.module.scss';
 import { CalendarContext } from '../../../contexts/CalendarContext.context';
 import { authorizeUrlValue } from '../../../../contains';
-import { formatedDataForZoom } from '../../../../utils/dateForZoom.utils';
+import { formatedDataForZoom } from '../../../../utils/zoom.utils';
 
 const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' };
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
-	const { activeDate, setActiveDate, taggedDates, setTaggedDates } = useContext(CalendarContext);
+	const { activeDate,  taggedDates, setTaggedDates } = useContext(CalendarContext);
 
 	const fullnessTimeForNewTask = (selectedTime, timeKey) => {
 		setNewTaskObj((prevTask) => ({

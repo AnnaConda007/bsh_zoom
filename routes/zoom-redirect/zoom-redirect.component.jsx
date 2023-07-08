@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import axios from 'axios';
-import { calculateMinuteDifference } from '../../utils/dateForZoom.utils';
+import { calculateMinuteDifference } from '../../utils/zoom.utils';
 import { getZoomToken } from '../../utils/zoom.utils';
 const ZoomRedirect = () => {
 	useEffect(() => {
@@ -24,7 +24,7 @@ const ZoomRedirect = () => {
 						console.log(response.data.meeting);
 					});
 			});
-			window.location.href = '/';
+	//		window.location.href = '/';
 		};
 		createMeet();
 	}, []);

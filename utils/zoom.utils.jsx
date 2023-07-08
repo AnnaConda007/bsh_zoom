@@ -21,6 +21,8 @@ export const getZoomToken = async () => {
 	}
 };
 
+export const getListMeeting = () => {};
+
 export const formatedDataForZoom = (date) => {
 	const inputDate = date;
 	const dateObj = new Date(inputDate);
@@ -38,5 +40,3 @@ export const calculateMinuteDifference = (date1, date2) => {
 	const minutes = Math.floor(diffInMilliseconds / (1000 * 60));
 	return minutes;
 };
-
-export const getListMeeting = () => {};

@@ -12,7 +12,7 @@ import { getDayTask } from '../../../utils/updateTask';
 import ModalBox from '../ModalBox/modalBox';
 const Calendar = () => {
 	const [modal, setModal] = useState(false);
-	const { activeDate, setActiveDate, taggedDates, setTaggedDates } = useContext(CalendarContext);
+	const { setActiveDate, taggedDates, setTaggedDates } = useContext(CalendarContext);
 
 	useEffect(() => {
 		const fetchData = async () => {
