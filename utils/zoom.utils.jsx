@@ -22,15 +22,18 @@ export const getZoomToken = async (redirect) => {
 
 export const getListMeeting = () => {};
 
-export const formatedDataForZoom = (date) => {
-	const inputDate = date;
-	const dateObj = new Date(inputDate);
+export const formatedDataForZoom = (selectedTime, activeDate) => {
+	const timeObj = new Date(selectedTime);
+	const dateSegments = activeDate.split('-').reverse();
+	const dateObj = new Date(dateSegments.join('-'));
+
 	const year = dateObj.getFullYear();
 	const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
 	const day = dateObj.getDate().toString().padStart(2, '0');
-	const hours = dateObj.getHours().toString().padStart(2, '0');
-	const minutes = dateObj.getMinutes().toString().padStart(2, '0');
+	const hours = timeObj.getHours().toString().padStart(2, '0');
+	const minutes = timeObj.getMinutes().toString().padStart(2, '0');
 	const iso8601Date = `${year}-${month}-${day}T${hours}:${minutes}:00Z`;
+console.log(iso8601Date)
 	return iso8601Date;
 };
 

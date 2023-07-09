@@ -14,14 +14,12 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' };
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
 	const { activeDate, taggedDates, setTaggedDates } = useContext(CalendarContext);
-
-	const fullnessTimeForNewTask = (selectedTime, timeKey) => {
+ 	const fullnessTimeForNewTask = (selectedTime, timeKey) => {
 		setNewTaskObj((prevTask) => ({
 			...prevTask,
 			[timeKey]: selectedTime,
 		}));
-		const date = formatedDataForZoom(selectedTime);
-		console.log('усанавливаю время', date);
+		const date = formatedDataForZoom(selectedTime,activeDate);
 		localStorage.setItem(timeKey, date);
 	};
 
