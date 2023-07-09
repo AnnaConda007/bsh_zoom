@@ -24,7 +24,7 @@ app.get('/exchangeCode', async (req, res) => {
             },
         });
         const accessToken = response.data.access_token;
-        console.log(accessToken)
+      //  console.log(accessToken)
   res.send({ access_token: accessToken });
 
   } catch (error) {
@@ -67,6 +67,26 @@ app.get('/newConference', async (req, res) => {
  })
 
 
+
+ app.get('/listMeetings', async (req, res) => {
+    const accessToken = req.query.token;
+    
+    try {
+        const response = await axios.get('https://api.zoom.us/v2/users/me/meetings', {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        
+        const meetings = response.data;
+        
+        res.send({ meetings: meetings });
+    } catch (error) {
+        console.log('Error retrieving meetings:', error.response.data);
+        res.status(500).send('Error retrieving meetings');
+    }
+});
 
 
 

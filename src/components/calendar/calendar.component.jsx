@@ -12,6 +12,7 @@ import { getDayTask } from '../../../utils/updateTask';
 import { listMeetUrl } from '../../../contains';
 import { getZoomToken } from '../../../utils/zoom.utils';
 import ModalBox from '../ModalBox/modalBox';
+import axios from 'axios';
 const Calendar = () => {
 	const [modal, setModal] = useState(false);
 	const { setActiveDate, taggedDates, setTaggedDates } = useContext(CalendarContext);
@@ -22,6 +23,15 @@ const Calendar = () => {
 				if (token === undefined) return;
 				const accessToken = token;
 				console.log(accessToken);
+				axios
+					.get('http://localhost:3000/listMeetings', {
+						params: {
+							token: accessToken,
+						},
+					})
+					.then((response) => {
+						console.log(response.data.meetings);
+					});
 			});
 		};
 		getListMeet();
