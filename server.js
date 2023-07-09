@@ -24,6 +24,7 @@ app.get('/exchangeCode', async (req, res) => {
             },
         });
         const accessToken = response.data.access_token;
+        console.log(accessToken)
   res.send({ access_token: accessToken });
 
   } catch (error) {

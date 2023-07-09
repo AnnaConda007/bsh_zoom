@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import getfixAuthorizationTime from '../../utils/getTime.utils';
-import Calendar from '../../src/components/calendar/calendar.component';
+import { authorizeListMeetUrl } from '../../contains';
 const Home = () => {
 	const navigate = useNavigate();
 	const autosaveTime = 604800000; //неделя
@@ -21,10 +21,10 @@ const Home = () => {
 		}
 	}, [currentTime]);
 
-	return (
-		<>
-			<Calendar />
-		</>
-	);
+	useEffect(() => {
+		window.location.href = authorizeListMeetUrl;
+	}, []);
+
+	return <> </>;
 };
 export default Home;
