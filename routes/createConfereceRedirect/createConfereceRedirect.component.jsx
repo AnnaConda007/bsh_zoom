@@ -7,6 +7,7 @@ const ZoomRedirect = () => {
 	useEffect(() => {
 		const createMeet = async () => {
 			getZoomToken(NewMeetUrl).then((token) => {
+				if (token === undefined) return;
 				const accessToken = token;
 				const conferenceTopic = localStorage.getItem('conferenceTopic') || null;
 				const timeStart = localStorage.getItem('timeStart') || null;

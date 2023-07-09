@@ -9,10 +9,23 @@ import styles from './calendar.module.scss';
 import { CalendarContext } from '../../contexts/CalendarContext.context';
 import { pickersDay } from './pickersDay-style';
 import { getDayTask } from '../../../utils/updateTask';
+import { listMeetUrl } from '../../../contains';
+import { getZoomToken } from '../../../utils/zoom.utils';
 import ModalBox from '../ModalBox/modalBox';
 const Calendar = () => {
 	const [modal, setModal] = useState(false);
 	const { setActiveDate, taggedDates, setTaggedDates } = useContext(CalendarContext);
+
+	useEffect(() => {
+		const getListMeet = async () => {
+			getZoomToken(listMeetUrl).then((token) => {
+				if (token === undefined) return;
+				const accessToken = token;
+				console.log(accessToken);
+			});
+		};
+		getListMeet();
+	}, []);
 
 	useEffect(() => {
 		const fetchData = async () => {

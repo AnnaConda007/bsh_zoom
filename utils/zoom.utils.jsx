@@ -3,23 +3,21 @@ import axios from 'axios';
 export const getZoomToken = async (redirect) => {
 	const urlParams = new URLSearchParams(window.location.search);
 	const authorizationCode = urlParams.get('code');
-	if (authorizationCode) {
-		return axios
-			.get('http://localhost:3000/exchangeCode', {
-				params: {
-					code: authorizationCode,
-					redirecturl: redirect,
-				},
-			})
-			.then((response) => {
-				localStorage.setItem('access_token', response.data.access_token);
-				return response.data.access_token;
-			})
-			.catch((error) => {
-				console.error('Error retrieving access token:', error);
-				throw error;
-			});
-	}
+	if (authorizationCode === null) return;
+	return axios
+		.get('http://localhost:3000/exchangeCode', {
+			params: {
+				code: authorizationCode,
+				redirecturl: redirect,
+			},
+		})
+		.then((response) => {
+			return response.data.access_token;
+		})
+		.catch((error) => {
+			console.error('Error retrieving access token:', error);
+			throw error;
+		});
 };
 
 export const getListMeeting = () => {};

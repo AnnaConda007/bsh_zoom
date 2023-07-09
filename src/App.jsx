@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import Authorization from '../routes/authorization/authorization.component';
 import Home from '../routes/home/home.component';
-import ZoomRedirect from '../routes/zoom-redirect/zoom-redirect.component';
+import ZoomRedirect from '../routes/createConfereceRedirect/createConfereceRedirect.component';
 import CalendarPage from '../routes/calendarPage/calendarPage.component';
 import { Providers } from './contexts/providers';
 function App() {
@@ -11,7 +11,7 @@ function App() {
 				<Route path='/' element={<Home />} />
 				<Route path='calendar' element={<CalendarPage />} />
 				<Route path='authorization' element={<Authorization />} />
-				<Route path='zoom' element={<ZoomRedirect />} />
+				<Route path='createConference' element={<ZoomRedirect />} />
 			</Routes>
 		</Providers>
 	);
