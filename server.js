@@ -1,7 +1,7 @@
 import axios from 'axios';
 import express from 'express';
 import cors from 'cors';
-import { clientId, clientSecret, redirectUri } from './contains.js';
+import { clientId, clientSecret } from './contains.js';
 
 const app = express();
 const port = 3000;
@@ -10,12 +10,14 @@ app.use(cors());
 
 app.get('/exchangeCode', async (req, res) => { 
     const authorizationCode = req.query.code; 
+    const redirecturl= req.query.redirecturl
+    
   try {
         const response = await axios.post('https://zoom.us/oauth/token', null, {
             params: {
                 grant_type: 'authorization_code',
                 code: authorizationCode,
-                redirect_uri: redirectUri,
+                redirect_uri: redirecturl,
             },
             headers: {
                 Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,

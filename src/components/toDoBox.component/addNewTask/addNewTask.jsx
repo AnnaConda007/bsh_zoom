@@ -7,13 +7,13 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import styles from './addNewTask.module.scss';
 import { CalendarContext } from '../../../contexts/CalendarContext.context';
-import { authorizeUrlValue } from '../../../../contains';
+import { authorizeNewMeetUrl } from '../../../../contains';
 import { formatedDataForZoom } from '../../../../utils/zoom.utils';
 
 const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' };
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
-	const { activeDate,  taggedDates, setTaggedDates } = useContext(CalendarContext);
+	const { activeDate, taggedDates, setTaggedDates } = useContext(CalendarContext);
 
 	const fullnessTimeForNewTask = (selectedTime, timeKey) => {
 		setNewTaskObj((prevTask) => ({
@@ -45,7 +45,7 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 			setTaggedDates((prevDates) => [...prevDates, activeDate]);
 		}
 
-		window.location.href = authorizeUrlValue;
+		window.location.href = authorizeNewMeetUrl;
 	};
 
 	return (

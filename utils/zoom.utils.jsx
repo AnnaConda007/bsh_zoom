@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const getZoomToken = async () => {
+export const getZoomToken = async (redirect) => {
 	const urlParams = new URLSearchParams(window.location.search);
 	const authorizationCode = urlParams.get('code');
 	if (authorizationCode) {
@@ -8,6 +8,7 @@ export const getZoomToken = async () => {
 			.get('http://localhost:3000/exchangeCode', {
 				params: {
 					code: authorizationCode,
+					redirecturl: redirect,
 				},
 			})
 			.then((response) => {

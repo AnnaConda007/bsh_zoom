@@ -2,10 +2,11 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { calculateMinuteDifference } from '../../utils/zoom.utils';
 import { getZoomToken } from '../../utils/zoom.utils';
+import { NewMeetUrl } from '../../contains';
 const ZoomRedirect = () => {
 	useEffect(() => {
 		const createMeet = async () => {
-			getZoomToken().then((token) => {
+			getZoomToken(NewMeetUrl).then((token) => {
 				const accessToken = token;
 				const conferenceTopic = localStorage.getItem('conferenceTopic') || null;
 				const timeStart = localStorage.getItem('timeStart') || null;
@@ -24,7 +25,7 @@ const ZoomRedirect = () => {
 						console.log(response.data.meeting);
 					});
 			});
-	//		window.location.href = '/';
+			//		window.location.href = '/';
 		};
 		createMeet();
 	}, []);
