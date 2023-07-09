@@ -2,12 +2,9 @@ import axios from 'axios';
 import express from 'express';
 import cors from 'cors';
 import { clientId, clientSecret } from './contains.js';
-
 const app = express();
 const port = 3000;
-
 app.use(cors());
-
 app.get('/exchangeCode', async (req, res) => { 
     const authorizationCode = req.query.code; 
     const redirecturl= req.query.redirecturl

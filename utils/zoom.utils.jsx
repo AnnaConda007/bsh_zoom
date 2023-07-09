@@ -14,52 +14,65 @@ export const getZoomToken = async (redirect) => {
 			},
 		})
 		.then((response) => {
- 			return response.data.access_token;
+			return response.data.access_token;
 		})
 		.catch((error) => {
 			console.error('Error retrieving access token:', error);
-			throw error;
 		});
 };
 
 export const getListMeet = async () => {
-	getZoomToken(listMeetUrl).then((res) => {
- 		const token = res || tokenFromLocalStorage;
-		const accessToken = token;
-		console.log(accessToken);
-		axios
-			.get('http://localhost:3000/listMeetings', {
-				params: {
-					token: accessToken,
-				},
-			})
-			.then((response) => {
-				console.log(response.data.meetings);
-			});
-	});
+	getZoomToken(listMeetUrl)
+		.then((res) => {
+			const token = res || tokenFromLocalStorage;
+			const accessToken = token;
+			console.log(accessToken);
+			axios
+				.get('http://localhost:3000/listMeetings', {
+					params: {
+						token: accessToken,
+					},
+				})
+				.then((response) => {
+					console.log(response.data.meetings);
+				})
+				.catch((error) => {
+					console.error('Error retrieving list meet:', error);
+				});
+		})
+		.catch((error) => {
+			console.error('Error getting Zoom token:', error);
+		});
 };
 
 export const createMeet = async () => {
-	getZoomToken(NewMeetUrl).then((token) => {
-		if (token === undefined) return;
-		const accessToken = token;
-		const conferenceTopic = localStorage.getItem('conferenceTopic') || null;
-		const timeStart = localStorage.getItem('timeStart') || null;
-		const timeEnd = localStorage.getItem('timeEnd') || null;
-		const conferenceDuration = calculateMinuteDifference(timeStart, timeEnd);
-		axios
-			.get('http://localhost:3000/newConference', {
-				params: {
-					conferenceTopic: conferenceTopic,
-					timeStart: timeStart,
-					conferenceDuration: conferenceDuration,
-					token: accessToken,
-				},
-			})
-			.then((response) => {
-				console.log(response.data.meeting);
-			});
-	});
+	getZoomToken(NewMeetUrl)
+		.then((token) => {
+			if (token === undefined) return;
+			const accessToken = token;
+			const conferenceTopic = localStorage.getItem('conferenceTopic') || null;
+			const timeStart = localStorage.getItem('timeStart') || null;
+			const timeEnd = localStorage.getItem('timeEnd') || null;
+			const conferenceDuration = calculateMinuteDifference(timeStart, timeEnd);
+			axios
+				.get('http://localhost:3000/newConference', {
+					params: {
+						conferenceTopic: conferenceTopic,
+						timeStart: timeStart,
+						conferenceDuration: conferenceDuration,
+						token: accessToken,
+					},
+				})
+				.then((response) => {
+					console.log(response.data.meeting);
+				})
+				.catch((error) => {
+					console.error('Error creating Zoom meeting:', error);
+				});
+		})
+		.catch((error) => {
+			console.error('Error getting Zoom token:', error);
+		});
 	//window.location.href = '/';
 };
 
