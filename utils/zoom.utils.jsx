@@ -1,9 +1,11 @@
 import axios from 'axios';
+import { listMeetUrl, NewMeetUrl } from '../contains';
 
 export const getZoomToken = async (redirect) => {
 	const urlParams = new URLSearchParams(window.location.search);
 	const authorizationCode = urlParams.get('code');
 	if (authorizationCode === null) return;
+
 	return axios
 		.get('http://localhost:3000/exchangeCode', {
 			params: {
@@ -12,7 +14,7 @@ export const getZoomToken = async (redirect) => {
 			},
 		})
 		.then((response) => {
-			return response.data.access_token;
+ 			return response.data.access_token;
 		})
 		.catch((error) => {
 			console.error('Error retrieving access token:', error);
@@ -20,7 +22,46 @@ export const getZoomToken = async (redirect) => {
 		});
 };
 
-export const getListMeeting = () => {};
+export const getListMeet = async () => {
+	getZoomToken(listMeetUrl).then((res) => {
+ 		const token = res || tokenFromLocalStorage;
+		const accessToken = token;
+		console.log(accessToken);
+		axios
+			.get('http://localhost:3000/listMeetings', {
+				params: {
+					token: accessToken,
+				},
+			})
+			.then((response) => {
+				console.log(response.data.meetings);
+			});
+	});
+};
+
+export const createMeet = async () => {
+	getZoomToken(NewMeetUrl).then((token) => {
+		if (token === undefined) return;
+		const accessToken = token;
+		const conferenceTopic = localStorage.getItem('conferenceTopic') || null;
+		const timeStart = localStorage.getItem('timeStart') || null;
+		const timeEnd = localStorage.getItem('timeEnd') || null;
+		const conferenceDuration = calculateMinuteDifference(timeStart, timeEnd);
+		axios
+			.get('http://localhost:3000/newConference', {
+				params: {
+					conferenceTopic: conferenceTopic,
+					timeStart: timeStart,
+					conferenceDuration: conferenceDuration,
+					token: accessToken,
+				},
+			})
+			.then((response) => {
+				console.log(response.data.meeting);
+			});
+	});
+	//window.location.href = '/';
+};
 
 export const formatedDataForZoom = (selectedTime, activeDate) => {
 	const timeObj = new Date(selectedTime);
@@ -33,7 +74,7 @@ export const formatedDataForZoom = (selectedTime, activeDate) => {
 	const hours = timeObj.getHours().toString().padStart(2, '0');
 	const minutes = timeObj.getMinutes().toString().padStart(2, '0');
 	const iso8601Date = `${year}-${month}-${day}T${hours}:${minutes}:00Z`;
-console.log(iso8601Date)
+	console.log(iso8601Date);
 	return iso8601Date;
 };
 
