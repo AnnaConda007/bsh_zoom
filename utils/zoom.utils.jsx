@@ -1,79 +1,59 @@
 import axios from 'axios';
-import { listMeetUrl, NewMeetUrl } from '../contains';
+import { token } from '../contains';
 
 export const getZoomToken = async (redirect) => {
 	const urlParams = new URLSearchParams(window.location.search);
 	const authorizationCode = urlParams.get('code');
 	if (authorizationCode === null) return;
 
-	return axios
-		.get('http://localhost:3000/exchangeCode', {
+	try {
+		const response = await axios.get('http://localhost:3000/exchangeCode', {
 			params: {
 				code: authorizationCode,
 				redirecturl: redirect,
 			},
-		})
-		.then((response) => {
-			return response.data.access_token;
-		})
-		.catch((error) => {
-			console.error('Error retrieving access token:', error);
 		});
+
+		return response.data.access_token;
+	} catch (error) {
+		console.error('Error retrieving access token:', error);
+	}
 };
 
 export const getListMeet = async () => {
-	getZoomToken(listMeetUrl)
-		.then((res) => {
-			const token = res || tokenFromLocalStorage;
-			const accessToken = token;
-			console.log(accessToken);
-			axios
-				.get('http://localhost:3000/listMeetings', {
-					params: {
-						token: accessToken,
-					},
-				})
-				.then((response) => {
-					console.log(response.data.meetings);
-				})
-				.catch((error) => {
-					console.error('Error retrieving list meet:', error);
-				});
-		})
-		.catch((error) => {
-			console.error('Error getting Zoom token:', error);
+	try {
+		const response = await axios.get('http://localhost:3000/listMeetings', {
+			params: {
+				token: token,
+			},
 		});
+		console.log(response.data.meetings);
+		return response.data.meetings;
+	} catch (error) {
+		console.error('Error retrieving list meet:', error);
+	}
 };
 
 export const createMeet = async () => {
-	getZoomToken(NewMeetUrl)
-		.then((token) => {
-			if (token === undefined) return;
-			const accessToken = token;
-			const conferenceTopic = localStorage.getItem('conferenceTopic') || null;
-			const timeStart = localStorage.getItem('timeStart') || null;
-			const timeEnd = localStorage.getItem('timeEnd') || null;
-			const conferenceDuration = calculateMinuteDifference(timeStart, timeEnd);
-			axios
-				.get('http://localhost:3000/newConference', {
-					params: {
-						conferenceTopic: conferenceTopic,
-						timeStart: timeStart,
-						conferenceDuration: conferenceDuration,
-						token: accessToken,
-					},
-				})
-				.then((response) => {
-					console.log(response.data.meeting);
-				})
-				.catch((error) => {
-					console.error('Error creating Zoom meeting:', error);
-				});
-		})
-		.catch((error) => {
-			console.error('Error getting Zoom token:', error);
+	try {
+		const accessToken = token;
+		const conferenceTopic = localStorage.getItem('conferenceTopic') || null;
+		const timeStart = localStorage.getItem('timeStart') || null;
+		const timeEnd = localStorage.getItem('timeEnd') || null;
+		const conferenceDuration = calculateMinuteDifference(timeStart, timeEnd);
+		const response = await axios.get('http://localhost:3000/newConference', {
+			params: {
+				conferenceTopic: conferenceTopic,
+				timeStart: timeStart,
+				conferenceDuration: conferenceDuration,
+				token: accessToken,
+			},
 		});
-	//window.location.href = '/';
+		console.log(response.data.meeting);
+	} catch (error) {
+		console.error('Error creating Zoom meeting:', error);
+	}
+	// window.location.href = '/';
 };
 
 export const formatedDataForZoom = (selectedTime, activeDate) => {
@@ -95,4 +75,21 @@ export const calculateMinuteDifference = (date1, date2) => {
 	const diffInMilliseconds = Math.abs(new Date(date2) - new Date(date1));
 	const minutes = Math.floor(diffInMilliseconds / (1000 * 60));
 	return minutes;
+};
+
+export const getTaggedDates = async () => {
+	const datesArr = [];
+	const listMeet = await getListMeet();
+	const meetings = listMeet.meetings;
+	console.log(meetings);
+	meetings.forEach((meeting) => {
+		const startTime = meeting.start_time;
+		const dateTime = new Date(startTime);
+		const year = dateTime.getFullYear();
+		const month = (dateTime.getMonth() + 1).toString().padStart(2, '0');
+		const day = dateTime.getDate().toString().padStart(2, '0');
+		const formattedDate = `${day}-${month}-${year}`;
+		datesArr.push(formattedDate);
+	});
+	return datesArr;
 };

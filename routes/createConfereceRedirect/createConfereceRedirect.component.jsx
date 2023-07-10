@@ -1,8 +1,12 @@
 import { useEffect } from 'react';
-import { createMeet } from '../../utils/zoom.utils';
+import { createMeet, getListMeet } from '../../utils/zoom.utils';
 const ZoomRedirect = () => {
 	useEffect(() => {
-		createMeet();
+		const asyncfun = async () => {
+		await	createMeet();
+			getListMeet();
+		};
+		asyncfun();
 	}, []);
 
 	return <h1>Создание новой конференции zoom...</h1>;
