@@ -20,7 +20,7 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 			...prevTask,
 			[timeKey]: selectedTime,
 		}));
-		const date = formatedDataForZoom(selectedTime);
+		const date = formatedDataForZoom(selectedTime, activeDate);
 		console.log('усанавливаю время', date);
 		localStorage.setItem(timeKey, date);
 	};

@@ -88,7 +88,6 @@ app.get('/newConference', async (req, res) => {
         'https://api.zoom.us/v2/users/me/meetings',
         {
           topic:conferenceTopic,
-          pre_schedule:true,
           type: 2,  
           start_time:timeStart,  
           duration: conferenceDuration,  
