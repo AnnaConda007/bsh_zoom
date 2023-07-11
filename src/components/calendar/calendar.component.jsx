@@ -10,26 +10,19 @@ import { CalendarContext } from '../../contexts/CalendarContext.context';
 import { pickersDay } from './pickersDay-style';
 import { getDayTask } from '../../../utils/updateTask';
 import ModalBox from '../ModalBox/modalBox';
-import { getZoomToken, getListMeeting , taggedDate} from '../../../utils/zoom.utils';
+import { getZoomToken, getListMeeting, getTaggedDate } from '../../../utils/zoom.utils';
 import { homeUrL } from '../../../contains';
+
 const Calendar = () => {
 	const [modal, setModal] = useState(false);
 	const { setActiveDate, taggedDates, setTaggedDates } = useContext(CalendarContext);
-	useEffect(() => {
-		const createMeet = async () => {
-			await getZoomToken(homeUrL);
-			await getListMeeting();
-		};
-		createMeet();
-	}, []);
 
 	useEffect(() => {
-		const fetchData = async () => {
-			const datesArray = await getDayTask();
-			setTaggedDates(datesArray);
-			taggedDate()
+		const getData = async () => {
+			await getZoomToken(homeUrL);
+			setTaggedDates(await getTaggedDate());
 		};
-		fetchData();
+		getData();
 	}, []);
 
 	const handleDateClick = async (date) => {

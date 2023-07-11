@@ -97,6 +97,12 @@ export const formatedDataForZoom = (selectedTime, activeDate) => {
 	console.log(iso8601Date);
 	return iso8601Date;
 };
+export const formatedDataFromZoom = (dateStr) => {
+	let date = new Date(dateStr);
+	let formattedDate =
+		('0' + date.getDate()).slice(-2) + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + date.getFullYear();
+	return formattedDate;
+};
 
 export const calculateMinuteDifference = (date1, date2) => {
 	const diffInMilliseconds = Math.abs(new Date(date2) - new Date(date1));
@@ -104,7 +110,16 @@ export const calculateMinuteDifference = (date1, date2) => {
 	return minutes;
 };
 
-export const taggedDate = async () => {
+export const getTaggedDate = async () => {
+	const taggedDateArr = [];
 	const conferenceData = await getListMeeting();
-	console.log('conferenceData', conferenceData);
+	const meetings = conferenceData.meetings;
+	meetings.forEach((miting) => {
+		const startTime = miting.start_time;
+		const date = formatedDataFromZoom(startTime);
+		if (!taggedDateArr.includes(date)) {
+			taggedDateArr.push(date);
+		}
+	});
+	return taggedDateArr;
 };
