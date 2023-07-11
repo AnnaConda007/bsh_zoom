@@ -1,42 +1,70 @@
 import axios from 'axios';
-import { token } from '../contains';
 
 export const getZoomToken = async (redirect) => {
-	const urlParams = new URLSearchParams(window.location.search);
-	const authorizationCode = urlParams.get('code');
-	if (authorizationCode === null) return;
-
 	try {
-		const response = await axios.get('http://localhost:3000/exchangeCode', {
-			params: {
-				code: authorizationCode,
-				redirecturl: redirect,
-			},
-		});
-
-		return response.data.access_token;
+		const urlParams = new URLSearchParams(window.location.search);
+		const authorizationCode = urlParams.get('code');
+		if (!localStorage.getItem('zoomRefreshToken')) {
+			const response = await axios.get('http://localhost:3000/exchangeCode', {
+				params: {
+					code: authorizationCode,
+					redirecturl: redirect,
+				},
+			});
+			localStorage.setItem('zoomRefreshToken', response.data.refresh_token);
+			localStorage.setItem('zoomAccesToken', response.data.access_token);
+			console.log(response.data.refresh_token);
+			console.log(response.data.access_token);
+			return response.data;
+		}
 	} catch (error) {
-		console.error('Error retrieving access token:', error);
+		console.error('Error retrieving refresh token:', error);
+		throw error;
 	}
 };
 
-export const getListMeet = async () => {
+export const updateAccesToken = async () => {
+	const refreshToken = localStorage.getItem('zoomRefreshToken');
+	const response = await axios.post('http://localhost:3000/refreshToken', {
+		refreshToken: refreshToken,
+	});
+	localStorage.setItem('zoomRefreshToken', response.data.refresh_token);
+	localStorage.setItem('zoomAccesToken', response.data.access_token);
+	console.log(
+		'новые токены:',
+		'zoomAccesToken',
+		response.data.refresh_token,
+		'zoomRefreshToken',
+		response.data.access_token
+	);
+	return response.data;
+};
+
+export const getListMeeting = async () => {
+	let accessToken = localStorage.getItem('zoomAccesToken');
 	try {
 		const response = await axios.get('http://localhost:3000/listMeetings', {
 			params: {
-				token: token,
+				accessToken: accessToken,
 			},
 		});
-		console.log(response.data.meetings);
-		return response.data.meetings;
+		//	console.log(response.data);
+		return response.data;
 	} catch (error) {
-		console.error('Error retrieving list meet:', error);
+		if (error.response && error.response.status === 401) {
+			const updatedTokenData = await updateAccesToken();
+			accessToken = updatedTokenData.access_token;
+			await getListMeeting();
+		} else {
+			console.error('Error retrieving meetings:', error.response.data);
+			throw error;
+		}
 	}
 };
 
 export const createMeet = async () => {
 	try {
-		const accessToken = token;
+		let accessToken = localStorage.getItem('zoomAccesToken');
 		const conferenceTopic = localStorage.getItem('conferenceTopic') || null;
 		const timeStart = localStorage.getItem('timeStart') || null;
 		const timeEnd = localStorage.getItem('timeEnd') || null;
@@ -50,17 +78,16 @@ export const createMeet = async () => {
 			},
 		});
 		console.log(response.data.meeting);
+		// window.location.href = '/';
 	} catch (error) {
-		console.error('Error creating Zoom meeting:', error);
+		console.error('Error creating meeting:', error);
 	}
-	// window.location.href = '/';
 };
 
 export const formatedDataForZoom = (selectedTime, activeDate) => {
 	const timeObj = new Date(selectedTime);
 	const dateSegments = activeDate.split('-').reverse();
 	const dateObj = new Date(dateSegments.join('-'));
-
 	const year = dateObj.getFullYear();
 	const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
 	const day = dateObj.getDate().toString().padStart(2, '0');
@@ -77,19 +104,7 @@ export const calculateMinuteDifference = (date1, date2) => {
 	return minutes;
 };
 
-export const getTaggedDates = async () => {
-	const datesArr = [];
-	const listMeet = await getListMeet();
-	const meetings = listMeet.meetings;
-	console.log(meetings);
-	meetings.forEach((meeting) => {
-		const startTime = meeting.start_time;
-		const dateTime = new Date(startTime);
-		const year = dateTime.getFullYear();
-		const month = (dateTime.getMonth() + 1).toString().padStart(2, '0');
-		const day = dateTime.getDate().toString().padStart(2, '0');
-		const formattedDate = `${day}-${month}-${year}`;
-		datesArr.push(formattedDate);
-	});
-	return datesArr;
+export const taggedDate = async () => {
+	const conferenceData = await getListMeeting();
+	console.log('conferenceData', conferenceData);
 };
