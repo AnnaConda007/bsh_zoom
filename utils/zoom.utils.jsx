@@ -48,7 +48,8 @@ export const getListMeeting = async () => {
 				accessToken: accessToken,
 			},
 		});
-		console.log(response.data);
+		//	console.log(response.data);
+		return response.data;
 	} catch (error) {
 		if (error.response && error.response.status === 401) {
 			const updatedTokenData = await updateAccesToken();
@@ -101,4 +102,9 @@ export const calculateMinuteDifference = (date1, date2) => {
 	const diffInMilliseconds = Math.abs(new Date(date2) - new Date(date1));
 	const minutes = Math.floor(diffInMilliseconds / (1000 * 60));
 	return minutes;
+};
+
+export const taggedDate = async () => {
+	const conferenceData = await getListMeeting();
+	console.log('conferenceData', conferenceData);
 };

@@ -12,6 +12,7 @@ const Header = () => {
 						variant='contained'
 						onClick={() => {
 							localStorage.removeItem('authorizationTime');
+							localStorage.removeItem('zoomRefreshToken');
 						}}
 					>
 						выйти

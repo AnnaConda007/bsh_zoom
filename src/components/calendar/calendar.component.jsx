@@ -10,7 +10,7 @@ import { CalendarContext } from '../../contexts/CalendarContext.context';
 import { pickersDay } from './pickersDay-style';
 import { getDayTask } from '../../../utils/updateTask';
 import ModalBox from '../ModalBox/modalBox';
-import { getZoomToken, getListMeeting } from '../../../utils/zoom.utils';
+import { getZoomToken, getListMeeting , taggedDate} from '../../../utils/zoom.utils';
 import { homeUrL } from '../../../contains';
 const Calendar = () => {
 	const [modal, setModal] = useState(false);
@@ -27,6 +27,7 @@ const Calendar = () => {
 		const fetchData = async () => {
 			const datesArray = await getDayTask();
 			setTaggedDates(datesArray);
+			taggedDate()
 		};
 		fetchData();
 	}, []);

@@ -18,6 +18,7 @@ export const getDayTask = async () => {
 	const res = await fetch(url);
 	const resJson = await res.json();
 	const datesArray = resJson ? Object.keys(resJson) : [];
+	//console.log(datesArray);
 	return datesArray;
 };
 
