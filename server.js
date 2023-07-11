@@ -5,7 +5,7 @@ import { clientId, clientSecret } from './contains.js';
 
 const app = express();
 const port = 3000;
-
+app.use(express.json());
 app.use(cors());
 
 app.get('/exchangeCode', async (req, res) => { 
@@ -23,15 +23,60 @@ app.get('/exchangeCode', async (req, res) => {
                 Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
             },
         });
-        const accessToken = response.data.access_token;
-        console.log(accessToken)
-  res.send({ access_token: accessToken });
+          const refreshToken = response.data.refresh_token;
+            const accessToken = response.data.access_token;    
+  res.send({ refresh_token: refreshToken,access_token:accessToken });
 
   } catch (error) {
     console.error('Error exchanging code for token:', error);
     res.status(500).send('Error exchanging code for token');
   }
 });
+
+ 
+
+
+
+
+app.post('/refreshToken', async (req, res) => {
+    const refreshToken = req.body.refreshToken; 
+    try {
+        const response = await axios.post('https://zoom.us/oauth/token', null, {
+            params: {
+                grant_type: 'refresh_token',
+                refresh_token: refreshToken,
+            },
+            headers: {
+                Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
+            },
+        });
+
+        const newAccessToken = response.data.access_token;
+        const newRefreshToken = response.data.refresh_token;
+        console.log("newAccessToken",newAccessToken)
+          console.log("newRefreshToken",newRefreshToken)
+        res.send({ 
+            access_token: newAccessToken, 
+            refresh_token: newRefreshToken 
+        });
+
+    } catch (error) {
+        console.error('Error refreshing access token:', error);
+        res.status(500).send('Error refreshing access token');
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.get('/newConference', async (req, res) => {
     const accessToken =req.query.token;

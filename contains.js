@@ -6,6 +6,16 @@ export const authorizeNewMeetUrl = `https://zoom.us/oauth/authorize?response_typ
 	NewMeetUrl
 )}`;
 export const listMeetUrl = 'http://localhost:5173/calendar';
+const homeUrl = "http://localhost:5173/"
 export const authorizeListMeetUrl = `https://zoom.us/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
 	listMeetUrl
 )}`;
+
+
+export const getTokenUrl = `https://zoom.us/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
+	homeUrl
+)}`;
+
+
+
+ 

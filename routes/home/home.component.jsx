@@ -22,7 +22,7 @@ const Home = () => {
 	}, [currentTime]);
 
 	useEffect(() => {
-		window.location.href = authorizeListMeetUrl;
+		//window.location.href = authorizeListMeetUrl;
 	}, []);
 
 	return <> </>;
