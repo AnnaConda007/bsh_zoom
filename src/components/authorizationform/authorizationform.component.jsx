@@ -3,7 +3,7 @@ import './authorizationform.styles.scss';
 import { Button, FormControl, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authorizeListMeetUrl } from '../../../contains';
+import { redirectHomeUrL } from '../../../contains';
 
 import getfixAuthorizationTime from '../../../utils/getTime.utils';
 function AuthorizationForm() {
@@ -43,7 +43,7 @@ function AuthorizationForm() {
 			});
 			if (response.ok) {
 				setFormValue(formValueDefault);
-				window.location.href = authorizeListMeetUrl;
+				window.location.href = redirectHomeUrL;
 			} else {
 				const data = await response.json();
 				const errorMessage = data.error.message;

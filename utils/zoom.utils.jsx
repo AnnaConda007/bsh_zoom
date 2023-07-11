@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { listMeetUrl } from '../contains';
+
 export const getZoomToken = async (redirect) => {
 	try {
 		const urlParams = new URLSearchParams(window.location.search);
@@ -42,6 +42,7 @@ export const updateAccesToken = async () => {
 
 export const getListMeeting = async () => {
 	let accessToken = localStorage.getItem('zoomAccesToken');
+	//let accessToken ="eyJzdiI6IjAwMDAwMSIsImFsZyI6IkhTNTEyIiwidiI6IjIuMCIsImtpZCI6ImEyMjI0YjRlLWM5NzItNGM3MC05NTIxLThjODlhOWRhYTQ1MCJ9.eyJ2ZXIiOjksImF1aWQiOiIwMWI4OGFmMjcyNmJiMTc3YmM3NGU0YWQ5ZTFjMzg0OCIsImNvZGUiOiJibWxhWTBQeWhISkRFcExOY1dFUzNHWXVOaUNGdjFpVFEiLCJpc3MiOiJ6bTpjaWQ6d1lJTEVkM3RRbkNDazRDRTZKaWh4ZyIsImdubyI6MCwidHlwZSI6MCwidGlkIjowLCJhdWQiOiJodHRwczovL29hdXRoLnpvb20udXMiLCJ1aWQiOiJLOVBzYUZYM1RrT0k2cU5LcE5xOW53IiwibmJmIj oxNjg5MDg2NDQyLCJleHAiOjE2ODkwOTAwNDIsImlhdCI6MTY4OTA4NjQ0MiwiYWlkIjoiOXBab09iakRTbjY3UDE0bUpOZWdMdyJ9.0jfA-Mq3zkGsmyPu8pb33NqLfeCwGbLgEr8CQcbA0k3MBOwyWKjXW9GDW4_1au1ARL6nYQPEOb8GcakEwhhUX"
 	try {
 		const response = await axios.get('http://localhost:3000/listMeetings', {
 			params: {
@@ -61,6 +62,28 @@ export const getListMeeting = async () => {
 	}
 };
 
+export const createMeet = async () => {
+	try {
+		let accessToken = localStorage.getItem('zoomAccesToken');
+		const conferenceTopic = localStorage.getItem('conferenceTopic') || null;
+		const timeStart = localStorage.getItem('timeStart') || null;
+		const timeEnd = localStorage.getItem('timeEnd') || null;
+		const conferenceDuration = calculateMinuteDifference(timeStart, timeEnd);
+		const response = await axios.get('http://localhost:3000/newConference', {
+			params: {
+				conferenceTopic: conferenceTopic,
+				timeStart: timeStart,
+				conferenceDuration: conferenceDuration,
+				token: accessToken,
+			},
+		});
+		console.log(response.data.meeting);
+		// window.location.href = '/';
+	} catch (error) {
+		console.error('Error creating meeting:', error);
+	}
+};
+
 export const formatedDataForZoom = (selectedTime, activeDate) => {
 	const timeObj = new Date(selectedTime);
 	const dateSegments = activeDate.split('-').reverse();
@@ -71,7 +94,7 @@ export const formatedDataForZoom = (selectedTime, activeDate) => {
 	const hours = timeObj.getHours().toString().padStart(2, '0');
 	const minutes = timeObj.getMinutes().toString().padStart(2, '0');
 	const iso8601Date = `${year}-${month}-${day}T${hours}:${minutes}:00Z`;
-console.log(iso8601Date)
+	console.log(iso8601Date);
 	return iso8601Date;
 };
 

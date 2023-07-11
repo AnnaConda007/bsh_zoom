@@ -11,18 +11,15 @@ import { pickersDay } from './pickersDay-style';
 import { getDayTask } from '../../../utils/updateTask';
 import ModalBox from '../ModalBox/modalBox';
 import { getZoomToken, getListMeeting } from '../../../utils/zoom.utils';
-import { listMeetUrl } from '../../../contains';
+import { homeUrL } from '../../../contains';
 import { ZoomContext } from '../../contexts/zoom.context';
 const Calendar = () => {
 	const [modal, setModal] = useState(false);
 	const { setActiveDate, taggedDates, setTaggedDates } = useContext(CalendarContext);
 	useEffect(() => {
 		const createMeet = async () => {
-			const urlParams = new URLSearchParams(window.location.search);
-			const authorizationCode = urlParams.get('code');
-			//	console.log(authorizationCode);
-			await getZoomToken(listMeetUrl);
-		await	getListMeeting();
+			await getZoomToken(homeUrL);
+			await getListMeeting();
 		};
 		createMeet();
 	}, []);

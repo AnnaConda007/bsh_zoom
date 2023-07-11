@@ -16,7 +16,7 @@ import { CalendarContext } from '../../../contexts/CalendarContext.context';
 const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
-	const { activeDate,  setTaggedDates } = useContext(CalendarContext);
+	const { activeDate, setTaggedDates } = useContext(CalendarContext);
 
 	const upDateTimeForAddedTask = (time, index, timeKey) => {
 		const updatedTasks = [...pulledTasks];
