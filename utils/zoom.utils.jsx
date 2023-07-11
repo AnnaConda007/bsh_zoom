@@ -42,7 +42,6 @@ export const updateAccesToken = async () => {
 
 export const getListMeeting = async () => {
 	let accessToken = localStorage.getItem('zoomAccesToken');
-	//let accessToken ="eyJzdiI6IjAwMDAwMSIsImFsZyI6IkhTNTEyIiwidiI6IjIuMCIsImtpZCI6ImEyMjI0YjRlLWM5NzItNGM3MC05NTIxLThjODlhOWRhYTQ1MCJ9.eyJ2ZXIiOjksImF1aWQiOiIwMWI4OGFmMjcyNmJiMTc3YmM3NGU0YWQ5ZTFjMzg0OCIsImNvZGUiOiJibWxhWTBQeWhISkRFcExOY1dFUzNHWXVOaUNGdjFpVFEiLCJpc3MiOiJ6bTpjaWQ6d1lJTEVkM3RRbkNDazRDRTZKaWh4ZyIsImdubyI6MCwidHlwZSI6MCwidGlkIjowLCJhdWQiOiJodHRwczovL29hdXRoLnpvb20udXMiLCJ1aWQiOiJLOVBzYUZYM1RrT0k2cU5LcE5xOW53IiwibmJmIj oxNjg5MDg2NDQyLCJleHAiOjE2ODkwOTAwNDIsImlhdCI6MTY4OTA4NjQ0MiwiYWlkIjoiOXBab09iakRTbjY3UDE0bUpOZWdMdyJ9.0jfA-Mq3zkGsmyPu8pb33NqLfeCwGbLgEr8CQcbA0k3MBOwyWKjXW9GDW4_1au1ARL6nYQPEOb8GcakEwhhUX"
 	try {
 		const response = await axios.get('http://localhost:3000/listMeetings', {
 			params: {
