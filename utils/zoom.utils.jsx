@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import { listMeetUrl } from '../contains';
 export const getZoomToken = async (redirect) => {
 	try {
 		const urlParams = new URLSearchParams(window.location.search);
@@ -32,7 +32,7 @@ export const updateAccesToken = async () => {
 	localStorage.setItem('zoomAccesToken', response.data.access_token);
 	console.log(
 		'новые токены:',
-		'ZoomAccesToken',
+		'zoomAccesToken',
 		response.data.refresh_token,
 		'zoomRefreshToken',
 		response.data.access_token
@@ -41,7 +41,7 @@ export const updateAccesToken = async () => {
 };
 
 export const getListMeeting = async () => {
-	const accessToken = localStorage.getItem('zoomAccesToken');
+	let accessToken = localStorage.getItem('zoomAccesToken');
 	try {
 		const response = await axios.get('http://localhost:3000/listMeetings', {
 			params: {
@@ -50,8 +50,14 @@ export const getListMeeting = async () => {
 		});
 		console.log(response.data);
 	} catch (error) {
-		console.error('Error retrieving meetings:', error.response.data);
-		throw error;
+		if (error.response && error.response.status === 401) {
+			const updatedTokenData = await updateAccesToken();
+			accessToken = updatedTokenData.access_token;
+			await getListMeeting();
+		} else {
+			console.error('Error retrieving meetings:', error.response.data);
+			throw error;
+		}
 	}
 };
 
