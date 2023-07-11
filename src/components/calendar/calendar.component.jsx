@@ -10,7 +10,7 @@ import { CalendarContext } from '../../contexts/CalendarContext.context';
 import { pickersDay } from './pickersDay-style';
 import { getDayTask } from '../../../utils/updateTask';
 import ModalBox from '../ModalBox/modalBox';
-import { getZoomToken, updateAccesToken } from '../../../utils/zoom.utils';
+import { getZoomToken, getListMeeting } from '../../../utils/zoom.utils';
 import { listMeetUrl } from '../../../contains';
 import { ZoomContext } from '../../contexts/zoom.context';
 const Calendar = () => {
@@ -20,9 +20,9 @@ const Calendar = () => {
 		const createMeet = async () => {
 			const urlParams = new URLSearchParams(window.location.search);
 			const authorizationCode = urlParams.get('code');
-		//	console.log(authorizationCode);
+			//	console.log(authorizationCode);
 			await getZoomToken(listMeetUrl);
-			//	updateAccesToken();
+		await	getListMeeting();
 		};
 		createMeet();
 	}, []);

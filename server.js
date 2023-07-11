@@ -112,7 +112,33 @@ app.get('/newConference', async (req, res) => {
  })
 
 
+app.get('/listMeetings', async (req, res) => {
+    const accessToken = req.query.accessToken;
+    console.log("accessToken", accessToken)
+    try {
+        let allMeetings = [];
+        let nextPageToken = '';
+        do {
+            const response = await axios.get(`https://api.zoom.us/v2/users/me/meetings?page_size=300&next_page_token=${nextPageToken}`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                },
+            });
 
+            const meetings = response.data;
+            allMeetings = [...allMeetings, ...meetings.meetings];
+
+            nextPageToken = meetings.next_page_token;
+
+        } while (nextPageToken);
+
+        res.send({ meetings: allMeetings });
+    } catch (error) {
+        console.log('Error retrieving meetings:', error.response.data);
+        res.status(500).send('Error retrieving meetings');
+    }
+});
 
 
 app.listen(port, () => {

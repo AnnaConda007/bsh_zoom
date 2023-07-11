@@ -29,7 +29,7 @@ export const updateAccesToken = async () => {
 		refreshToken: refreshToken,
 	});
 	localStorage.setItem('zoomRefreshToken', response.data.refresh_token);
-	localStorage.setItem('ZoomAccesToken', response.data.access_token);
+	localStorage.setItem('zoomAccesToken', response.data.access_token);
 	console.log(
 		'новые токены:',
 		'ZoomAccesToken',
@@ -38,6 +38,21 @@ export const updateAccesToken = async () => {
 		response.data.access_token
 	);
 	return response.data;
+};
+
+export const getListMeeting = async () => {
+	const accessToken = localStorage.getItem('zoomAccesToken');
+	try {
+		const response = await axios.get('http://localhost:3000/listMeetings', {
+			params: {
+				accessToken: accessToken,
+			},
+		});
+		console.log(response.data);
+	} catch (error) {
+		console.error('Error retrieving meetings:', error.response.data);
+		throw error;
+	}
 };
 
 export const formatedDataForZoom = (date) => {
