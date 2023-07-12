@@ -143,7 +143,21 @@ const { accessToken, data,id } = req.body;
 		}
 	}
 });
-
+app.delete('/deleteConference', async (req, res) => {
+  const { accessToken, id } = req.body;
+  console.log(accessToken, id);
+  try {
+    const response = await axios.delete(`https://api.zoom.us/v2/meetings/${id}`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      },
+    });
+    res.status(200).send(response.data);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
 
 
 
@@ -156,19 +170,3 @@ app.listen(port, () => {
 	console.log(`Server listening at http://localhost:${port}`);
 });
  
-
-async function updateMeeting(meetingId, updatedData, token) {
-    const url = `https://api.zoom.us/v2/meetings/${meetingId}`;
-
-    const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-    }
-
-    try {
-        const response = await axios.patch(url, updatedData, { headers: headers });
-        console.log(response.data);
-    } catch (error) {
-        console.error(error);
-    }
-}
