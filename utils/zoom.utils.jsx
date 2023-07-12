@@ -13,8 +13,7 @@ export const getZoomToken = async (redirect) => {
 			});
 			localStorage.setItem('zoomRefreshToken', response.data.refresh_token);
 			localStorage.setItem('zoomAccesToken', response.data.access_token);
-			console.log(response.data.refresh_token);
-			console.log(response.data.access_token);
+
 			return response.data;
 		}
 	} catch (error) {
@@ -48,7 +47,6 @@ export const getListMeeting = async () => {
 				accessToken: accessToken,
 			},
 		});
-		console.log(response.data);
 		return response.data;
 	} catch (error) {
 		if (error.response && error.response.status === 401) {
@@ -100,19 +98,30 @@ export const formatedDataFromZoom = (dateStr) => {
 	let date = new Date(dateStr);
 	let formattedDate =
 		('0' + date.getDate()).slice(-2) + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + date.getFullYear();
+
 	return formattedDate;
 };
 
 export const formateTimeFromZoom = (time) => {
-	const startTime = time;
-	const date = new Date(startTime);
-	const year = date.getUTCFullYear();
-	const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-	const day = String(date.getUTCDate()).padStart(2, '0');
-	const hours = String(date.getUTCHours()).padStart(2, '0');
-	const minutes = String(date.getUTCMinutes()).padStart(2, '0');
-	const seconds = String(date.getUTCSeconds()).padStart(2, '0');
-	const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.248Z`;
+const inputDate = time
+const date = new Date(inputDate);
+
+const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+const dayOfWeek = daysOfWeek[date.getUTCDay()];
+const month = months[date.getUTCMonth()];
+const day = date.getUTCDate();
+const year = date.getUTCFullYear();
+const hours = date.getUTCHours();
+const minutes = date.getUTCMinutes();
+const seconds = date.getUTCSeconds();
+
+const formattedDate = `${dayOfWeek} ${month} ${day} ${year} ${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")} GMT+0400 (Грузия, стандартное время)`;
+
+console.log(formattedDate);
+
+
 	return formattedDate;
 };
 
@@ -150,6 +159,7 @@ export const getConferenceInfo = async (selectedDate) => {
 	const tasks = {};
 	const conferenceData = await getListMeeting();
 	const meetings = conferenceData.meetings;
+	console.log(meetings);
 	meetings.forEach((meeting) => {
 		const time = meeting.start_time;
 		const duration = meeting.duration;
@@ -168,7 +178,7 @@ export const getConferenceInfo = async (selectedDate) => {
 		}
 	});
 	const tasksForDay = tasks[selectedDate] || [];
-	console.log(tasks);
+
 	return tasksForDay;
 };
 
@@ -182,7 +192,6 @@ export const updateConferenceInfo = async (idTopic, newData) => {
 			id: id,
 			data: data,
 		});
-		console.log('ответ', response.data);
 		return response.data;
 	} catch (error) {
 		console.error('Error retrieving meetings:', error); // добавить обновление токена
@@ -190,22 +199,20 @@ export const updateConferenceInfo = async (idTopic, newData) => {
 };
 
 export const deleteConference = async (conferenceId) => {
-		let accessToken = localStorage.getItem('zoomAccesToken');
-  const id = conferenceId;
-  try {
-    const response = await axios.delete('http://localhost:3000/deleteConference', {
-      data: {
-        accessToken: accessToken,
-        id: id,
-      },
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    });
-    console.log('ответ', response.data);
-    return response.data;
-  } catch (error) {
-    // Обработка ошибки
-  }
+	let accessToken = localStorage.getItem('zoomAccesToken');
+	const id = conferenceId;
+	try {
+		const response = await axios.delete('http://localhost:3000/deleteConference', {
+			data: {
+				accessToken: accessToken,
+				id: id,
+			},
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+		return response.data;
+	} catch (error) {
+		// Обработка ошибки
+	}
 };
-

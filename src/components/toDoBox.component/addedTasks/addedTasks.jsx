@@ -19,6 +19,7 @@ import {
 	deleteConference,
 } from '../../../../utils/zoom.utils';
 
+
 const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
@@ -67,7 +68,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 		if (index === isEditingIndex) {
 			setisEditingIndex(null);
 		}
-
+		T;
 		if (pulledTasks.length <= 1) {
 			setTaggedDates((prevDates) => prevDates.filter((date) => date !== activeDate));
 		}
@@ -81,6 +82,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 		<>
 			<FormControl className={styles.tasks}>
 				{pulledTasks.map((task, index) => {
+					console.log(task.timeStart);
 					return (
 						<div className={styles.tasks__task} key={`${index}-${task.timeStart} ${task.timeEnd}`}>
 							<TextField
@@ -105,6 +107,9 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 													autoOk={false}
 													orientation='landscape'
 													value={dayjs(task.timeStart)}
+													onChange={(time) => {
+														console.log(time);
+													}}
 													onAccept={(time) => {
 														upDateStartTimeFor(time, index);
 													}}

@@ -62,6 +62,7 @@ app.get('/newConference', async (req, res) => {
 	const accessToken = req.query.token;
 	const conferenceTopic = req.query.conferenceTopic;
 	const timeStart = req.query.timeStart;
+	console.log(timeStart)
 	const conferenceDuration = req.query.conferenceDuration;
 	try {
 		const meetingResponse = await axios.post(

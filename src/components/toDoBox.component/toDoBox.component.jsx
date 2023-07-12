@@ -10,10 +10,9 @@ const ToDoBox = () => {
 	const [pulledTasks, setPulledTasks] = useState([]);
 	useEffect(() => {
 		const fetchTasks = async () => {
-			const taskForDate = await pullTask(activeDate);
-			console.log('pull', taskForDate);
+			//	const taskForDate = await pullTask(activeDate);
 			const task = await getConferenceInfo(activeDate);
-			console.log('getInfo', task);
+
 			setPulledTasks(task);
 		};
 		fetchTasks();

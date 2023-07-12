@@ -37,7 +37,7 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 		const updatedTasks = [...pulledTasks];
 		updatedTasks.push(newTaskObj);
 		setPulledTasks(updatedTasks);
-		pushTasks(updatedTasks);
+		//pushTasks(updatedTasks);
 		setNewTaskObj(defaultTask);
 
 		if (!taggedDates.includes(activeDate)) {
