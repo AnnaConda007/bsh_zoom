@@ -4,17 +4,18 @@ let AlltasksForDay;
 let selectedDate;
 
 export const pullTask = async (formattedDate) => {
+	// ++
 	const url = `${dataBaseUrl}/.json`;
 	const res = await fetch(url);
 	AlltasksForDay = await res.json();
 	AlltasksForDay = AlltasksForDay ? AlltasksForDay : {};
 	selectedDate = formattedDate;
 	const taskForDate = AlltasksForDay[selectedDate] || [];
-
 	return taskForDate;
 };
 
 export const getDayTask = async () => {
+	//++
 	const url = `${dataBaseUrl}/.json`;
 	const res = await fetch(url);
 	const resJson = await res.json();

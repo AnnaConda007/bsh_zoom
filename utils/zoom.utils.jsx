@@ -168,5 +168,6 @@ export const getConferenceInfo = async (selectedDate) => {
 		}
 	});
 	const tasksForDay = tasks[selectedDate] || [];
+	console.log(tasks)
 	return tasksForDay;
 };
