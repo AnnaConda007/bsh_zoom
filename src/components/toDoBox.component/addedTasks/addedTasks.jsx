@@ -12,17 +12,26 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs from 'dayjs';
 import styles from './addedTasks.module.scss';
 import { CalendarContext } from '../../../contexts/CalendarContext.context';
+import {
+	updateConferenceInfo,
+	formatedDataForZoom,
+	calculateMinuteDifference,
+	deleteConference,
+} from '../../../../utils/zoom.utils';
 
 const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
 	const { activeDate, setTaggedDates } = useContext(CalendarContext);
 
-	const upDateTimeForAddedTask = (time, index, timeKey) => {
-		const updatedTasks = [...pulledTasks];
-		updatedTasks[index][timeKey] = time.toISOString();
-		pushTasks(updatedTasks);
-		setPulledTasks(updatedTasks);
+	const upDateStartTimeFor = (timeStart, index) => {
+		const duration = calculateMinuteDifference(timeStart, pulledTasks[index].timeEnd);
+		const id = pulledTasks[index].meetingId;
+		const newStartTimeValue = {
+			duration: duration,
+			start_time: formatedDataForZoom(timeStart, activeDate),
+		};
+		updateConferenceInfo(id, newStartTimeValue);
 	};
 
 	const handleEditBtn = (index) => {
@@ -37,7 +46,11 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const handleSaveEdit = (index) => {
 		const updatedTasks = [...pulledTasks];
 		updatedTasks[index].taskValue = editingValue;
-		pushTasks(updatedTasks);
+		const id = updatedTasks[index].meetingId;
+		const newTopicValue = {
+			topic: editingValue,
+		};
+		updateConferenceInfo(id, newTopicValue);
 		setPulledTasks(updatedTasks);
 		setisEditingIndex(null);
 	};
@@ -48,7 +61,8 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 
 	const handleDeleteBtn = (index) => {
 		const updatedTasks = pulledTasks.filter((_, i) => i !== index);
-		pushTasks(updatedTasks);
+		const id = pulledTasks[index].meetingId;
+		deleteConference(id);
 		setPulledTasks(updatedTasks);
 		if (index === isEditingIndex) {
 			setisEditingIndex(null);
@@ -85,20 +99,23 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 										<div className={styles.tasks__add__time}>
 											<LocalizationProvider dateAdapter={AdapterDayjs}>
 												<TimePicker
+													closeOnSelect={false}
 													label='начало'
 													ampm={false}
+													autoOk={false}
 													orientation='landscape'
 													value={dayjs(task.timeStart)}
-													onChange={(time) => {
-														upDateTimeForAddedTask(time, index, 'timeStart');
+													onAccept={(time) => {
+														upDateStartTimeFor(time, index);
 													}}
 												/>
 												<TimePicker
 													label='конец'
 													ampm={false}
 													value={dayjs(task.timeEnd)}
-													onChange={(time) => {
-														upDateTimeForAddedTask(time, index, 'timeEnd');
+													onChange={(time) => {}}
+													onAccept={() => {
+														upDateTimeForAddedTask();
 													}}
 												/>
 											</LocalizationProvider>

@@ -125,7 +125,50 @@ app.get('/listMeetings', async (req, res) => {
 	}
 });
 
+app.patch('/updateConferenceInfo', async (req, res) => {
+const { accessToken, data,id } = req.body;	
+   const headers = {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+    }
+	try { 
+  		const response = await axios.patch(`https://api.zoom.us/v2/meetings/${id}`, data, { headers: headers });
+			console.log(response)
+		res.status(200).send(response.data);
+	} catch (error) { 
+		if (error.response && error.response.data.code === 124) {
+			res.status(401).send(error.response.data);
+		} else {
+			res.status(500).send(error.response.data);
+		}
+	}
+});
+
+
+
+
+
+
+
+
+
 app.listen(port, () => {
 	console.log(`Server listening at http://localhost:${port}`);
 });
  
+
+async function updateMeeting(meetingId, updatedData, token) {
+    const url = `https://api.zoom.us/v2/meetings/${meetingId}`;
+
+    const headers = {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+    }
+
+    try {
+        const response = await axios.patch(url, updatedData, { headers: headers });
+        console.log(response.data);
+    } catch (error) {
+        console.error(error);
+    }
+}

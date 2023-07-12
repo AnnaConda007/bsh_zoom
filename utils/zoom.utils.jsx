@@ -48,7 +48,7 @@ export const getListMeeting = async () => {
 				accessToken: accessToken,
 			},
 		});
-		//	console.log(response.data);
+		console.log(response.data);
 		return response.data;
 	} catch (error) {
 		if (error.response && error.response.status === 401) {
@@ -80,7 +80,7 @@ export const createMeet = async () => {
 		console.log(response.data.meeting);
 		// window.location.href = '/';
 	} catch (error) {
-		console.error('Error creating meeting:', error);
+		console.error('Error creating meeting:', error); //!!!!!!! добавь обновление токенво
 	}
 };
 
@@ -94,7 +94,6 @@ export const formatedDataForZoom = (selectedTime, activeDate) => {
 	const hours = timeObj.getHours().toString().padStart(2, '0');
 	const minutes = timeObj.getMinutes().toString().padStart(2, '0');
 	const iso8601Date = `${year}-${month}-${day}T${hours}:${minutes}:00Z`;
-	console.log(iso8601Date);
 	return iso8601Date;
 };
 export const formatedDataFromZoom = (dateStr) => {
@@ -120,9 +119,9 @@ export const formateTimeFromZoom = (time) => {
 export const calculatTimeEnd = (time, durationTime) => {
 	const startTime = time;
 	const duration = durationTime;
-	const startDate = new Date(startTime); // Создаем объект Date из начального времени
-	startDate.setMinutes(startDate.getMinutes() + duration); // Добавляем минуты
-	const endTime = startDate.toISOString(); // Конвертируем обратно в формат ISO
+	const startDate = new Date(startTime);
+	startDate.setMinutes(startDate.getMinutes() + duration);
+	const endTime = startDate.toISOString();
 	const formatedTime = formateTimeFromZoom(endTime);
 	return formatedTime;
 };
@@ -160,6 +159,7 @@ export const getConferenceInfo = async (selectedDate) => {
 			timeStart: formateTimeFromZoom(meeting.start_time),
 			timeEnd: calculatTimeEnd(time, duration),
 			meetingUrl: meeting.join_url,
+			meetingId: meeting.id,
 		};
 		if (tasks[date]) {
 			tasks[date].push(task);
@@ -168,6 +168,44 @@ export const getConferenceInfo = async (selectedDate) => {
 		}
 	});
 	const tasksForDay = tasks[selectedDate] || [];
-	console.log(tasks)
+	console.log(tasks);
 	return tasksForDay;
 };
+
+export const updateConferenceInfo = async (idTopic, newData) => {
+	let accessToken = localStorage.getItem('zoomAccesToken');
+	const id = idTopic;
+	const data = newData;
+	try {
+		const response = await axios.patch('http://localhost:3000/updateConferenceInfo', {
+			accessToken: accessToken,
+			id: id,
+			data: data,
+		});
+		console.log('ответ', response.data);
+		return response.data;
+	} catch (error) {
+		console.error('Error retrieving meetings:', error); // добавить обновление токена
+	}
+};
+
+export const deleteConference = async (conferenceId) => {
+		let accessToken = localStorage.getItem('zoomAccesToken');
+  const id = conferenceId;
+  try {
+    const response = await axios.delete('http://localhost:3000/deleteConference', {
+      data: {
+        accessToken: accessToken,
+        id: id,
+      },
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+    console.log('ответ', response.data);
+    return response.data;
+  } catch (error) {
+    // Обработка ошибки
+  }
+};
+
