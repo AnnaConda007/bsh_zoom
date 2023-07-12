@@ -5,11 +5,14 @@ export const CalendarContext = createContext({
 	setActiveDate: () => {},
 	taggedDates: [],
 	setTaggedDates: () => {},
+	AlltasksForDay: '',
+	setAlltasksForDay: () => {},
 });
 
 export const CalendarProvider = ({ children }) => {
 	const [activeDate, setActiveDate] = useState('');
 	const [taggedDates, setTaggedDates] = useState([]);
-	const value = { activeDate, setActiveDate, taggedDates, setTaggedDates };
+	const [AlltasksForDay, setAlltasksForDay] = useState('');
+ 	const value = { activeDate, setActiveDate, taggedDates, setTaggedDates, AlltasksForDay, setAlltasksForDay };
 	return <CalendarContext.Provider value={value}>{children}</CalendarContext.Provider>;
 };

@@ -10,6 +10,7 @@ export const pullTask = async (formattedDate) => {
 	AlltasksForDay = AlltasksForDay ? AlltasksForDay : {};
 	selectedDate = formattedDate;
 	const taskForDate = AlltasksForDay[selectedDate] || [];
+
 	return taskForDate;
 };
 
@@ -18,7 +19,7 @@ export const getDayTask = async () => {
 	const res = await fetch(url);
 	const resJson = await res.json();
 	const datesArray = resJson ? Object.keys(resJson) : [];
-//	console.log(datesArray);
+	//	console.log(datesArray);
 	return datesArray;
 };
 

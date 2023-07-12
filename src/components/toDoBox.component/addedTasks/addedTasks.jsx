@@ -59,7 +59,9 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 		}
 	};
 
-	const handleZoomBtn = (index) => {};
+	const handleZoomBtn = (index) => {
+		window.location.href = pulledTasks[index].meetingUrl;
+	};
 
 	return (
 		<>

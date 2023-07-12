@@ -4,13 +4,17 @@ import AddNewTask from './addNewTask/addNewTask';
 import AddedTasks from './addedTasks/addedTasks';
 import { pullTask } from '../../../utils/updateTask';
 import { CalendarContext } from '../../contexts/CalendarContext.context';
+import { getConferenceInfo } from '../../../utils/zoom.utils';
 const ToDoBox = () => {
 	const { activeDate, setActiveDate } = useContext(CalendarContext);
 	const [pulledTasks, setPulledTasks] = useState([]);
 	useEffect(() => {
 		const fetchTasks = async () => {
 			const taskForDate = await pullTask(activeDate);
-			setPulledTasks(taskForDate);
+			console.log('pull', taskForDate);
+			const task = await getConferenceInfo(activeDate);
+			console.log('getInfo', task);
+			setPulledTasks(task);
 		};
 		fetchTasks();
 	}, [activeDate]);

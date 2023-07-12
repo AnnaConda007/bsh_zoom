@@ -8,9 +8,9 @@ import Header from '../header/header';
 import styles from './calendar.module.scss';
 import { CalendarContext } from '../../contexts/CalendarContext.context';
 import { pickersDay } from './pickersDay-style';
-import { getDayTask } from '../../../utils/updateTask';
 import ModalBox from '../ModalBox/modalBox';
 import { getZoomToken, getListMeeting, getTaggedDate } from '../../../utils/zoom.utils';
+import { getConferenceInfo } from '../../../utils/zoom.utils';
 import { homeUrL } from '../../../contains';
 
 const Calendar = () => {
@@ -21,6 +21,7 @@ const Calendar = () => {
 		const getData = async () => {
 			await getZoomToken(homeUrL);
 			setTaggedDates(await getTaggedDate());
+ 
 		};
 		getData();
 	}, []);

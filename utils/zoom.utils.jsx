@@ -104,6 +104,29 @@ export const formatedDataFromZoom = (dateStr) => {
 	return formattedDate;
 };
 
+export const formateTimeFromZoom = (time) => {
+	const startTime = time;
+	const date = new Date(startTime);
+	const year = date.getUTCFullYear();
+	const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+	const day = String(date.getUTCDate()).padStart(2, '0');
+	const hours = String(date.getUTCHours()).padStart(2, '0');
+	const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+	const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+	const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.248Z`;
+	return formattedDate;
+};
+
+export const calculatTimeEnd = (time, durationTime) => {
+	const startTime = time;
+	const duration = durationTime;
+	const startDate = new Date(startTime); // Создаем объект Date из начального времени
+	startDate.setMinutes(startDate.getMinutes() + duration); // Добавляем минуты
+	const endTime = startDate.toISOString(); // Конвертируем обратно в формат ISO
+	const formatedTime = formateTimeFromZoom(endTime);
+	return formatedTime;
+};
+
 export const calculateMinuteDifference = (date1, date2) => {
 	const diffInMilliseconds = Math.abs(new Date(date2) - new Date(date1));
 	const minutes = Math.floor(diffInMilliseconds / (1000 * 60));
@@ -122,4 +145,28 @@ export const getTaggedDate = async () => {
 		}
 	});
 	return taggedDateArr;
+};
+
+export const getConferenceInfo = async (selectedDate) => {
+	const tasks = {};
+	const conferenceData = await getListMeeting();
+	const meetings = conferenceData.meetings;
+	meetings.forEach((meeting) => {
+		const time = meeting.start_time;
+		const duration = meeting.duration;
+		const date = formatedDataFromZoom(time);
+		const task = {
+			taskValue: meeting.topic,
+			timeStart: formateTimeFromZoom(meeting.start_time),
+			timeEnd: calculatTimeEnd(time, duration),
+			meetingUrl: meeting.join_url,
+		};
+		if (tasks[date]) {
+			tasks[date].push(task);
+		} else {
+			tasks[date] = [task];
+		}
+	});
+	const tasksForDay = tasks[selectedDate] || [];
+	return tasksForDay;
 };
