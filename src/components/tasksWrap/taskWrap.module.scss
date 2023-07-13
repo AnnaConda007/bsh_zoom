@@ -6,4 +6,13 @@
   align-content: space-evenly;
   flex-wrap: wrap; 
 }
- 
+ .date{
+  width: 100%;
+  display: flex;
+justify-content: flex-start; 
+font-weight: bolder;
+ }
+
+ .dateDisabled{
+  color:rgb(223, 62, 62)
+ }
