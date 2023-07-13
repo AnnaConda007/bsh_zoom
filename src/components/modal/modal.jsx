@@ -1,8 +1,8 @@
 import { Modal, Box, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import 'dayjs/locale/ru';
-import ToDoBox from '../toDoBox.component/toDoBox.component';
-import styles from './modalBox.module.scss'; 
+import ToDoBox from '../tasksWrap/taskWrap.component';
+import styles from './modal.module.scss';
 const ModalBox = ({ setModal, modal }) => {
 	const handleClose = () => {
 		setModal(false);

@@ -1,4 +1,3 @@
-import { pushTasks } from '../../../../utils/updateTask';
 import { TextField, FormControl } from '@mui/material';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -11,26 +10,24 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs from 'dayjs';
 import styles from './addedTasks.module.scss';
-import { CalendarContext } from '../../../contexts/CalendarContext.context';
-import {
-	updateConferenceInfo,
-	formatedDataForZoom,
-	calculateMinuteDifference,
-	deleteConference,
-} from '../../../../utils/zoom.utils';
-
+import { CalendarContext } from '../../contexts/calendar.context';
+import { deleteConference } from '../../../utils/manageConference.utils';
+import { updateConferenceInfo } from '../../../utils/manageConference.utils';
+//import { updateConferenceInfo } from '../../../utils/zoom.utils';
+import { formatedDateForZoom } from '../../../utils/formatting.utils';
+import { calculateDuration } from '../../../utils/calculat.utils';
 
 const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
 	const { activeDate, setTaggedDates } = useContext(CalendarContext);
 
-	const upDateStartTimeFor = (timeStart, index) => {
-		const duration = calculateMinuteDifference(timeStart, pulledTasks[index].timeEnd);
+	const upDateStartTime = (timeStart, index) => {
+		const duration = calculateDuration(timeStart, pulledTasks[index].timeEnd);
 		const id = pulledTasks[index].meetingId;
 		const newStartTimeValue = {
 			duration: duration,
-			start_time: formatedDataForZoom(timeStart, activeDate),
+			start_time: formatedDateForZoom(timeStart, activeDate),
 		};
 		updateConferenceInfo(id, newStartTimeValue);
 	};
@@ -45,8 +42,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	};
 
 	const handleSaveEdit = (index) => {
-		const updatedTasks = [...pulledTasks];
-		updatedTasks[index].taskValue = editingValue;
+		pulledTasks[index].taskValue = editingValue;
 		const id = updatedTasks[index].meetingId;
 		const newTopicValue = {
 			topic: editingValue,
@@ -68,7 +64,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 		if (index === isEditingIndex) {
 			setisEditingIndex(null);
 		}
-		T;
+
 		if (pulledTasks.length <= 1) {
 			setTaggedDates((prevDates) => prevDates.filter((date) => date !== activeDate));
 		}
@@ -111,7 +107,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 														console.log(time);
 													}}
 													onAccept={(time) => {
-														upDateStartTimeFor(time, index);
+														upDateStartTime(time, index);
 													}}
 												/>
 												<TimePicker

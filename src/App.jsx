@@ -9,7 +9,7 @@ function App() {
 			<Routes>
 				<Route path='/' element={<Home />} />
 				<Route path='authorization' element={<Authorization />} />
-				<Route path='zoom' element={<CreateConferenceRedirect />} /> 
+				<Route path='zoom' element={<CreateConferenceRedirect />} />
 			</Routes>
 		</Providers>
 	);

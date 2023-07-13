@@ -6,12 +6,12 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import Header from '../header/header';
 import styles from './calendar.module.scss';
-import { CalendarContext } from '../../contexts/CalendarContext.context';
+import { CalendarContext } from '../../contexts/calendar.context';
 import { pickersDay } from './pickersDay-style';
-import ModalBox from '../ModalBox/modalBox';
-import { getZoomToken, getListMeeting, getTaggedDate } from '../../../utils/zoom.utils';
-import { getConferenceInfo } from '../../../utils/zoom.utils';
+import ModalBox from '../modal/modal';
+import { getTaggedDate } from '../../../utils/manageConference.utils';
 import { homeUrL } from '../../../contains';
+import { getZoomTokens } from '../../../utils/tokensZoom.utils';
 
 const Calendar = () => {
 	const [modal, setModal] = useState(false);
@@ -19,9 +19,8 @@ const Calendar = () => {
 
 	useEffect(() => {
 		const getData = async () => {
-			await getZoomToken(homeUrL);
+			await getZoomTokens(homeUrL);
 			setTaggedDates(await getTaggedDate());
- 
 		};
 		getData();
 	}, []);

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { createMeet } from '../../utils/zoom.utils';
-import { getConferenceInfo } from '../../utils/zoom.utils';
-import { CalendarContext } from '../../src/contexts/CalendarContext.context';
+import { getConferenceInfo } from '../../utils/manageConference.utils';
+import { CalendarContext } from '../../src/contexts/calendar.context';
 import { useContext } from 'react';
 const CreateConferenceRedirect = () => {
 	const { activeDate, setActiveDate } = useContext(CalendarContext);

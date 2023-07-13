@@ -1,26 +1,24 @@
 import { TextField } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useState, useContext } from 'react';
-import { pushTasks } from '../../../../utils/updateTask';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import styles from './addNewTask.module.scss';
-import { CalendarContext } from '../../../contexts/CalendarContext.context';
-import { redirectNewMeetUrl } from '../../../../contains';
-import { formatedDataForZoom } from '../../../../utils/zoom.utils';
-
+import { CalendarContext } from '../../contexts/calendar.context';
+import { redirectNewMeetUrl } from '../../../contains';
+import { formatedDateForZoom } from '../../../utils/formatting.utils';
 const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' };
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
 	const { activeDate, taggedDates, setTaggedDates } = useContext(CalendarContext);
- 	const fullnessTimeForNewTask = (selectedTime, timeKey) => {
+
+	const fullnessTimeForNewTask = (selectedTime, timeKey) => {
 		setNewTaskObj((prevTask) => ({
 			...prevTask,
 			[timeKey]: selectedTime,
 		}));
-		const date = formatedDataForZoom(selectedTime, activeDate);
-		console.log('усанавливаю время', date);
+		const date = formatedDateForZoom(selectedTime, activeDate);
 		localStorage.setItem(timeKey, date);
 	};
 
@@ -37,13 +35,10 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 		const updatedTasks = [...pulledTasks];
 		updatedTasks.push(newTaskObj);
 		setPulledTasks(updatedTasks);
-		//pushTasks(updatedTasks);
 		setNewTaskObj(defaultTask);
-
 		if (!taggedDates.includes(activeDate)) {
 			setTaggedDates((prevDates) => [...prevDates, activeDate]);
 		}
-
 		window.location.href = redirectNewMeetUrl;
 	};
 
