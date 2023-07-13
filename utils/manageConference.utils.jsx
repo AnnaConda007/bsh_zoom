@@ -33,12 +33,14 @@ export const getConferenceInfo = async (selectedDate) => {
 		const tasks = {};
 		const conferenceData = await getListMeeting();
 		const meetings = conferenceData.meetings;
- 		meetings.forEach((meeting) => {
+		meetings.forEach((meeting) => {
 			const timeStart = meeting.start_time;
 			const duration = meeting.duration;
 			const date = formatedDateFromZoom(timeStart);
+			const topicObject = JSON.parse(meeting.topic);
 			const task = {
-				taskValue: meeting.topic,
+				creator: topicObject.creator,
+				taskValue: topicObject.value,
 				timeStart: formateTimeFromZoom(timeStart),
 				timeEnd: calculatTimeEnd(timeStart, duration),
 				meetingUrl: meeting.join_url,

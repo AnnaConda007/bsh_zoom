@@ -58,7 +58,7 @@ app.post('/refreshToken', async (req, res) => {
 
 app.get('/newConference', async (req, res) => {
 	const accessToken = req.query.token;
-	const conferenceTopic = req.query.conferenceTopic;
+ 	const conferenceTopic = req.query.conferenceTopic;
 	const timeStart = req.query.timeStart;
 	console.log(timeStart)
 	const conferenceDuration = req.query.conferenceDuration;

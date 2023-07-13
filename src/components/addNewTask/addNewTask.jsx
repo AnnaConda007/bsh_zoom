@@ -79,13 +79,11 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 					}}
 				/>
 
-				<button>
-					{disabled === false && (
-						<button>
-							<AddCircleOutlineIcon onClick={handleAddTaskBtn} />
-						</button>
-					)}
-				</button>
+				{disabled === false && (
+					<button>
+						<AddCircleOutlineIcon onClick={handleAddTaskBtn} />
+					</button>
+				)}
 			</div>
 		</>
 	);

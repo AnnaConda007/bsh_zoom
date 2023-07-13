@@ -124,6 +124,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 								}}
 							/>
 							<div className={styles.tasks_btns}>
+								
 								<button>
 									<VideocamIcon
 										sx={{ color: 'blue' }}
