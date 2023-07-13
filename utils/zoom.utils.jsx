@@ -5,6 +5,7 @@ import { updateAccesToken } from './tokensZoom.utils';
 
 export const getListMeeting = async () => {
 	let accessToken = localStorage.getItem('zoomAccesToken');
+
 	try {
 		const response = await axios.get('http://localhost:3000/listMeetings', {
 			params: {
@@ -13,20 +14,13 @@ export const getListMeeting = async () => {
 		});
 		return response.data;
 	} catch (error) {
-		if (error.response && error.response.status === 401) {
-			const updatedTokenData = await updateAccesToken();
-			accessToken = updatedTokenData.access_token;
-			await getListMeeting();
-		} else {
-			console.error('Error retrieving meetings:', error.response.data);
-			throw error;
-		}
+		console.error('Error retrieving meetings:', error.response.data);
+		throw error;
 	}
 };
 
 export const createMeet = async () => {
 	try {
-		let accessToken = localStorage.getItem('zoomAccesToken');
 		const conferenceTopic = localStorage.getItem('conferenceTopic') || null;
 		const timeStart = localStorage.getItem('timeStart') || null;
 		const timeEnd = localStorage.getItem('timeEnd') || null;
@@ -42,6 +36,11 @@ export const createMeet = async () => {
 		console.log(response.data.meeting);
 		// window.location.href = '/';
 	} catch (error) {
+		if (error.response && error.response.status === 401) {
+			console.log('прошел час ');
+			await updateAccesToken();
+			await createMeet();
+		}
 		console.error('Error creating meeting:', error); //!!!!!!! добавь обновление токенво
 	}
 };

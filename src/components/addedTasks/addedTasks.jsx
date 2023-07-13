@@ -21,7 +21,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
 	const { activeDate, setTaggedDates } = useContext(CalendarContext);
-
+	console.log(pulledTasks);
 	const upDateStartTime = (timeStart, index) => {
 		const duration = calculateDuration(timeStart, pulledTasks[index].timeEnd);
 		const id = pulledTasks[index].meetingId;
@@ -42,8 +42,9 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	};
 
 	const handleSaveEdit = (index) => {
-		pulledTasks[index].taskValue = editingValue;
-		const id = updatedTasks[index].meetingId;
+		const updatedTasks = [...pulledTasks];
+		updatedTasks[index].taskValue = editingValue;
+		const id = pulledTasks[index].meetingId;
 		const newTopicValue = {
 			topic: editingValue,
 		};

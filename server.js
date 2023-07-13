@@ -23,7 +23,7 @@ app.get('/exchangeCode', async (req, res) => {
 			},
 		});
 		const refreshToken = response.data.refresh_token;
-		const accessToken = response.data.access_token;
+		const accessToken = response.data.access_token; 
 		res.send({ refresh_token: refreshToken, access_token: accessToken });
 	} catch (error) {
 		console.error('Error exchanging code for token:', error);
@@ -45,9 +45,7 @@ app.post('/refreshToken', async (req, res) => {
 		});
 
 		const newAccessToken = response.data.access_token;
-		const newRefreshToken = response.data.refresh_token;
-		console.log('newAccessToken', newAccessToken);
-		console.log('newRefreshToken', newRefreshToken);
+		const newRefreshToken = response.data.refresh_token; 
 		res.send({
 			access_token: newAccessToken,
 			refresh_token: newRefreshToken,
@@ -97,8 +95,7 @@ app.get('/newConference', async (req, res) => {
 
 app.get('/listMeetings', async (req, res) => {
 	const accessToken = req.query.accessToken;
-	console.log('accessToken', accessToken);
-	try {
+ 	try {
 		let allMeetings = [];
 		let nextPageToken = '';
 		do {
@@ -145,8 +142,7 @@ const { accessToken, data,id } = req.body;
 	}
 });
 app.delete('/deleteConference', async (req, res) => {
-  const { accessToken, id } = req.body;
-  console.log(accessToken, id);
+  const { accessToken, id } = req.body; 
   try {
     const response = await axios.delete(`https://api.zoom.us/v2/meetings/${id}`, {
       headers: {
@@ -155,9 +151,13 @@ app.delete('/deleteConference', async (req, res) => {
       },
     });
     res.status(200).send(response.data);
-  } catch (error) {
-    res.status(500).send(error);
-  }
+  } catch (error) { 
+		if (error.response && error.response.data.code === 124) {
+			res.status(401).send(error.response.data);
+		} else {
+			res.status(500).send(error.response.data);
+		}
+	}
 });
 
 
