@@ -1,21 +1,18 @@
 import { useState, useEffect, useContext } from 'react';
-import styles from './toDoBox.module.scss';
+import styles from './taskWrap.module.scss';
 import AddNewTask from '../addNewTask/addNewTask';
 import AddedTasks from '../addedTasks/addedTasks';
-import { pullTask } from '../../../utils/updateTask';
 import { CalendarContext } from '../../contexts/calendar.context';
 import { getConferenceInfo } from '../../../utils/manageConference.utils';
 const ToDoBox = () => {
-	const { activeDate, setActiveDate } = useContext(CalendarContext);
+	const { activeDate } = useContext(CalendarContext);
 	const [pulledTasks, setPulledTasks] = useState([]);
 	useEffect(() => {
-		const fetchTasks = async () => {
-			//	const taskForDate = await pullTask(activeDate);
+		const getTask = async () => {
 			const task = await getConferenceInfo(activeDate);
-
 			setPulledTasks(task);
 		};
-		fetchTasks();
+		getTask();
 	}, [activeDate]);
 
 	return (

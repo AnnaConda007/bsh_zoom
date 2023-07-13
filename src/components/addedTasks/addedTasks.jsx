@@ -1,4 +1,3 @@
-import { pushTasks } from '../../../../utils/updateTask';
 import { TextField, FormControl } from '@mui/material';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -11,21 +10,26 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs from 'dayjs';
 import styles from './addedTasks.module.scss';
-import { ActiveDateContext } from '../../../contexts/activeDateContext';
-import { TaggetDatesContext } from '../../../contexts/taggedDates';
-import { clientId, redirectUri } from '../../../../contains';
+import { CalendarContext } from '../../contexts/calendar.context';
+import { deleteConference } from '../../../utils/manageConference.utils';
+import { updateConferenceInfo } from '../../../utils/manageConference.utils';
+//import { updateConferenceInfo } from '../../../utils/zoom.utils';
+import { formatedDateForZoom } from '../../../utils/formatting.utils';
+import { calculateDuration } from '../../../utils/calculat.utils';
 
 const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
-	const { activeDate, setActiveDate } = useContext(ActiveDateContext);
-	const { dates, setDates } = useContext(TaggetDatesContext);
+	const { activeDate, setTaggedDates } = useContext(CalendarContext);
 
-	const upDateTimeForAddedTask = (time, index, timeKey) => {
-		const updatedTasks = [...pulledTasks];
-		updatedTasks[index][timeKey] = time.toISOString();
-		pushTasks(updatedTasks);
-		setPulledTasks(updatedTasks);
+	const upDateStartTime = (timeStart, index) => {
+		const duration = calculateDuration(timeStart, pulledTasks[index].timeEnd);
+		const id = pulledTasks[index].meetingId;
+		const newStartTimeValue = {
+			duration: duration,
+			start_time: formatedDateForZoom(timeStart, activeDate),
+		};
+		updateConferenceInfo(id, newStartTimeValue);
 	};
 
 	const handleEditBtn = (index) => {
@@ -38,9 +42,12 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	};
 
 	const handleSaveEdit = (index) => {
-		const updatedTasks = [...pulledTasks];
-		updatedTasks[index].taskValue = editingValue;
-		pushTasks(updatedTasks);
+		pulledTasks[index].taskValue = editingValue;
+		const id = updatedTasks[index].meetingId;
+		const newTopicValue = {
+			topic: editingValue,
+		};
+		updateConferenceInfo(id, newTopicValue);
 		setPulledTasks(updatedTasks);
 		setisEditingIndex(null);
 	};
@@ -51,29 +58,27 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 
 	const handleDeleteBtn = (index) => {
 		const updatedTasks = pulledTasks.filter((_, i) => i !== index);
-		pushTasks(updatedTasks);
+		const id = pulledTasks[index].meetingId;
+		deleteConference(id);
 		setPulledTasks(updatedTasks);
 		if (index === isEditingIndex) {
 			setisEditingIndex(null);
 		}
 
 		if (pulledTasks.length <= 1) {
-			setDates((prevDates) => prevDates.filter((date) => date !== activeDate));
+			setTaggedDates((prevDates) => prevDates.filter((date) => date !== activeDate));
 		}
 	};
 
 	const handleZoomBtn = (index) => {
-		const authorizeUrl = `https://zoom.us/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
-			redirectUri
-		)}`;
-		window.location.href = authorizeUrl;
-		localStorage.setItem('meetingIndex', index);
+		window.location.href = pulledTasks[index].meetingUrl;
 	};
 
 	return (
 		<>
 			<FormControl className={styles.tasks}>
 				{pulledTasks.map((task, index) => {
+					console.log(task.timeStart);
 					return (
 						<div className={styles.tasks__task} key={`${index}-${task.timeStart} ${task.timeEnd}`}>
 							<TextField
@@ -92,20 +97,26 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 										<div className={styles.tasks__add__time}>
 											<LocalizationProvider dateAdapter={AdapterDayjs}>
 												<TimePicker
+													closeOnSelect={false}
 													label='начало'
 													ampm={false}
+													autoOk={false}
 													orientation='landscape'
 													value={dayjs(task.timeStart)}
 													onChange={(time) => {
-														upDateTimeForAddedTask(time, index, 'timeStart');
+														console.log(time);
+													}}
+													onAccept={(time) => {
+														upDateStartTime(time, index);
 													}}
 												/>
 												<TimePicker
 													label='конец'
 													ampm={false}
 													value={dayjs(task.timeEnd)}
-													onChange={(time) => {
-														upDateTimeForAddedTask(time, index, 'timeEnd');
+													onChange={(time) => {}}
+													onAccept={() => {
+														upDateTimeForAddedTask();
 													}}
 												/>
 											</LocalizationProvider>

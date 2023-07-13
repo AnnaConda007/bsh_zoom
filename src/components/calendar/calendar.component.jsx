@@ -6,36 +6,35 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import Header from '../header/header';
 import styles from './calendar.module.scss';
-import { ActiveDateContext } from '../../contexts/activeDateContext';
+import { CalendarContext } from '../../contexts/calendar.context';
 import { pickersDay } from './pickersDay-style';
-import { getDayTask } from '../../../utils/updateTask';
-import ModalBox from '../ModalBox/modalBox';
-import { TaggetDatesContext } from '../../contexts/taggedDates';
-import { DateMeetingContext } from '../../contexts/dateMeeting.context';
+import ModalBox from '../modal/modal';
+import { getTaggedDate } from '../../../utils/manageConference.utils';
+import { homeUrL } from '../../../contains';
+import { getZoomTokens } from '../../../utils/tokensZoom.utils';
+
 const Calendar = () => {
 	const [modal, setModal] = useState(false);
-	const { activeDate, setActiveDate } = useContext(ActiveDateContext);
-	const { dates, setDates } = useContext(TaggetDatesContext);
+	const { setActiveDate, taggedDates, setTaggedDates } = useContext(CalendarContext);
 
 	useEffect(() => {
-		const fetchData = async () => {
-			const datesArray = await getDayTask();
-			setDates(datesArray);
+		const getData = async () => {
+			await getZoomTokens(homeUrL);
+			setTaggedDates(await getTaggedDate());
 		};
-		fetchData();
+		getData();
 	}, []);
 
 	const handleDateClick = async (date) => {
 		const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY');
 		setActiveDate(formattedDate);
 		setModal(true);
-		localStorage.setItem('meetingDate', formattedDate);
 	};
 
 	const slotProps = {
 		day: (date) => {
 			const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY');
-			const isDateInArray = dates.includes(formattedDate);
+			const isDateInArray = taggedDates.includes(formattedDate);
 			return {
 				onClick: () => handleDateClick(date),
 				isDateInArray,

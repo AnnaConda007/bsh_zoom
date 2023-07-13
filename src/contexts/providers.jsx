@@ -1,11 +1,9 @@
-import { ActiveDateProvider } from './activeDateContext';
-import { TaggetDatesProvider } from './taggedDates';
+import { CalendarProvider } from './calendar.context';
+import { ZoomProvider } from './zoom.context';
 export const Providers = ({ children }) => {
 	return (
-		<ActiveDateProvider>
-			<TaggetDatesProvider>
-				 {children}
-			</TaggetDatesProvider>
-		</ActiveDateProvider>
+		<CalendarProvider>
+			<ZoomProvider>{children}</ZoomProvider>
+		</CalendarProvider>
 	);
 };

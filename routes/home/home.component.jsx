@@ -21,10 +21,10 @@ const Home = () => {
 		}
 	}, [currentTime]);
 
-	return (
-		<>
-			<Calendar />
-		</>
-	);
+	useEffect(() => {
+		//window.location.href = redirectHomeUrL;
+	}, []);
+
+	return <Calendar />;
 };
 export default Home;

@@ -1,25 +1,25 @@
 import { TextField } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useState, useContext } from 'react';
-import { pushTasks } from '../../../../utils/updateTask';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import styles from './addNewTask.module.scss';
-import { ActiveDateContext } from '../../../contexts/activeDateContext';
-import { TaggetDatesContext } from '../../../contexts/taggedDates';
-
+import { CalendarContext } from '../../contexts/calendar.context';
+import { redirectNewMeetUrl } from '../../../contains';
+import { formatedDateForZoom } from '../../../utils/formatting.utils';
 const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' };
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
-	const { activeDate, setActiveDate } = useContext(ActiveDateContext);
-	const { dates, setDates } = useContext(TaggetDatesContext);
+	const { activeDate, taggedDates, setTaggedDates } = useContext(CalendarContext);
 
 	const fullnessTimeForNewTask = (selectedTime, timeKey) => {
 		setNewTaskObj((prevTask) => ({
 			...prevTask,
 			[timeKey]: selectedTime,
 		}));
+		const date = formatedDateForZoom(selectedTime, activeDate);
+		localStorage.setItem(timeKey, date);
 	};
 
 	const fullnessValueForNewTask = (value) => {
@@ -27,6 +27,7 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 			...prevTask,
 			taskValue: value,
 		}));
+		localStorage.setItem('conferenceTopic', value);
 	};
 
 	const handleAddTaskBtn = () => {
@@ -34,12 +35,11 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 		const updatedTasks = [...pulledTasks];
 		updatedTasks.push(newTaskObj);
 		setPulledTasks(updatedTasks);
-		pushTasks(updatedTasks);
 		setNewTaskObj(defaultTask);
-
-		if (!dates.includes(activeDate)) {
-			setDates((prevDates) => [...prevDates, activeDate]);
+		if (!taggedDates.includes(activeDate)) {
+			setTaggedDates((prevDates) => [...prevDates, activeDate]);
 		}
+		window.location.href = redirectNewMeetUrl;
 	};
 
 	return (
