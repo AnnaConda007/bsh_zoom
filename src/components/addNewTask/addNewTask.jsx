@@ -11,7 +11,7 @@ import { formatedDateForZoom } from '../../../utils/formatting.utils';
 const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' };
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
-	const { activeDate, taggedDates, setTaggedDates } = useContext(CalendarContext);
+	const { activeDate, taggedDates, setTaggedDates, disabled } = useContext(CalendarContext);
 
 	const fullnessTimeForNewTask = (selectedTime, timeKey) => {
 		setNewTaskObj((prevTask) => ({
@@ -78,8 +78,13 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 						),
 					}}
 				/>
+
 				<button>
-					<AddCircleOutlineIcon onClick={handleAddTaskBtn} />
+					{disabled === false && (
+						<button>
+							<AddCircleOutlineIcon onClick={handleAddTaskBtn} />
+						</button>
+					)}
 				</button>
 			</div>
 		</>

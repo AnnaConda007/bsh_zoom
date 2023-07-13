@@ -1,3 +1,6 @@
+import { DateTime } from 'luxon';
+import getfixAuthorizationTime from './getTime.utils';
+
 export const formatedDateForZoom = (selectedTime, activeDate) => {
 	const timeObj = new Date(selectedTime);
 	const dateSegments = activeDate.split('-').reverse();
@@ -15,7 +18,6 @@ export const formatedDateFromZoom = (dateStr) => {
 	let date = new Date(dateStr);
 	let formattedDate =
 		('0' + date.getDate()).slice(-2) + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + date.getFullYear();
-
 	return formattedDate;
 };
 
@@ -36,8 +38,31 @@ export const formateTimeFromZoom = (time) => {
 		.padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds
 		.toString()
 		.padStart(2, '0')} GMT+0400 (Грузия, стандартное время)`;
-
-	console.log(formattedDate);
-
 	return formattedDate;
 };
+
+const toUnix = (string) => {
+	const dateString = DateTime.fromFormat(string, 'dd-MM-yyyy');
+	const unixTimestamp = dateString.toSeconds();
+	return unixTimestamp;
+};
+
+export const checkPastDate = async (activeDate) => {
+	const todaySecond = await getfixAuthorizationTime();
+	const dateTime = DateTime.fromSeconds(todaySecond);
+	const todayString = dateTime.toFormat('dd-MM-yyyy');
+	toUnix(todayString);
+	toUnix(activeDate);
+	if (todayString > activeDate) {
+		return true;
+	} else {
+		return false;
+	}
+};
+
+/*
+
+
+const dateTime = DateTime.fromFormat(dateString, 'dd-MM-yyyy');
+  
+  const unixTimestamp = dateTime.toSeconds();*/

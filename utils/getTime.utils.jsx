@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 
-const getfixAuthorizationTime = async () => {
+  const getfixAuthorizationTime = async () => {
 	let currentTime;
 	try {
 		const response = await fetch('http://worldtimeapi.org/api/timezone/Russia/Moscow');

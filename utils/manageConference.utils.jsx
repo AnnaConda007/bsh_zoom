@@ -33,8 +33,7 @@ export const getConferenceInfo = async (selectedDate) => {
 		const tasks = {};
 		const conferenceData = await getListMeeting();
 		const meetings = conferenceData.meetings;
-		console.log(meetings);
-		meetings.forEach((meeting) => {
+ 		meetings.forEach((meeting) => {
 			const timeStart = meeting.start_time;
 			const duration = meeting.duration;
 			const date = formatedDateFromZoom(timeStart);

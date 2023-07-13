@@ -21,8 +21,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
 	const { activeDate, setTaggedDates } = useContext(CalendarContext);
-	console.log(pulledTasks);
-	const upDateStartTime = (timeStart, index) => {
+ 	const upDateStartTime = (timeStart, index) => {
 		const duration = calculateDuration(timeStart, pulledTasks[index].timeEnd);
 		const id = pulledTasks[index].meetingId;
 		const newStartTimeValue = {
@@ -79,8 +78,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 		<>
 			<FormControl className={styles.tasks}>
 				{pulledTasks.map((task, index) => {
-					console.log(task.timeStart);
-					return (
+ 					return (
 						<div className={styles.tasks__task} key={`${index}-${task.timeStart} ${task.timeEnd}`}>
 							<TextField
 								sx={{ border: '1px solid', borderRadius: '5px' }}

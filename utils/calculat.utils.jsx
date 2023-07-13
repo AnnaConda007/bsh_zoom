@@ -5,8 +5,7 @@ export const calculatTimeEnd = (time, durationTime) => {
 	const startDate = new Date(startTime);
 	startDate.setMinutes(startDate.getMinutes() + duration);
 	const endTime = startDate.toISOString();
-	console.log(endTime);
-	const formatedTimeEnd = formateTimeFromZoom(endTime);
+ 	const formatedTimeEnd = formateTimeFromZoom(endTime);
 	return formatedTimeEnd;
 };
 
