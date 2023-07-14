@@ -44,3 +44,11 @@ export const formateTimeFromUTCtoHumanReadable = (time) => {
 
 	return formattedDate; // Sat Jul 15 2023 09:00:00
 };
+
+export const compareStartEndMeeting = (startTime, endTime) => {
+	if (new Date(startTime) > new Date(endTime)) {
+		return true;
+	} else {
+		return false;
+	}
+};

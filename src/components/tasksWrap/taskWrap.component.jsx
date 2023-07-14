@@ -7,7 +7,15 @@ import { getConferenceInfo } from '../../../utils/manageConference.utils';
 import { Snackbar } from '@mui/material';
 
 const ToDoBox = () => {
-	const { activeDate, disabledDate, disabledTime } = useContext(CalendarContext);
+	const {
+		activeDate,
+		disabledDate,
+		disabledTime,
+		nonCorrectTime,
+		disabledMessage,
+		SetisabledMessage,
+		SetDisabledTime,
+	} = useContext(CalendarContext);
 	const [pulledTasks, setPulledTasks] = useState([]);
 	useEffect(() => {
 		const getTask = async () => {
@@ -17,6 +25,13 @@ const ToDoBox = () => {
 		getTask();
 	}, [activeDate]);
 
+	const handleSnackbarClose = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+		SetDisabledTime(false);
+	};
+
 	return (
 		<>
 			<div className={styles.planner}>
@@ -24,8 +39,9 @@ const ToDoBox = () => {
 					{activeDate}
 					<Snackbar
 						open={disabledTime}
-						autoHideDuration={6000}
-						message='Вы пытаетесь назаначить встречу на прошедшее время'
+						onClose={handleSnackbarClose}
+						autoHideDuration={4000}
+						message={disabledMessage}
 						anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
 					/>
 				</div>

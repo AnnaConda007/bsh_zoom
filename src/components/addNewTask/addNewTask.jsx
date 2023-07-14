@@ -9,25 +9,32 @@ import { CalendarContext } from '../../contexts/calendar.context';
 import { redirectNewMeetUrl } from '../../../contains';
 import { formatedDateToUTS } from '../../../utils/formatting.utils';
 import { checkPastTime } from '../../../utils/getTime.utils';
-import { Snackbar } from '@mui/material';
-
+import { compareStartEndMeeting } from '../../../utils/formatting.utils';
 const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' };
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
-	const { activeDate, taggedDates, setTaggedDates, disabledDate, disabledTime, SetDisabledTime } = useContext(
-		CalendarContext
-	);
-	const [openSnackbar, setOpenSnackbar] = useState(false);
+	const {
+		activeDate,
+		taggedDates,
+		setTaggedDates,
+		disabledDate,
+		disabledTime,
+		SetDisabledTime,
+		nonCorrectTime,
+		SetNonCorrectTime,
+		SetisabledMessage,
+	} = useContext(CalendarContext);
 
 	const fullnessTimeForNewTask = async (selectedTime, timeKey) => {
 		const disabledTimeResponse = await checkPastTime(selectedTime, activeDate);
 		SetDisabledTime(disabledTimeResponse);
-		setOpenSnackbar(disabledTimeResponse);
+		SetisabledMessage('Вы пытаетесь назаначить встречу на прошедшее время');
 
 		setNewTaskObj((prevTask) => ({
 			...prevTask,
 			[timeKey]: selectedTime,
 		}));
+
 		const date = formatedDateToUTS(selectedTime, activeDate);
 		localStorage.setItem(timeKey, date);
 	};
@@ -40,8 +47,12 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 		localStorage.setItem('conferenceTopic', value);
 	};
 
-	const handleAddTaskBtn = () => { 
-		if (disabledTime === true) return;
+	const handleAddTaskBtn = () => {
+		const compareRes = compareStartEndMeeting(newTaskObj.timeStart.$d, newTaskObj.timeEnd.$d);
+		SetDisabledTime(compareRes);
+		SetisabledMessage('Время начала конференции позже времени окончания');
+		if (disabledTime === true || compareRes === true) return;
+
 		if (newTaskObj.taskValue.trim() === '' || newTaskObj.timeStart === '' || newTaskObj.timeEnd === '') return;
 		const updatedTasks = [...pulledTasks];
 		updatedTasks.push(newTaskObj);
@@ -55,7 +66,6 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 
 	return (
 		<>
-			
 			<div className={styles.newTask}>
 				<TextField
 					sx={{ border: '1px solid', borderRadius: '5px' }}

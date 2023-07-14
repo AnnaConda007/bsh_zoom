@@ -52,7 +52,6 @@ export const checkPastTime = async (time, activeDate) => {
  
 		return true;
 	} else {
-		console.log('можно,false');
-		return false;
+ 		return false;
 	}
 };

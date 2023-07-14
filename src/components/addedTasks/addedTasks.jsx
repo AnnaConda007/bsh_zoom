@@ -17,21 +17,41 @@ import { checkPastTime } from '../../../utils/getTime.utils';
 //import { updateConferenceInfo } from '../../../utils/zoom.utils';
 import { formatedDateToUTS } from '../../../utils/formatting.utils';
 import { calculateDuration } from '../../../utils/calculat.utils';
-
+import { compareStartEndMeeting } from '../../../utils/formatting.utils';
 const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
-	const { activeDate, setTaggedDates } = useContext(CalendarContext);
+	const { activeDate, setTaggedDates, SetDisabledTime, SetNonCorrectTime, SetisabledMessage } = useContext(
+		CalendarContext
+	);
 
-	const upDateStartTime = (timeStart, index) => {
+	const upDateStartTime = async (timeStart, index) => {
 		//checkPastTime(timeStart, activeDate);
+		const disabledTimeResponse = await checkPastTime(timeStart, activeDate);
+		SetDisabledTime(disabledTimeResponse);
+		SetisabledMessage('Время начала конференции позже времени окончания');
 		const duration = calculateDuration(timeStart, pulledTasks[index].timeEnd);
 		const id = pulledTasks[index].meetingId;
 		const newStartTimeValue = {
 			duration: duration,
 			start_time: formatedDateToUTS(timeStart, activeDate),
 		};
+
+		const compareRes = compareStartEndMeeting(timeStart.$d, pulledTasks[index].timeEnd);
+		SetDisabledTime(compareRes);
+
 		updateConferenceInfo(id, newStartTimeValue);
+	};
+
+	const upDateEndTime = async (timeEnd, index) => {
+		const duration = calculateDuration(pulledTasks[index].timeStart, timeEnd);
+		const id = pulledTasks[index].meetingId;
+		const newEndTimeValue = {
+			duration: duration,
+		};
+		const compareRes = compareStartEndMeeting(pulledTasks[index].timeStart, timeEnd.$d);
+		SetDisabledTime(compareRes);
+		updateConferenceInfo(id, newEndTimeValue);
 	};
 
 	const handleEditBtn = (index) => {
@@ -115,8 +135,8 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 													ampm={false}
 													value={dayjs(task.timeEnd)}
 													onChange={(time) => {}}
-													onAccept={() => {
-														upDateTimeForAddedTask();
+													onAccept={(time) => {
+														upDateEndTime(time, index);
 													}}
 												/>
 											</LocalizationProvider>
