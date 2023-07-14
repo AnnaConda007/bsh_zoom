@@ -103,6 +103,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 				{pulledTasks.map((task, index) => {
 					return (
 						<div className={styles.tasks__task} key={`${index}-${task.timeStart} ${task.timeEnd}`}>
+							<span className={styles.tasks__user}>Организатор: {task.creator ? task.creator : 'не указан'}</span>
 							<TextField
 								sx={{ border: '1px solid', borderRadius: '5px' }}
 								className={styles.planner__textField}
@@ -116,31 +117,33 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 								type='text'
 								InputProps={{
 									endAdornment: (
-										<div className={styles.tasks__add__time}>
-											<LocalizationProvider dateAdapter={AdapterDayjs}>
-												<TimePicker
-													closeOnSelect={false}
-													label='начало'
-													ampm={false}
-													autoOk={false}
-													orientation='landscape'
-													value={dayjs(task.timeStart)}
-													onChange={(time) => {}}
-													onAccept={(time) => {
-														upDateStartTime(time, index);
-													}}
-												/>
-												<TimePicker
-													label='конец'
-													ampm={false}
-													value={dayjs(task.timeEnd)}
-													onChange={(time) => {}}
-													onAccept={(time) => {
-														upDateEndTime(time, index);
-													}}
-												/>
-											</LocalizationProvider>
-										</div>
+										<>
+											<div className={styles.tasks__add__time}>
+												<LocalizationProvider dateAdapter={AdapterDayjs}>
+													<TimePicker
+														closeOnSelect={false}
+														label='начало'
+														ampm={false}
+														autoOk={false}
+														orientation='landscape'
+														value={dayjs(task.timeStart)}
+														onChange={(time) => {}}
+														onAccept={(time) => {
+															upDateStartTime(time, index);
+														}}
+													/>
+													<TimePicker
+														label='конец'
+														ampm={false}
+														value={dayjs(task.timeEnd)}
+														onChange={(time) => {}}
+														onAccept={(time) => {
+															upDateEndTime(time, index);
+														}}
+													/>
+												</LocalizationProvider>
+											</div>
+										</>
 									),
 								}}
 							/>

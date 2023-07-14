@@ -8,13 +8,17 @@
 
 .tasks__task{
     display: flex;
+    flex-wrap: wrap;
   max-height: 140px;
   margin: 5px;
+ }
+.styles.tasks__user{
+  width: 95%;
 }
 
  .planner__textField { 
   overflow: auto;  
-      width: 100%;
+      width: 95%;
   }
 
 .tasks__add__time { 
@@ -27,7 +31,8 @@
 .tasks_btns{
   display: flex;
   flex-direction: column; 
-justify-content: center; }
+justify-content: center; 
+max-width: 5%;}
 
 
 
