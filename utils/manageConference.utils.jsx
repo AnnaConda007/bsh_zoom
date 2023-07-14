@@ -1,5 +1,5 @@
 import { getListMeeting } from './zoom.utils';
-import { formatedDateFromZoom, formateTimeFromZoom } from './formatting.utils';
+import { formatedDateFromUTStoDMY, formateTimeFromUTCtoHumanReadable } from './formatting.utils';
 import { calculatTimeEnd } from './calculat.utils';
 import { updateAccesToken } from './tokensZoom.utils';
 import axios from 'axios';
@@ -11,7 +11,7 @@ export const getTaggedDate = async () => {
 		const meetings = conferenceData.meetings;
 		meetings.forEach((miting) => {
 			const startTime = miting.start_time;
-			const date = formatedDateFromZoom(startTime);
+			const date = formatedDateFromUTStoDMY(startTime);
 			if (!taggedDateArr.includes(date)) {
 				taggedDateArr.push(date);
 			}
@@ -36,12 +36,12 @@ export const getConferenceInfo = async (selectedDate) => {
 		meetings.forEach((meeting) => {
 			const timeStart = meeting.start_time;
 			const duration = meeting.duration;
-			const date = formatedDateFromZoom(timeStart);
+			const date = formatedDateFromUTStoDMY(timeStart);
 			const topicObject = JSON.parse(meeting.topic);
 			const task = {
 				creator: topicObject.creator,
 				taskValue: topicObject.value,
-				timeStart: formateTimeFromZoom(timeStart),
+				timeStart: formateTimeFromUTCtoHumanReadable(timeStart),
 				timeEnd: calculatTimeEnd(timeStart, duration),
 				meetingUrl: meeting.join_url,
 				meetingId: meeting.id,

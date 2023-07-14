@@ -7,15 +7,18 @@ export const CalendarContext = createContext({
 	setTaggedDates: () => {},
 	AlltasksForDay: '',
 	setAlltasksForDay: () => {},
-	disabled: '',
-	setDisabled: () => {},
+	disabledDate: '',
+	SetDisabledDate: () => {},
+	disabledTime: '',
+	SetDisabledTime: () => {},
 });
 
 export const CalendarProvider = ({ children }) => {
 	const [activeDate, setActiveDate] = useState('');
 	const [taggedDates, setTaggedDates] = useState([]);
 	const [AlltasksForDay, setAlltasksForDay] = useState('');
-	const [disabled, setDisabled] = useState('');
+	const [disabledDate, SetDisabledDate] = useState('');
+	const [disabledTime, SetDisabledTime] = useState('');
 	const value = {
 		activeDate,
 		setActiveDate,
@@ -23,8 +26,10 @@ export const CalendarProvider = ({ children }) => {
 		setTaggedDates,
 		AlltasksForDay,
 		setAlltasksForDay,
-		disabled,
-		setDisabled,
+		disabledDate,
+		SetDisabledDate,
+		disabledTime,
+		SetDisabledTime,
 	};
 	return <CalendarContext.Provider value={value}>{children}</CalendarContext.Provider>;
 };

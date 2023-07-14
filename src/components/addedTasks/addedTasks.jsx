@@ -13,20 +13,23 @@ import styles from './addedTasks.module.scss';
 import { CalendarContext } from '../../contexts/calendar.context';
 import { deleteConference } from '../../../utils/manageConference.utils';
 import { updateConferenceInfo } from '../../../utils/manageConference.utils';
+import { checkPastTime } from '../../../utils/getTime.utils';
 //import { updateConferenceInfo } from '../../../utils/zoom.utils';
-import { formatedDateForZoom } from '../../../utils/formatting.utils';
+import { formatedDateToUTS } from '../../../utils/formatting.utils';
 import { calculateDuration } from '../../../utils/calculat.utils';
 
 const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
 	const { activeDate, setTaggedDates } = useContext(CalendarContext);
- 	const upDateStartTime = (timeStart, index) => {
+
+	const upDateStartTime = (timeStart, index) => {
+		//checkPastTime(timeStart, activeDate);
 		const duration = calculateDuration(timeStart, pulledTasks[index].timeEnd);
 		const id = pulledTasks[index].meetingId;
 		const newStartTimeValue = {
 			duration: duration,
-			start_time: formatedDateForZoom(timeStart, activeDate),
+			start_time: formatedDateToUTS(timeStart, activeDate),
 		};
 		updateConferenceInfo(id, newStartTimeValue);
 	};
@@ -78,7 +81,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 		<>
 			<FormControl className={styles.tasks}>
 				{pulledTasks.map((task, index) => {
- 					return (
+					return (
 						<div className={styles.tasks__task} key={`${index}-${task.timeStart} ${task.timeEnd}`}>
 							<TextField
 								sx={{ border: '1px solid', borderRadius: '5px' }}
@@ -102,9 +105,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 													autoOk={false}
 													orientation='landscape'
 													value={dayjs(task.timeStart)}
-													onChange={(time) => {
-														console.log(time);
-													}}
+													onChange={(time) => {}}
 													onAccept={(time) => {
 														upDateStartTime(time, index);
 													}}
@@ -124,7 +125,6 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 								}}
 							/>
 							<div className={styles.tasks_btns}>
-								
 								<button>
 									<VideocamIcon
 										sx={{ color: 'blue' }}

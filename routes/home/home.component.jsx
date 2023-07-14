@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import getfixAuthorizationTime from '../../utils/getTime.utils';
+import { getcurrentTime } from '../../utils/getTime.utils';
 import Calendar from '../../src/components/calendar/calendar.component';
 const Home = () => {
 	const navigate = useNavigate();
@@ -9,7 +9,7 @@ const Home = () => {
 	const [currentTime, setCurrentTime] = useState(null);
 	useEffect(() => {
 		const fetchCurrentTime = async () => {
-			const time = await getfixAuthorizationTime();
+			const time = await getcurrentTime();
 			setCurrentTime(time);
 		};
 		fetchCurrentTime();

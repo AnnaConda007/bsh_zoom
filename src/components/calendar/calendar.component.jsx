@@ -12,10 +12,11 @@ import ModalBox from '../modal/modal';
 import { getTaggedDate } from '../../../utils/manageConference.utils';
 import { homeUrL } from '../../../contains';
 import { getZoomTokens } from '../../../utils/tokensZoom.utils';
-import { checkPastDate } from '../../../utils/formatting.utils';
+import { checkPastDate } from '../../../utils/getTime.utils';
+
 const Calendar = () => {
 	const [modal, setModal] = useState(false);
-	const { setActiveDate, taggedDates, setTaggedDates, setDisabled } = useContext(CalendarContext);
+	const { setActiveDate, taggedDates, setTaggedDates, SetDisabledDate } = useContext(CalendarContext);
 
 	useEffect(() => {
 		const getData = async () => {
@@ -28,8 +29,8 @@ const Calendar = () => {
 	const handleDateClick = async (date) => {
 		const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY');
 		setActiveDate(formattedDate);
-		const disabledDate = await checkPastDate(formattedDate);
-  		setDisabled(disabledDate);
+		const disabledDateDate = await checkPastDate(formattedDate);
+		SetDisabledDate(disabledDateDate);
 		setModal(true);
 	};
 

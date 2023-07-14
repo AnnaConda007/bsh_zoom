@@ -7,18 +7,28 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import styles from './addNewTask.module.scss';
 import { CalendarContext } from '../../contexts/calendar.context';
 import { redirectNewMeetUrl } from '../../../contains';
-import { formatedDateForZoom } from '../../../utils/formatting.utils';
+import { formatedDateToUTS } from '../../../utils/formatting.utils';
+import { checkPastTime } from '../../../utils/getTime.utils';
+import { Snackbar } from '@mui/material';
+
 const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' };
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
-	const { activeDate, taggedDates, setTaggedDates, disabled } = useContext(CalendarContext);
+	const { activeDate, taggedDates, setTaggedDates, disabledDate, disabledTime, SetDisabledTime } = useContext(
+		CalendarContext
+	);
+	const [openSnackbar, setOpenSnackbar] = useState(false);
 
-	const fullnessTimeForNewTask = (selectedTime, timeKey) => {
+	const fullnessTimeForNewTask = async (selectedTime, timeKey) => {
+		const disabledTimeResponse = await checkPastTime(selectedTime, activeDate);
+		SetDisabledTime(disabledTimeResponse);
+		setOpenSnackbar(disabledTimeResponse);
+
 		setNewTaskObj((prevTask) => ({
 			...prevTask,
 			[timeKey]: selectedTime,
 		}));
-		const date = formatedDateForZoom(selectedTime, activeDate);
+		const date = formatedDateToUTS(selectedTime, activeDate);
 		localStorage.setItem(timeKey, date);
 	};
 
@@ -30,7 +40,8 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 		localStorage.setItem('conferenceTopic', value);
 	};
 
-	const handleAddTaskBtn = () => {
+	const handleAddTaskBtn = () => { 
+		if (disabledTime === true) return;
 		if (newTaskObj.taskValue.trim() === '' || newTaskObj.timeStart === '' || newTaskObj.timeEnd === '') return;
 		const updatedTasks = [...pulledTasks];
 		updatedTasks.push(newTaskObj);
@@ -44,6 +55,7 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 
 	return (
 		<>
+			
 			<div className={styles.newTask}>
 				<TextField
 					sx={{ border: '1px solid', borderRadius: '5px' }}
@@ -79,7 +91,7 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 					}}
 				/>
 
-				{disabled === false && (
+				{disabledDate === false && (
 					<button>
 						<AddCircleOutlineIcon onClick={handleAddTaskBtn} />
 					</button>

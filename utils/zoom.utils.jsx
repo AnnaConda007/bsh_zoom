@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { formatedDateFromZoom, formateTimeFromZoom } from './formatting.utils';
 import { calculatTimeEnd, calculateDuration } from './calculat.utils';
 import { updateAccesToken } from './tokensZoom.utils';
 

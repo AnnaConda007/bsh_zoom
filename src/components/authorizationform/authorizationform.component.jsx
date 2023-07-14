@@ -2,14 +2,14 @@ import './authorizationform.styles.scss';
 import { Button, FormControl, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { redirectHomeUrL } from '../../../contains';
-import getfixAuthorizationTime from '../../../utils/getTime.utils';
+import { getcurrentTime } from '../../../utils/getTime.utils'; 
 function AuthorizationForm() {
 	const [currentTime, setCurrentTime] = useState(null);
 	const [error, setError] = useState('');
 
 	useEffect(() => {
 		const fetchCurrentTime = async () => {
-			const time = await getfixAuthorizationTime();
+			const time = await getcurrentTime();
 			setCurrentTime(time);
 		};
 		fetchCurrentTime();

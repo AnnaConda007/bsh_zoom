@@ -1,11 +1,11 @@
-import { formateTimeFromZoom } from './formatting.utils';
+import { formateTimeFromUTCtoHumanReadable } from './formatting.utils';
 export const calculatTimeEnd = (time, durationTime) => {
 	const startTime = time;
 	const duration = durationTime;
 	const startDate = new Date(startTime);
 	startDate.setMinutes(startDate.getMinutes() + duration);
 	const endTime = startDate.toISOString();
- 	const formatedTimeEnd = formateTimeFromZoom(endTime);
+	const formatedTimeEnd = formateTimeFromUTCtoHumanReadable(endTime);
 	return formatedTimeEnd;
 };
 

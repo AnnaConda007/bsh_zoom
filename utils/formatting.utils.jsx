@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
-import getfixAuthorizationTime from './getTime.utils';
+import { getcurrentTime } from './getTime.utils';
 
-export const formatedDateForZoom = (selectedTime, activeDate) => {
+export const formatedDateToUTS = (selectedTime, activeDate) => {
 	const timeObj = new Date(selectedTime);
 	const dateSegments = activeDate.split('-').reverse();
 	const dateObj = new Date(dateSegments.join('-'));
@@ -11,17 +11,22 @@ export const formatedDateForZoom = (selectedTime, activeDate) => {
 	const hours = timeObj.getHours().toString().padStart(2, '0');
 	const minutes = timeObj.getMinutes().toString().padStart(2, '0');
 	const iso8601Date = `${year}-${month}-${day}T${hours}:${minutes}:00Z`;
-	return iso8601Date;
+	return iso8601Date; // 2023-07-14T02:00:00Z
 };
 
-export const formatedDateFromZoom = (dateStr) => {
-	let date = new Date(dateStr);
+export const formatedDateFromUTStoDMY = (UTSTime) => {
+	let date = new Date(UTSTime);
 	let formattedDate =
-		('0' + date.getDate()).slice(-2) + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + date.getFullYear();
-	return formattedDate;
+		('0' + date.getUTCDate()).slice(-2) +
+		'-' +
+		('0' + (date.getUTCMonth() + 1)).slice(-2) +
+		'-' +
+		date.getUTCFullYear();
+
+	return formattedDate; // dd-mm-year
 };
 
-export const formateTimeFromZoom = (time) => {
+export const formateTimeFromUTCtoHumanReadable = (time) => {
 	const inputDate = time;
 	const date = new Date(inputDate);
 	const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -35,34 +40,7 @@ export const formateTimeFromZoom = (time) => {
 	const seconds = date.getUTCSeconds();
 	const formattedDate = `${dayOfWeek} ${month} ${day} ${year} ${hours
 		.toString()
-		.padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds
-		.toString()
-		.padStart(2, '0')} GMT+0400 (Грузия, стандартное время)`;
-	return formattedDate;
+		.padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} `;
+
+	return formattedDate; // Sat Jul 15 2023 09:00:00
 };
-
-const toUnix = (string) => {
-	const dateString = DateTime.fromFormat(string, 'dd-MM-yyyy');
-	const unixTimestamp = dateString.toSeconds();
-	return unixTimestamp;
-};
-
-export const checkPastDate = async (activeDate) => {
-	const todaySecond = await getfixAuthorizationTime();
-	const dateTime = DateTime.fromSeconds(todaySecond);
-	const todayString = dateTime.toFormat('dd-MM-yyyy');
-	toUnix(todayString);
-	toUnix(activeDate);
-	if (todayString > activeDate) {
-		return true;
-	} else {
-		return false;
-	}
-};
-
-/*
-
-
-const dateTime = DateTime.fromFormat(dateString, 'dd-MM-yyyy');
-  
-  const unixTimestamp = dateTime.toSeconds();*/
