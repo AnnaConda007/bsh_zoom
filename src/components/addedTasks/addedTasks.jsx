@@ -16,7 +16,7 @@ import { formatedDateToUTS } from '../../../utils/formatting.utils';
 import { calculateDuration, compareStartEndMeeting } from '../../../utils/calculat.utils';
 import { DisabledContext } from '../../contexts/disabled.context';
 import { DatesContext } from '../../contexts/dates.context';
-
+import { disabledMessageForCompareErrorTime, disabledMessageForPastTimeError } from '../../../contains';
 const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
@@ -26,10 +26,10 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const upDateStartTime = async (timeStart, index) => {
 		const disabledTimeResponse = await checkPastTime(timeStart, activeDate);
 		SetDisabledTime(disabledTimeResponse);
-		SetisabledMessage('Вы пытаетесь назаначить встречу на прошедшее время');
+		SetisabledMessage(disabledMessageForPastTimeError);
 		const compareResponse = compareStartEndMeeting(timeStart.$d, pulledTasks[index].timeEnd);
 		SetDisabledTime(compareResponse);
-		SetisabledMessage('Время начала конференции позже времени окончания');
+		SetisabledMessage(disabledMessageForCompareErrorTime);
 		if (disabledTimeResponse || compareResponse) return;
 		const duration = calculateDuration(timeStart, pulledTasks[index].timeEnd);
 		const id = pulledTasks[index].meetingId;
@@ -43,7 +43,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const upDateEndTime = async (timeEnd, index) => {
 		const compareResponse = compareStartEndMeeting(pulledTasks[index].timeStart, timeEnd.$d);
 		SetDisabledTime(compareResponse);
-		SetisabledMessage('Время начала конференции позже времени окончания');
+		SetisabledMessage(disabledMessageForCompareErrorTime);
 		if (compareResponse) return;
 		const duration = calculateDuration(pulledTasks[index].timeStart, timeEnd);
 		const id = pulledTasks[index].meetingId;

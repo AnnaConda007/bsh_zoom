@@ -51,6 +51,7 @@ export const getListMeeting = async () => {
 
 export const getTaggedDate = async () => {
 	try {
+		console.log('getTaggedDate');
 		const taggedDateArr = [];
 		const conferenceData = await getListMeeting();
 		const meetings = conferenceData.meetings;
@@ -67,10 +68,11 @@ export const getTaggedDate = async () => {
 			console.log('обработка ошибки');
 			await updateAccesToken();
 			console.log('updateAccesToken');
-			return await getTaggedDate(); // Изменено: вызываем рекурсивно getTaggedDate() возвращая его результат
+			return await getTaggedDate();
+			с;
 		} else {
 			console.error('error while getting TaggedDate:', error.response.data);
-			throw error; // Добавлено: выбрасываем ошибку для дальнейшей обработки
+			throw error;
 		}
 	}
 };

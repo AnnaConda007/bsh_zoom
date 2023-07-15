@@ -1,19 +1,27 @@
+@font-face {
+  font-family: "Montserrat-Italic";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../src/fonts/Montserrat-Italic-VariableFont_wght.ttf");
+}
 html,
-body{
-  height: 100%; 
+body {
+  height: 100%;
+  font-family: "Montserrat-Italic";
 }
 
 #root {
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: center; 
+  justify-content: center;
+  font-family: "Montserrat-Italic";
 }
 
-button{
+button {
   background-color: transparent;
   border: none;
 }
-button:active{
+button:active {
   transform: scale(0.8);
 }

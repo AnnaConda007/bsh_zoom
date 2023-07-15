@@ -1,19 +1,20 @@
 import { useEffect, useState, useContext } from 'react';
 import { Badge } from '@mui/material';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { pickersDay } from './pickersDay-style';
 import { LocalizationProvider, DateCalendar, PickersDay } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import Header from '../header/header';
-import styles from './calendar.module.scss';
-import { DatesContext } from '../../contexts/dates.context';
-import { pickersDay } from './pickersDay-style';
 import ModalBox from '../modal/modal';
 import { getTaggedDate } from '../../../utils/getZoomData.utils';
 import { homeUrL } from '../../../contains';
 import { getZoomTokens } from '../../../utils/getZoomData.utils';
 import { checkPastDate } from '../../../utils/currentTime.utils';
 import { DisabledContext } from '../../contexts/disabled.context';
+import { DatesContext } from '../../contexts/dates.context';
+import styles from './calendar.module.scss';
+
 const Calendar = () => {
 	const [modal, setModal] = useState(false);
 	const { setActiveDate, taggedDates, setTaggedDates } = useContext(DatesContext);

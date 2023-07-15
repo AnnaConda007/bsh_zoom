@@ -5,16 +5,15 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import styles from './addNewTask.module.scss';
-import { DatesContext } from '../../contexts/dates.context';
-import { redirectNewMeetUrl } from '../../../contains';
 import { formatedDateToUTS } from '../../../utils/formatting.utils';
 import { checkPastTime } from '../../../utils/currentTime.utils';
 import { compareStartEndMeeting } from '../../../utils/calculat.utils';
 import { createMeet } from '../../../utils/manageConference.utils';
 import { DisabledContext } from '../../contexts/disabled.context';
+import { DatesContext } from '../../contexts/dates.context';
+import { disabledMessageForCompareErrorTime, disabledMessageForPastTimeError } from '../../../contains';
 const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' };
-
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
 	const { activeDate, taggedDates, setTaggedDates } = useContext(DatesContext);
 	const { disabledDate, disabledTime, SetDisabledTime, SetisabledMessage } = useContext(DisabledContext);
@@ -22,13 +21,11 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 	const fullnessTimeForNewTask = async (selectedTime, timeKey) => {
 		const disabledTimeResponse = await checkPastTime(selectedTime, activeDate);
 		SetDisabledTime(disabledTimeResponse);
-		SetisabledMessage('Вы пытаетесь назаначить встречу на прошедшее время');
-
+		SetisabledMessage(disabledMessageForPastTimeError);
 		setNewTaskObj((prevTask) => ({
 			...prevTask,
 			[timeKey]: selectedTime,
 		}));
-
 		const date = formatedDateToUTS(selectedTime, activeDate);
 		localStorage.setItem(timeKey, date);
 	};
@@ -44,9 +41,8 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 	const handleAddTaskBtn = async () => {
 		const compareRes = compareStartEndMeeting(newTaskObj.timeStart.$d, newTaskObj.timeEnd.$d);
 		SetDisabledTime(compareRes);
-		SetisabledMessage('Время начала конференции позже времени окончания');
+		SetisabledMessage(disabledMessageForCompareErrorTime);
 		if (disabledTime === true || compareRes === true) return;
-
 		if (newTaskObj.taskValue.trim() === '' || newTaskObj.timeStart === '' || newTaskObj.timeEnd === '') return;
 		const updatedTasks = [...pulledTasks];
 		updatedTasks.push(newTaskObj);

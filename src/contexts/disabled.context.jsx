@@ -5,15 +5,12 @@ export const DisabledContext = createContext({
 	SetDisabledDate: () => {},
 	disabledTime: false,
 	SetDisabledTime: () => {},
-	nonCorrectTime: false,
-	SetDisabledTime: () => {},
 	disabledMessage: '',
 	SetisabledMessage: () => {},
 });
 
 export const DisabledCProvider = ({ children }) => {
 	const [disabledDate, SetDisabledDate] = useState('');
-	const [nonCorrectTime, SetNonCorrectTime] = useState(false);
 	const [disabledTime, SetDisabledTime] = useState(false);
 	const [disabledMessage, SetisabledMessage] = useState('');
 	const value = {
@@ -21,8 +18,6 @@ export const DisabledCProvider = ({ children }) => {
 		SetDisabledDate,
 		disabledTime,
 		SetDisabledTime,
-		nonCorrectTime,
-		SetNonCorrectTime,
 		disabledMessage,
 		SetisabledMessage,
 	};

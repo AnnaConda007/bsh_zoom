@@ -4,6 +4,7 @@
   max-height: 500px;
   overflow: auto;
   display: flex;  
+  font-family:  'Montserrat-Italic'
 }
 
 .tasks__task{
@@ -12,8 +13,9 @@
   max-height: 140px;
   margin: 5px;
  }
+
 .styles.tasks__user{
-  width: 95%;
+  width: 95%; 
 }
 
  .planner__textField { 
