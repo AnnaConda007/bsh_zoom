@@ -2,20 +2,14 @@ import { useState, useEffect, useContext } from 'react';
 import styles from './taskWrap.module.scss';
 import AddNewTask from '../addNewTask/addNewTask';
 import AddedTasks from '../addedTasks/addedTasks';
-import { CalendarContext } from '../../contexts/calendar.context';
-import { getConferenceInfo } from '../../../utils/manageConference.utils';
+import { DatesContext } from '../../contexts/dates.context';
+import { getConferenceInfo } from '../../../utils/getZoomData.utils';
 import { Snackbar } from '@mui/material';
-
+import { DisabledContext } from '../../contexts/disabled.context';
 const ToDoBox = () => {
-	const {
-		activeDate,
-		disabledDate,
-		disabledTime,
-		nonCorrectTime,
-		disabledMessage,
-		SetisabledMessage,
-		SetDisabledTime,
-	} = useContext(CalendarContext);
+	const { activeDate } = useContext(DatesContext);
+	const { disabledDate, disabledTime, disabledMessage, SetDisabledTime } = useContext(DisabledContext);
+
 	const [pulledTasks, setPulledTasks] = useState([]);
 	useEffect(() => {
 		const getTask = async () => {

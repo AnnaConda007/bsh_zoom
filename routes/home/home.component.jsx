@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getcurrentTime } from '../../utils/getTime.utils';
+import { getcurrentTime } from '../../utils/currentTime.utils';
 import Calendar from '../../src/components/calendar/calendar.component';
 const Home = () => {
 	const navigate = useNavigate();

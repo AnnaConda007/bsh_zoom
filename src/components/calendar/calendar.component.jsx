@@ -6,17 +6,18 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import Header from '../header/header';
 import styles from './calendar.module.scss';
-import { CalendarContext } from '../../contexts/calendar.context';
+import { DatesContext } from '../../contexts/dates.context';
 import { pickersDay } from './pickersDay-style';
 import ModalBox from '../modal/modal';
-import { getTaggedDate } from '../../../utils/manageConference.utils';
+import { getTaggedDate } from '../../../utils/getZoomData.utils';
 import { homeUrL } from '../../../contains';
-import { getZoomTokens } from '../../../utils/tokensZoom.utils';
-import { checkPastDate } from '../../../utils/getTime.utils';
-
+import { getZoomTokens } from '../../../utils/getZoomData.utils';
+import { checkPastDate } from '../../../utils/currentTime.utils';
+import { DisabledContext } from '../../contexts/disabled.context';
 const Calendar = () => {
 	const [modal, setModal] = useState(false);
-	const { setActiveDate, taggedDates, setTaggedDates, SetDisabledDate } = useContext(CalendarContext);
+	const { setActiveDate, taggedDates, setTaggedDates } = useContext(DatesContext);
+	const { SetDisabledDate } = useContext(DisabledContext);
 
 	useEffect(() => {
 		const getData = async () => {

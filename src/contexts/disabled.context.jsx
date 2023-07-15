@@ -1,12 +1,6 @@
 import { createContext, useState } from 'react';
 
-export const CalendarContext = createContext({
-	activeDate: '',
-	setActiveDate: () => {},
-	taggedDates: [],
-	setTaggedDates: () => {},
-	AlltasksForDay: '',
-	setAlltasksForDay: () => {},
+export const DisabledContext = createContext({
 	disabledDate: '',
 	SetDisabledDate: () => {},
 	disabledTime: false,
@@ -17,21 +11,12 @@ export const CalendarContext = createContext({
 	SetisabledMessage: () => {},
 });
 
-export const CalendarProvider = ({ children }) => {
-	const [activeDate, setActiveDate] = useState('');
-	const [taggedDates, setTaggedDates] = useState([]);
-	const [AlltasksForDay, setAlltasksForDay] = useState('');
+export const DisabledCProvider = ({ children }) => {
 	const [disabledDate, SetDisabledDate] = useState('');
 	const [nonCorrectTime, SetNonCorrectTime] = useState(false);
 	const [disabledTime, SetDisabledTime] = useState(false);
 	const [disabledMessage, SetisabledMessage] = useState('');
 	const value = {
-		activeDate,
-		setActiveDate,
-		taggedDates,
-		setTaggedDates,
-		AlltasksForDay,
-		setAlltasksForDay,
 		disabledDate,
 		SetDisabledDate,
 		disabledTime,
@@ -41,5 +26,5 @@ export const CalendarProvider = ({ children }) => {
 		disabledMessage,
 		SetisabledMessage,
 	};
-	return <CalendarContext.Provider value={value}>{children}</CalendarContext.Provider>;
+	return <DisabledContext.Provider value={value}>{children}</DisabledContext.Provider>;
 };

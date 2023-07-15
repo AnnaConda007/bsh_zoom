@@ -2,7 +2,7 @@ import './authorizationform.styles.scss';
 import { Button, FormControl, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { redirectHomeUrL } from '../../../contains';
-import { getcurrentTime } from '../../../utils/getTime.utils'; 
+import { getcurrentTime } from '../../../utils/currentTime.utils'; 
 function AuthorizationForm() {
 	const [currentTime, setCurrentTime] = useState(null);
 	const [error, setError] = useState('');

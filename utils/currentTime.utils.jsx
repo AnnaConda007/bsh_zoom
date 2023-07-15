@@ -15,13 +15,13 @@ export const getcurrentTime = async () => {
 	return currentTime;
 };
 
-const dateToUnix = (activeDate) => {
-	const dateString = DateTime.fromFormat(activeDate, 'dd-MM-yyyy');
-	const unixTimestamp = dateString.toSeconds();
-	return unixTimestamp;
-};
-
 export const checkPastDate = async (activeDate) => {
+	const dateToUnix = (activeDate) => {
+		const dateString = DateTime.fromFormat(activeDate, 'dd-MM-yyyy');
+		const unixTimestamp = dateString.toSeconds();
+		return unixTimestamp;
+	};
+
 	const todaySecond = await getcurrentTime();
 	const dateTime = DateTime.fromSeconds(todaySecond);
 	const todayString = dateTime.toFormat('dd-MM-yyyy');
@@ -31,7 +31,7 @@ export const checkPastDate = async (activeDate) => {
 		const dateTimeString = '2023-07-14 15:02:07';
 		const dateTime = DateTime.fromFormat(dateTimeString, 'yyyy-MM-dd HH:mm:ss');
 		const unixTimestamp = Math.floor(dateTime.toSeconds());
-		console.log(unixTimestamp); // Вывод: 1694748127
+		console.log(unixTimestamp);
 		return true;
 	} else {
 		return false;
@@ -49,9 +49,8 @@ export const checkPastTime = async (time, activeDate) => {
 	const currentDateTime = DateTime.fromFormat(stringCurrent, 'yyyy-MM-dd HH:mm:ss');
 	const selectDateTime = DateTime.fromFormat(selectString, 'yyyy-MM-dd HH:mm:ss');
 	if (currentDateTime > selectDateTime) {
- 
 		return true;
 	} else {
- 		return false;
+		return false;
 	}
 };

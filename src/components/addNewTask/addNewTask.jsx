@@ -5,25 +5,19 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import styles from './addNewTask.module.scss';
-import { CalendarContext } from '../../contexts/calendar.context';
+import { DatesContext } from '../../contexts/dates.context';
 import { redirectNewMeetUrl } from '../../../contains';
 import { formatedDateToUTS } from '../../../utils/formatting.utils';
-import { checkPastTime } from '../../../utils/getTime.utils';
-import { compareStartEndMeeting } from '../../../utils/formatting.utils';
+import { checkPastTime } from '../../../utils/currentTime.utils';
+import { compareStartEndMeeting } from '../../../utils/calculat.utils';
+import { createMeet } from '../../../utils/manageConference.utils';
+import { DisabledContext } from '../../contexts/disabled.context';
 const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' };
+
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
-	const {
-		activeDate,
-		taggedDates,
-		setTaggedDates,
-		disabledDate,
-		disabledTime,
-		SetDisabledTime,
-		nonCorrectTime,
-		SetNonCorrectTime,
-		SetisabledMessage,
-	} = useContext(CalendarContext);
+	const { activeDate, taggedDates, setTaggedDates } = useContext(DatesContext);
+	const { disabledDate, disabledTime, SetDisabledTime, SetisabledMessage } = useContext(DisabledContext);
 
 	const fullnessTimeForNewTask = async (selectedTime, timeKey) => {
 		const disabledTimeResponse = await checkPastTime(selectedTime, activeDate);
@@ -47,7 +41,7 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 		localStorage.setItem('conferenceTopic', value);
 	};
 
-	const handleAddTaskBtn = () => {
+	const handleAddTaskBtn = async () => {
 		const compareRes = compareStartEndMeeting(newTaskObj.timeStart.$d, newTaskObj.timeEnd.$d);
 		SetDisabledTime(compareRes);
 		SetisabledMessage('Время начала конференции позже времени окончания');
@@ -61,7 +55,7 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 		if (!taggedDates.includes(activeDate)) {
 			setTaggedDates((prevDates) => [...prevDates, activeDate]);
 		}
-		window.location.href = redirectNewMeetUrl;
+		await createMeet();
 	};
 
 	return (

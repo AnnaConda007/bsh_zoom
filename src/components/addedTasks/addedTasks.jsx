@@ -1,56 +1,55 @@
+import { useState, useContext } from 'react';
 import { TextField, FormControl } from '@mui/material';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelIcon from '@mui/icons-material/Cancel';
 import VideocamIcon from '@mui/icons-material/Videocam';
-import { useState, useContext } from 'react';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import styles from './addedTasks.module.scss';
-import { CalendarContext } from '../../contexts/calendar.context';
-import { deleteConference } from '../../../utils/manageConference.utils';
-import { updateConferenceInfo } from '../../../utils/manageConference.utils';
-import { checkPastTime } from '../../../utils/getTime.utils';
-//import { updateConferenceInfo } from '../../../utils/zoom.utils';
+import { deleteConference, updateConferenceInfo } from '../../../utils/manageConference.utils';
+import { checkPastTime } from '../../../utils/currentTime.utils';
 import { formatedDateToUTS } from '../../../utils/formatting.utils';
-import { calculateDuration } from '../../../utils/calculat.utils';
-import { compareStartEndMeeting } from '../../../utils/formatting.utils';
+import { calculateDuration, compareStartEndMeeting } from '../../../utils/calculat.utils';
+import { DisabledContext } from '../../contexts/disabled.context';
+import { DatesContext } from '../../contexts/dates.context';
+
 const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
-	const { activeDate, setTaggedDates, SetDisabledTime, SetNonCorrectTime, SetisabledMessage } = useContext(
-		CalendarContext
-	);
+	const { activeDate, setTaggedDates } = useContext(DatesContext);
+	const { SetDisabledTime, SetisabledMessage } = useContext(DisabledContext);
 
 	const upDateStartTime = async (timeStart, index) => {
-		//checkPastTime(timeStart, activeDate);
 		const disabledTimeResponse = await checkPastTime(timeStart, activeDate);
 		SetDisabledTime(disabledTimeResponse);
+		SetisabledMessage('Вы пытаетесь назаначить встречу на прошедшее время');
+		const compareResponse = compareStartEndMeeting(timeStart.$d, pulledTasks[index].timeEnd);
+		SetDisabledTime(compareResponse);
 		SetisabledMessage('Время начала конференции позже времени окончания');
+		if (disabledTimeResponse || compareResponse) return;
 		const duration = calculateDuration(timeStart, pulledTasks[index].timeEnd);
 		const id = pulledTasks[index].meetingId;
 		const newStartTimeValue = {
 			duration: duration,
 			start_time: formatedDateToUTS(timeStart, activeDate),
 		};
-
-		const compareRes = compareStartEndMeeting(timeStart.$d, pulledTasks[index].timeEnd);
-		SetDisabledTime(compareRes);
-
 		updateConferenceInfo(id, newStartTimeValue);
 	};
 
 	const upDateEndTime = async (timeEnd, index) => {
+		const compareResponse = compareStartEndMeeting(pulledTasks[index].timeStart, timeEnd.$d);
+		SetDisabledTime(compareResponse);
+		SetisabledMessage('Время начала конференции позже времени окончания');
+		if (compareResponse) return;
 		const duration = calculateDuration(pulledTasks[index].timeStart, timeEnd);
 		const id = pulledTasks[index].meetingId;
 		const newEndTimeValue = {
 			duration: duration,
 		};
-		const compareRes = compareStartEndMeeting(pulledTasks[index].timeStart, timeEnd.$d);
-		SetDisabledTime(compareRes);
 		updateConferenceInfo(id, newEndTimeValue);
 	};
 
@@ -127,8 +126,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 														autoOk={false}
 														orientation='landscape'
 														value={dayjs(task.timeStart)}
-														onChange={(time) => {}}
-														onAccept={(time) => {
+														onChange={(time) => {
 															upDateStartTime(time, index);
 														}}
 													/>
@@ -136,8 +134,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 														label='конец'
 														ampm={false}
 														value={dayjs(task.timeEnd)}
-														onChange={(time) => {}}
-														onAccept={(time) => {
+														onChange={(time) => {
 															upDateEndTime(time, index);
 														}}
 													/>

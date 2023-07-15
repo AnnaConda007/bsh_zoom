@@ -3,10 +3,10 @@ import styles from './toDoBox.module.scss';
 import AddNewTask from '../addNewTask/addNewTask';
 import AddedTasks from '../addedTasks/addedTasks';
 import { pullTask } from '../../../utils/updateTask';
-import { CalendarContext } from '../../contexts/calendar.context';
-import { getConferenceInfo } from '../../../utils/manageConference.utils';
+import { DatesContext } from '../../contexts/calendar.context';
+import { getConferenceInfo } from '../../../utils/getZoomData.utils';
 const ToDoBox = () => {
-	const { activeDate, setActiveDate } = useContext(CalendarContext);
+	const { activeDate, setActiveDate } = useContext(DatesContext);
 	const [pulledTasks, setPulledTasks] = useState([]);
 	useEffect(() => {
 		const fetchTasks = async () => {

@@ -1,67 +1,34 @@
-import { getListMeeting } from './zoom.utils';
-import { formatedDateFromUTStoDMY, formateTimeFromUTCtoHumanReadable } from './formatting.utils';
-import { calculatTimeEnd } from './calculat.utils';
-import { updateAccesToken } from './tokensZoom.utils';
+import { updateAccesToken } from './getZoomData.utils';
+import { calculateDuration } from './calculat.utils';
 import axios from 'axios';
 
-export const getTaggedDate = async () => {
+export const createMeet = async () => {
 	try {
-		const taggedDateArr = [];
-		const conferenceData = await getListMeeting();
-		const meetings = conferenceData.meetings;
-		meetings.forEach((miting) => {
-			const startTime = miting.start_time;
-			const date = formatedDateFromUTStoDMY(startTime);
-			if (!taggedDateArr.includes(date)) {
-				taggedDateArr.push(date);
-			}
+		let accessToken = localStorage.getItem('zoomAccesToken');
+		const userName = localStorage.getItem('email') || null;
+		const conferenceTopic = localStorage.getItem('conferenceTopic') || null;
+		const timeStart = localStorage.getItem('timeStart') || null;
+		const timeEnd = localStorage.getItem('timeEnd') || null;
+		const conferenceDuration = calculateDuration(timeStart, timeEnd);
+		const topicValue = {
+			creator: userName,
+			value: conferenceTopic,
+		};
+		const response = await axios.get('http://localhost:3000/newConference', {
+			params: {
+				conferenceTopic: JSON.stringify(topicValue),
+				timeStart: timeStart,
+				conferenceDuration: conferenceDuration,
+				token: accessToken,
+			},
 		});
-		return taggedDateArr;
+		console.log(response.data.meeting);
 	} catch (error) {
 		if (error.response && error.response.status === 401) {
-			console.log('прошел час ');
 			await updateAccesToken();
-			await getTaggedDate();
-		} else {
-			console.error('error while getting TaggedDate:', error.response.data);
+			return await createMeet();
 		}
-	}
-};
-
-export const getConferenceInfo = async (selectedDate) => {
-	try {
-		const tasks = {};
-		const conferenceData = await getListMeeting();
-		const meetings = conferenceData.meetings;
-		meetings.forEach((meeting) => {
-			const timeStart = meeting.start_time;
-			const duration = meeting.duration;
-			const date = formatedDateFromUTStoDMY(timeStart);
-			const topicObject = JSON.parse(meeting.topic);
-			const task = {
-				creator: topicObject.creator,
-				taskValue: topicObject.value,
-				timeStart: formateTimeFromUTCtoHumanReadable(timeStart),
-				timeEnd: calculatTimeEnd(timeStart, duration),
-				meetingUrl: meeting.join_url,
-				meetingId: meeting.id,
-			};
-			if (tasks[date]) {
-				tasks[date].push(task);
-			} else {
-				tasks[date] = [task];
-			}
-		});
-		const tasksForDay = tasks[selectedDate] || [];
-		return tasksForDay;
-	} catch (error) {
-		if (error.response && error.response.status === 401) {
-			console.log('прошел час ');
-			await updateAccesToken();
-			await getConferenceInfo(selectedDate);
-		} else {
-			console.error('error while getting conference info:', error.response.data);
-		}
+		console.error('Error creating meeting:', error);
 	}
 };
 
@@ -79,7 +46,7 @@ export const updateConferenceInfo = async (idTopic, newData) => {
 	} catch (error) {
 		if (error.response && error.response.status === 401) {
 			await updateAccesToken();
-			await updateConferenceInfo(idTopic, newData);
+			return await updateConferenceInfo(idTopic, newData);
 		}
 		console.error('Error update meetings:', error);
 	}
@@ -103,7 +70,7 @@ export const deleteConference = async (conferenceId) => {
 		if (error.response && error.response.status === 401) {
 			console.log('прошел час ');
 			await updateAccesToken();
-			await deleteConference(conferenceId);
+			return await deleteConference(conferenceId);
 		}
 		console.error('Error delete meetings:', error);
 	}

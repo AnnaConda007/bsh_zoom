@@ -1,6 +1,3 @@
-import { DateTime } from 'luxon';
-import { getcurrentTime } from './getTime.utils';
-
 export const formatedDateToUTS = (selectedTime, activeDate) => {
 	const timeObj = new Date(selectedTime);
 	const dateSegments = activeDate.split('-').reverse();
@@ -43,12 +40,4 @@ export const formateTimeFromUTCtoHumanReadable = (time) => {
 		.padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} `;
 
 	return formattedDate; // Sat Jul 15 2023 09:00:00
-};
-
-export const compareStartEndMeeting = (startTime, endTime) => {
-	if (new Date(startTime) > new Date(endTime)) {
-		return true;
-	} else {
-		return false;
-	}
 };
