@@ -4,7 +4,7 @@ import { formatedDateToUTS } from './formatting.utils';
 export const getcurrentTime = async () => {
 	let currentTime;
 	try {
-		const response = await fetch('http://worldtimeapi.org/api/timezone/Russia/Moscow');
+		const response = await fetch('http://worldtimeapi.org/api/timezone/Europe/Moscow');
 		const data = await response.json();
 		const dateTime = DateTime.fromISO(data.datetime).setZone('Europe/Moscow');
 		const timestamp = Math.floor(dateTime.toSeconds());
@@ -28,10 +28,6 @@ export const checkPastDate = async (activeDate) => {
 	dateToUnix(todayString);
 	dateToUnix(activeDate);
 	if (todayString > activeDate) {
-		const dateTimeString = '2023-07-14 15:02:07';
-		const dateTime = DateTime.fromFormat(dateTimeString, 'yyyy-MM-dd HH:mm:ss');
-		const unixTimestamp = Math.floor(dateTime.toSeconds());
-		console.log(unixTimestamp);
 		return true;
 	} else {
 		return false;

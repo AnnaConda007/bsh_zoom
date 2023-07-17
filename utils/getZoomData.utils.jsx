@@ -51,7 +51,6 @@ export const getListMeeting = async () => {
 
 export const getTaggedDate = async () => {
 	try {
-		console.log('getTaggedDate');
 		const taggedDateArr = [];
 		const conferenceData = await getListMeeting();
 		const meetings = conferenceData.meetings;
@@ -65,11 +64,8 @@ export const getTaggedDate = async () => {
 		return taggedDateArr;
 	} catch (error) {
 		if (error.response && error.response.status === 401) {
-			console.log('обработка ошибки');
 			await updateAccesToken();
-			console.log('updateAccesToken');
 			return await getTaggedDate();
-			с;
 		} else {
 			console.error('error while getting TaggedDate:', error.response.data);
 			throw error;
@@ -86,7 +82,12 @@ export const getConferenceInfo = async (selectedDate) => {
 			const timeStart = meeting.start_time;
 			const duration = meeting.duration;
 			const date = formatedDateFromUTStoDMY(timeStart);
-			const topicObject = JSON.parse(meeting.topic);
+			let topicObject;
+			try {
+				topicObject = JSON.parse(meeting.topic);
+			} catch (error) {
+				topicObject = { creator: 'не указан', value: meeting.topic };
+			}
 			const task = {
 				creator: topicObject.creator,
 				taskValue: topicObject.value,
@@ -105,7 +106,6 @@ export const getConferenceInfo = async (selectedDate) => {
 		return tasksForDay;
 	} catch (error) {
 		if (error.response && error.response.status === 401) {
-			console.log('прошел час ');
 			await updateAccesToken();
 			return await getConferenceInfo(selectedDate);
 		} else {

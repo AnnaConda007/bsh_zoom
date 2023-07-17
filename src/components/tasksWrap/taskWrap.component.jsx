@@ -9,7 +9,7 @@ import styles from './taskWrap.module.scss';
 
 const ToDoBox = () => {
 	const { activeDate } = useContext(DatesContext);
-	const { disabledDate, disabledTime, disabledMessage, SetDisabledTime } = useContext(DisabledContext);
+	const { disabledDate, errorExsist, errorMessage, SetErrorExsist } = useContext(DisabledContext);
 
 	const [pulledTasks, setPulledTasks] = useState([]);
 	useEffect(() => {
@@ -24,7 +24,7 @@ const ToDoBox = () => {
 		if (reason === 'clickaway') {
 			return;
 		}
-		SetDisabledTime(false);
+		SetErrorExsist(false);
 	};
 
 	return (
@@ -33,10 +33,10 @@ const ToDoBox = () => {
 				<div className={`${styles.date} ${disabledDate ? styles.datedisabledDate : ''}`}>
 					{activeDate}
 					<Snackbar
-						open={disabledTime}
+						open={errorExsist}
 						onClose={handleSnackbarClose}
 						autoHideDuration={4000}
-						message={disabledMessage}
+						message={errorMessage}
 						anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
 					/>
 				</div>

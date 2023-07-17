@@ -16,41 +16,42 @@ import { formatedDateToUTS } from '../../../utils/formatting.utils';
 import { calculateDuration, compareStartEndMeeting } from '../../../utils/calculat.utils';
 import { DisabledContext } from '../../contexts/disabled.context';
 import { DatesContext } from '../../contexts/dates.context';
-import { disabledMessageForCompareErrorTime, disabledMessageForPastTimeError } from '../../../contains';
+import { errorMessageForCompareErrorTime, errorMessageForPastTimeError } from '../../../contains';
 const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
 	const { activeDate, setTaggedDates } = useContext(DatesContext);
-	const { SetDisabledTime, SetisabledMessage } = useContext(DisabledContext);
+	const { disabledDate, SetErrorExsist, SetErrorMessage } = useContext(DisabledContext);
 
 	const upDateStartTime = async (timeStart, index) => {
-		const disabledTimeResponse = await checkPastTime(timeStart, activeDate);
-		SetDisabledTime(disabledTimeResponse);
-		SetisabledMessage(disabledMessageForPastTimeError);
+		const errorExsistResponse = await checkPastTime(timeStart, activeDate);
+		console.log(errorExsistResponse);
+		SetErrorExsist(errorExsistResponse);
+		SetErrorMessage(errorMessageForPastTimeError);
 		const compareResponse = compareStartEndMeeting(timeStart.$d, pulledTasks[index].timeEnd);
-		SetDisabledTime(compareResponse);
-		SetisabledMessage(disabledMessageForCompareErrorTime);
-		if (disabledTimeResponse || compareResponse) return;
+		SetErrorExsist(compareResponse);
+		SetErrorMessage(errorMessageForCompareErrorTime);
+		if (errorExsistResponse || compareResponse) return;
 		const duration = calculateDuration(timeStart, pulledTasks[index].timeEnd);
 		const id = pulledTasks[index].meetingId;
 		const newStartTimeValue = {
 			duration: duration,
 			start_time: formatedDateToUTS(timeStart, activeDate),
 		};
-		updateConferenceInfo(id, newStartTimeValue);
+		updateConferenceInfo(id, newStartTimeValue, SetErrorExsist, SetErrorMessage);
 	};
 
 	const upDateEndTime = async (timeEnd, index) => {
 		const compareResponse = compareStartEndMeeting(pulledTasks[index].timeStart, timeEnd.$d);
-		SetDisabledTime(compareResponse);
-		SetisabledMessage(disabledMessageForCompareErrorTime);
+		SetErrorExsist(compareResponse);
+		SetErrorMessage(errorMessageForCompareErrorTime);
 		if (compareResponse) return;
 		const duration = calculateDuration(pulledTasks[index].timeStart, timeEnd);
 		const id = pulledTasks[index].meetingId;
 		const newEndTimeValue = {
 			duration: duration,
 		};
-		updateConferenceInfo(id, newEndTimeValue);
+		updateConferenceInfo(id, newEndTimeValue, SetErrorExsist, SetErrorMessage);
 	};
 
 	const handleEditBtn = (index) => {
@@ -69,7 +70,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 		const newTopicValue = {
 			topic: editingValue,
 		};
-		updateConferenceInfo(id, newTopicValue);
+		updateConferenceInfo(id, newTopicValue, SetErrorExsist, SetErrorMessage);
 		setPulledTasks(updatedTasks);
 		setisEditingIndex(null);
 	};
@@ -81,12 +82,12 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const handleDeleteBtn = (index) => {
 		const updatedTasks = pulledTasks.filter((_, i) => i !== index);
 		const id = pulledTasks[index].meetingId;
-		deleteConference(id);
+		const deleteConferenceRsponse = deleteConference(id);
+		if (!deleteConferenceRsponse) return;
 		setPulledTasks(updatedTasks);
 		if (index === isEditingIndex) {
 			setisEditingIndex(null);
 		}
-
 		if (pulledTasks.length <= 1) {
 			setTaggedDates((prevDates) => prevDates.filter((date) => date !== activeDate));
 		}
@@ -102,7 +103,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 				{pulledTasks.map((task, index) => {
 					return (
 						<div className={styles.tasks__task} key={`${index}-${task.timeStart} ${task.timeEnd}`}>
-							<span className={styles.tasks__user}>Организатор: {task.creator ? task.creator : 'не указан'}</span>
+							<span className={styles.tasks__user}>Организатор: {task.creator}</span>
 							<TextField
 								sx={{ border: '1px solid', borderRadius: '5px' }}
 								className={styles.planner__textField}
@@ -125,6 +126,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 														ampm={false}
 														autoOk={false}
 														orientation='landscape'
+														disabled={disabledDate}
 														value={dayjs(task.timeStart)}
 														onChange={(time) => {
 															upDateStartTime(time, index);
@@ -133,6 +135,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 													<TimePicker
 														label='конец'
 														ampm={false}
+														disabled={disabledDate}
 														value={dayjs(task.timeEnd)}
 														onChange={(time) => {
 															upDateEndTime(time, index);

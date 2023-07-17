@@ -1,12 +1,12 @@
 import { DatesProvider } from './dates.context';
-import { ZoomProvider } from './zoom.context';
 import { DisabledCProvider } from './disabled.context';
+import { TaskInfoProvider } from './taskInfo.context';
 export const Providers = ({ children }) => {
 	return (
 		<DatesProvider>
-			<ZoomProvider>
-				<DisabledCProvider>{children}</DisabledCProvider>
-			</ZoomProvider>
+			<TaskInfoProvider>
+				<DisabledCProvider>{children} </DisabledCProvider>
+			</TaskInfoProvider>
 		</DatesProvider>
 	);
 };

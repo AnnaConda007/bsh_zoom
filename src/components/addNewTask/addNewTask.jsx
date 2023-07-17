@@ -11,23 +11,31 @@ import { compareStartEndMeeting } from '../../../utils/calculat.utils';
 import { createMeet } from '../../../utils/manageConference.utils';
 import { DisabledContext } from '../../contexts/disabled.context';
 import { DatesContext } from '../../contexts/dates.context';
-import { disabledMessageForCompareErrorTime, disabledMessageForPastTimeError } from '../../../contains';
+import { TaskInfoContext } from '../../contexts/taskInfo.context';
+import { errorMessageForCompareErrorTime, errorMessageForPastTimeError } from '../../../contains';
 const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 	const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' };
 	const [newTaskObj, setNewTaskObj] = useState(defaultTask);
 	const { activeDate, taggedDates, setTaggedDates } = useContext(DatesContext);
-	const { disabledDate, disabledTime, SetDisabledTime, SetisabledMessage } = useContext(DisabledContext);
-
+	const { disabledDate, errorExsist, SetErrorExsist, SetErrorMessage } = useContext(DisabledContext);
+	const { conferenceTopic, setConferenceTopic, timeStart, setTimeStart, timeEnd, setTimeEnd } = useContext(
+		TaskInfoContext
+	);
 	const fullnessTimeForNewTask = async (selectedTime, timeKey) => {
-		const disabledTimeResponse = await checkPastTime(selectedTime, activeDate);
-		SetDisabledTime(disabledTimeResponse);
-		SetisabledMessage(disabledMessageForPastTimeError);
+		const errorExsistResponse = await checkPastTime(selectedTime, activeDate);
+		SetErrorExsist(errorExsistResponse);
+		SetErrorMessage(errorMessageForPastTimeError);
 		setNewTaskObj((prevTask) => ({
 			...prevTask,
 			[timeKey]: selectedTime,
 		}));
 		const date = formatedDateToUTS(selectedTime, activeDate);
-		localStorage.setItem(timeKey, date);
+		if (timeKey === 'timeStart') {
+			setTimeStart(date);
+		}
+		if (timeKey === 'timeEnd') {
+			setTimeEnd(date);
+		}
 	};
 
 	const fullnessValueForNewTask = (value) => {
@@ -35,15 +43,16 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 			...prevTask,
 			taskValue: value,
 		}));
-		localStorage.setItem('conferenceTopic', value);
+		setConferenceTopic(value);
 	};
 
 	const handleAddTaskBtn = async () => {
 		const compareRes = compareStartEndMeeting(newTaskObj.timeStart.$d, newTaskObj.timeEnd.$d);
-		SetDisabledTime(compareRes);
-		SetisabledMessage(disabledMessageForCompareErrorTime);
-		if (disabledTime === true || compareRes === true) return;
+		SetErrorExsist(compareRes);
+		SetErrorMessage(errorMessageForCompareErrorTime);
+		if (errorExsist === true || compareRes === true) return;
 		if (newTaskObj.taskValue.trim() === '' || newTaskObj.timeStart === '' || newTaskObj.timeEnd === '') return;
+		await createMeet(SetErrorExsist, SetErrorMessage, conferenceTopic, timeStart, timeEnd);
 		const updatedTasks = [...pulledTasks];
 		updatedTasks.push(newTaskObj);
 		setPulledTasks(updatedTasks);
@@ -51,7 +60,6 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
 		if (!taggedDates.includes(activeDate)) {
 			setTaggedDates((prevDates) => [...prevDates, activeDate]);
 		}
-		await createMeet();
 	};
 
 	return (
