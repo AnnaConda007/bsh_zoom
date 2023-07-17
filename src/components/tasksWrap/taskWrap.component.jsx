@@ -7,15 +7,19 @@ import { DisabledContext } from '../../contexts/disabled.context';
 import { DatesContext } from '../../contexts/dates.context';
 import styles from './taskWrap.module.scss';
 
-const ToDoBox = () => {
+const TaskWrap = () => {
 	const { activeDate } = useContext(DatesContext);
 	const { disabledDate, errorExsist, errorMessage, SetErrorExsist } = useContext(DisabledContext);
-
 	const [pulledTasks, setPulledTasks] = useState([]);
 	useEffect(() => {
 		const getTask = async () => {
-			const task = await getConferenceInfo(activeDate);
-			setPulledTasks(task);
+			try {
+				const task = await getConferenceInfo(activeDate);
+ 				setPulledTasks(task);
+			} catch (error) {
+				console.error('Ошибка при попытке получения информации о конференциях на выбранную дату ', error);
+				setPulledTasks([]);
+			}
 		};
 		getTask();
 	}, [activeDate]);
@@ -47,4 +51,4 @@ const ToDoBox = () => {
 	);
 };
 
-export default ToDoBox;
+export default TaskWrap;

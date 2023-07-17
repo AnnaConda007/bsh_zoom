@@ -21,9 +21,22 @@ const Calendar = () => {
 	const { SetDisabledDate } = useContext(DisabledContext);
 
 	useEffect(() => {
+		const getTokens = async () => {
+			try {
+				await getZoomTokens(homeUrL);
+			} catch (error) {
+				console.error('Ошибка при попытке получения токена', error);
+				throw error;
+			}
+		};
+		getTokens();
+
 		const getData = async () => {
-			await getZoomTokens(homeUrL);
-			setTaggedDates(await getTaggedDate());
+			try {
+				setTaggedDates(await getTaggedDate());
+			} catch (error) {
+				console.error('Ошибка при попытке получения TaggedDates ', error);
+			}
 		};
 		getData();
 	}, []);

@@ -17,6 +17,8 @@ import { calculateDuration, compareStartEndMeeting } from '../../../utils/calcul
 import { DisabledContext } from '../../contexts/disabled.context';
 import { DatesContext } from '../../contexts/dates.context';
 import { errorMessageForCompareErrorTime, errorMessageForPastTimeError } from '../../../contains';
+import { updateAccesToken } from '../../../utils/getZoomData.utils';
+import { limitErrorMessage } from '../../../contains';
 const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const [isEditingIndex, setisEditingIndex] = useState(null);
 	const [editingValue, setEditingValue] = useState('');
@@ -38,7 +40,17 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 			duration: duration,
 			start_time: formatedDateToUTS(timeStart, activeDate),
 		};
-		updateConferenceInfo(id, newStartTimeValue, SetErrorExsist, SetErrorMessage);
+		try {
+			updateConferenceInfo(id, newStartTimeValue);
+		} catch (error) {
+			if (error.response && error.response.data.code === 124) {
+				await updateAccesToken();
+				return await updateConferenceInfo(id, newStartTimeValue);
+			} else if (error.response.data.code === 429) {
+				SetErrorExsist(true), SetErrorMessage(limitErrorMessage);
+			}
+			console.error('Ошибка при редактировании времени конференции:', error);
+		}
 	};
 
 	const upDateEndTime = async (timeEnd, index) => {
@@ -51,7 +63,17 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 		const newEndTimeValue = {
 			duration: duration,
 		};
-		updateConferenceInfo(id, newEndTimeValue, SetErrorExsist, SetErrorMessage);
+		try {
+			updateConferenceInfo(id, newEndTimeValue);
+		} catch (error) {
+			if (error.response && error.response.data.code === 124) {
+				await updateAccesToken();
+				return await updateConferenceInfo(id, newEndTimeValue, SetErrorExsist, SetErrorMessage);
+			} else if (error.response.data.code === 429) {
+				SetErrorExsist(true), SetErrorMessage(limitErrorMessage);
+			}
+			console.error('Ошибка при редактировании времени конференции:', error);
+		}
 	};
 
 	const handleEditBtn = (index) => {
@@ -63,14 +85,25 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 		setEditingValue(newValue);
 	};
 
-	const handleSaveEdit = (index) => {
+	const handleSaveEdit = async (index) => {
 		const updatedTasks = [...pulledTasks];
 		updatedTasks[index].taskValue = editingValue;
 		const id = pulledTasks[index].meetingId;
 		const newTopicValue = {
 			topic: editingValue,
 		};
-		updateConferenceInfo(id, newTopicValue, SetErrorExsist, SetErrorMessage);
+		try {
+			updateConferenceInfo(id, newTopicValue);
+		} catch (error) {
+			if (error.response && error.response.data.code === 124) {
+				await updateAccesToken();
+				return await updateConferenceInfo(id, newTopicValue, SetErrorExsist, SetErrorMessage);
+			} else if (error.response.data.code === 429) {
+				SetErrorExsist(true), SetErrorMessage(limitErrorMessage);
+			}
+			console.error('Ошибка при редактировании конференции:', error);
+		}
+
 		setPulledTasks(updatedTasks);
 		setisEditingIndex(null);
 	};
@@ -79,17 +112,28 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 		setisEditingIndex(null);
 	};
 
-	const handleDeleteBtn = (index) => {
+	const handleDeleteBtn = async (index) => {
 		const updatedTasks = pulledTasks.filter((_, i) => i !== index);
 		const id = pulledTasks[index].meetingId;
-		const deleteConferenceRsponse = deleteConference(id);
-		if (!deleteConferenceRsponse) return;
-		setPulledTasks(updatedTasks);
-		if (index === isEditingIndex) {
-			setisEditingIndex(null);
-		}
-		if (pulledTasks.length <= 1) {
-			setTaggedDates((prevDates) => prevDates.filter((date) => date !== activeDate));
+		try {
+			const deleteConferenceRsponse = deleteConference(id);
+			if (!deleteConferenceRsponse) return;
+			setPulledTasks(updatedTasks);
+			if (index === isEditingIndex) {
+				setisEditingIndex(null);
+			}
+			if (pulledTasks.length <= 1) {
+				setTaggedDates((prevDates) => prevDates.filter((date) => date !== activeDate));
+			}
+		} catch (error) {
+			if (error.response && error.response.status === 401) {
+				console.log('прошел час ');
+				await updateAccesToken();
+				return await deleteConference(index);
+			} else if (error.response.data.code === 429) {
+				SetErrorExsist(true), SetErrorMessage(limitErrorMessage);
+			}
+			console.error('Ошибка при удалении задачи:', error);
 		}
 	};
 

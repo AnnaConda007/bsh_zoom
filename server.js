@@ -85,10 +85,10 @@ app.get('/newConference', async (req, res) => {
 		res.send({ meeting: meetingResponse.data });
 	}catch (error) {
 		console.log('Error retrieving meetings:', error.response.data);
-		if (error.response.data.code === 124) {
+	if (error.response.data.code === 124 || error.response.data.code === 401) {
 			res.status(401).send(error.response.data);
 		} else {
-			res.status(500).send(error.response.data);
+			res.status(500).send(error);
 		}
 	}
 });
@@ -115,10 +115,10 @@ app.get('/listMeetings', async (req, res) => {
 		res.send({ meetings: allMeetings });
 	} catch (error) {
 		console.log('Error retrieving meetings:', error);
-		if (error.response.data.code === 124) {
+		if (error.response.data.code === 124 || error.response.data.code === 401) {
 			res.status(401).send(error.response.data);
 		} else {
-			res.status(500).send(error.response.data);
+			res.status(500).send(error);
 		}
 	}
 });
@@ -137,7 +137,7 @@ const { accessToken, data,id } = req.body;
 		if (error.response && error.response.data.code === 124) {
 			res.status(401).send(error.response.data);
 		} else {
-			res.status(500).send(error.response.data);
+			res.status(500).send(error);
 		}
 	}
 });
@@ -152,10 +152,10 @@ app.delete('/deleteConference', async (req, res) => {
     });
     res.status(200).send(response.data);
   } catch (error) { 
-		if (error.response && error.response.data.code === 124) {
+		if (error.response && error.response.data.code === 124 || error.response.data.code === 401) {
 			res.status(401).send(error.response.data);
 		} else {
-			res.status(500).send(error.response.data);
+			res.status(500).send(error);
 		}
 	}
 });
