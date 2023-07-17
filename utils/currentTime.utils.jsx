@@ -16,18 +16,17 @@ export const getcurrentTime = async () => {
 };
 
 export const checkPastDate = async (activeDate) => {
-	const dateToUnix = (activeDate) => {
-		const dateString = DateTime.fromFormat(activeDate, 'dd-MM-yyyy');
+	const dateToUnix = (date) => {
+		const dateString = DateTime.fromFormat(date, 'dd-MM-yyyy');
 		const unixTimestamp = dateString.toSeconds();
 		return unixTimestamp;
 	};
-
 	const todaySecond = await getcurrentTime();
 	const dateTime = DateTime.fromSeconds(todaySecond);
 	const todayString = dateTime.toFormat('dd-MM-yyyy');
-	dateToUnix(todayString);
-	dateToUnix(activeDate);
-	if (todayString > activeDate) {
+	const todayUnix = dateToUnix(todayString);
+	const activeDateUnix = dateToUnix(activeDate);
+	if (todayUnix > activeDateUnix) {
 		return true;
 	} else {
 		return false;

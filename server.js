@@ -114,7 +114,7 @@ app.get('/listMeetings', async (req, res) => {
 		} while (nextPageToken);
 		res.send({ meetings: allMeetings });
 	} catch (error) {
-		console.log('Error retrieving meetings:', error.response.data);
+		console.log('Error retrieving meetings:', error);
 		if (error.response.data.code === 124) {
 			res.status(401).send(error.response.data);
 		} else {

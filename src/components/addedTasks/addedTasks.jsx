@@ -24,14 +24,14 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const { disabledDate, SetErrorExsist, SetErrorMessage } = useContext(DisabledContext);
 
 	const upDateStartTime = async (timeStart, index) => {
-		const errorExsistResponse = await checkPastTime(timeStart, activeDate);
-		console.log(errorExsistResponse);
-		SetErrorExsist(errorExsistResponse);
+		const checkPastTimeResponse = await checkPastTime(timeStart, activeDate);
+		SetErrorExsist(checkPastTimeResponse);
 		SetErrorMessage(errorMessageForPastTimeError);
+		if (checkPastTimeResponse) return;
 		const compareResponse = compareStartEndMeeting(timeStart.$d, pulledTasks[index].timeEnd);
 		SetErrorExsist(compareResponse);
 		SetErrorMessage(errorMessageForCompareErrorTime);
-		if (errorExsistResponse || compareResponse) return;
+		if (compareResponse) return;
 		const duration = calculateDuration(timeStart, pulledTasks[index].timeEnd);
 		const id = pulledTasks[index].meetingId;
 		const newStartTimeValue = {

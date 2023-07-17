@@ -67,7 +67,7 @@ export const getTaggedDate = async () => {
 			await updateAccesToken();
 			return await getTaggedDate();
 		} else {
-			console.error('error while getting TaggedDate:', error.response.data);
+			console.error('error while getting TaggedDate:', error);
 			throw error;
 		}
 	}

@@ -21,9 +21,7 @@ const Home = () => {
 		}
 	}, [currentTime]);
 
-	useEffect(() => {
-		//window.location.href = redirectHomeUrL;
-	}, []);
+	useEffect(() => {}, []);
 
 	return <Calendar />;
 };
