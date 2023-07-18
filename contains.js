@@ -8,3 +8,4 @@ export const homeUrL = 'http://localhost:5173/';
  export const errorMessageForCompareErrorTime = "Время начала конференции не может быть позже времени её окончания"
   export const errorMessageForPastTimeError = "Невозможно назначить встречу на прошедшее время"
   export const limitErrorMessage = "Вы достигли предельного количества запросов. Пожалуйста, попробуйте снова после 03:00 по времени Москве."
+ export const serverErrorMessage = "Ошибка при запросе к сервреру"

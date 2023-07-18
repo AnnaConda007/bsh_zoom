@@ -3,6 +3,7 @@ import { Badge } from '@mui/material';
 import { pickersDay } from './pickersDay-style';
 import { LocalizationProvider, DateCalendar, PickersDay } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Snackbar } from '@mui/material';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import Header from '../header/header';
@@ -18,27 +19,22 @@ import styles from './calendar.module.scss';
 const Calendar = () => {
 	const [modal, setModal] = useState(false);
 	const { setActiveDate, taggedDates, setTaggedDates } = useContext(DatesContext);
-	const { SetDisabledDate } = useContext(DisabledContext);
+	const { SetDisabledDate, SetErrorExsist, SetErrorMessage, errorExsist, errorMessage } = useContext(DisabledContext);
 
 	useEffect(() => {
 		const getTokens = async () => {
-			try {
-				await getZoomTokens(homeUrL);
-			} catch (error) {
-				console.error('Ошибка при попытке получения токена', error);
-				throw error;
-			}
+			await getZoomTokens(homeUrL, SetErrorExsist, SetErrorMessage);
 		};
 		getTokens();
 
-		const getData = async () => {
+		const getDates = async () => {
 			try {
-				setTaggedDates(await getTaggedDate());
+				setTaggedDates(await getTaggedDate(SetErrorExsist, SetErrorMessage));
 			} catch (error) {
 				console.error('Ошибка при попытке получения TaggedDates ', error);
 			}
 		};
-		getData();
+		getDates();
 	}, []);
 
 	const handleDateClick = async (date) => {
@@ -59,6 +55,13 @@ const Calendar = () => {
 			};
 		},
 	};
+
+	const handleSnackbarClose = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+		SetErrorExsist(false);
+	};
 	const ServerDay = (props) => {
 		const { day, isDateInArray, ...other } = props;
 		return (
@@ -69,6 +72,13 @@ const Calendar = () => {
 	};
 	return (
 		<div className={styles.wrap}>
+			<Snackbar
+				open={errorExsist}
+				onClose={handleSnackbarClose}
+				autoHideDuration={4000}
+				message={errorMessage}
+				anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+			/>
 			<ModalBox modal={modal} setModal={setModal} />
 			<Header />
 			<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>

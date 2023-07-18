@@ -1,6 +1,6 @@
 import { updateAccesToken } from './getZoomData.utils';
 import { calculateDuration } from './calculat.utils';
-import { limitErrorMessage } from '../contains';
+import { limitErrorMessage, serverErrorMessage } from '../contains';
 import axios from 'axios';
 
 export const createMeet = async (SetErrorExsist, SetErrorMessage, conferenceTopic, timeStart, timeEnd) => {
@@ -23,40 +23,74 @@ export const createMeet = async (SetErrorExsist, SetErrorMessage, conferenceTopi
 		console.log(response.data.meeting);
 	} catch (error) {
 		if (error.response && error.response.data.code === 124) {
+			console.log('Обновление токена');
+			console.error(error.response.data);
+
 			await updateAccesToken();
-			return await createMeet();
-		} else if (error.response.data.code === 429) {
+			return await createMeet(conferenceTopic, timeStart, timeEnd);
+		} else if (error.response && error.response.data.code === 429) {
 			SetErrorExsist(true), SetErrorMessage(limitErrorMessage);
+		} else {
+			console.error('Ошибка сервера при создании конференции:', error);
+			SetErrorExsist(true), SetErrorMessage(`${serverErrorMessage}:createMeet`);
 		}
-		console.error('Error creating meeting:', error.response.data);
 	}
 };
 
-export const updateConferenceInfo = async (idTopic, newData) => {
-	let accessToken = localStorage.getItem('zoomAccesToken');
-	const id = idTopic;
-	const data = newData;
-
-	const response = await axios.patch('http://localhost:3000/updateConferenceInfo', {
-		accessToken: accessToken,
-		id: id,
-		data: data,
-	});
-	return response.data;
-};
-
-export const deleteConference = async (conferenceId) => {
-	let accessToken = localStorage.getItem('zoomAccesToken');
-	const id = conferenceId;
-
-	const response = await axios.delete('http://localhost:3000/deleteConference', {
-		data: {
+export const updateConferenceInfo = async (idTopic, newData, SetErrorExsist, SetErrorMessage) => {
+	try {
+		let accessToken = localStorage.getItem('zoomAccesToken');
+		const id = idTopic;
+		const data = newData;
+		const response = await axios.patch('http://localhost:3000/updateConferenceInfo', {
 			accessToken: accessToken,
 			id: id,
-		},
-		headers: {
-			'Content-Type': 'application/json',
-		},
-	});
-	return response.data;
+			data: data,
+		});
+		return response.data;
+	} catch (error) {
+		if (error.response && error.response.data.code === 124) {
+			await updateAccesToken();
+			console.log('обновлние токена');
+			console.error(error.response.data);
+
+			return await updateConferenceInfo(idTopic, newData);
+		} else if (error.respons && error.response.data.code === 429) {
+			SetErrorExsist(true), SetErrorMessage(limitErrorMessage);
+		} else {
+			console.error(' ошибка сервера при редактирвоании данных', error);
+			SetErrorExsist(true), SetErrorMessage(`${serverErrorMessage}:updateConferenceInfo`);
+		}
+	}
+};
+
+export const deleteConference = async (conferenceId, SetErrorExsist, SetErrorMessage) => {
+	try {
+		let accessToken = localStorage.getItem('zoomAccesToken');
+		const id = conferenceId;
+		const response = await axios.delete('http://localhost:3000/deleteConference', {
+			data: {
+				accessToken: accessToken,
+				id: id,
+			},
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+		return response.data
+	} catch (error) {
+		if (error.response && error.response.data.code === 124) {
+			await updateAccesToken();
+			console.log('обновлние токена');
+			console.error(error.response.data);
+
+			return await deleteConference(conferenceId);
+		} else if (error.respons && error.response.data.code === 429) {
+			SetErrorExsist(true), SetErrorMessage(limitErrorMessage);
+		} else {
+			console.error(' ошибка сервера при удалении данных', error);
+			SetErrorExsist(true);
+			SetErrorMessage(`${serverErrorMessage}:deleteConference`);
+		}
+	}
 };

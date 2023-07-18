@@ -9,16 +9,17 @@ import styles from './taskWrap.module.scss';
 
 const TaskWrap = () => {
 	const { activeDate } = useContext(DatesContext);
-	const { disabledDate, errorExsist, errorMessage, SetErrorExsist } = useContext(DisabledContext);
+	const { disabledDate, errorExsist, errorMessage, SetErrorExsist, SetErrorMessage } = useContext(DisabledContext);
+	
 	const [pulledTasks, setPulledTasks] = useState([]);
 	useEffect(() => {
 		const getTask = async () => {
 			try {
-				const task = await getConferenceInfo(activeDate);
- 				setPulledTasks(task);
+				const task = await getConferenceInfo(activeDate, SetErrorExsist, SetErrorMessage);
+				console.log(task);
+				setPulledTasks(task);
 			} catch (error) {
 				console.error('Ошибка при попытке получения информации о конференциях на выбранную дату ', error);
-				setPulledTasks([]);
 			}
 		};
 		getTask();

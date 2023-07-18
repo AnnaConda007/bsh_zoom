@@ -40,17 +40,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 			duration: duration,
 			start_time: formatedDateToUTS(timeStart, activeDate),
 		};
-		try {
-			updateConferenceInfo(id, newStartTimeValue);
-		} catch (error) {
-			if (error.response && error.response.data.code === 124) {
-				await updateAccesToken();
-				return await updateConferenceInfo(id, newStartTimeValue);
-			} else if (error.response.data.code === 429) {
-				SetErrorExsist(true), SetErrorMessage(limitErrorMessage);
-			}
-			console.error('Ошибка при редактировании времени конференции:', error);
-		}
+		await updateConferenceInfo(id, newStartTimeValue, SetErrorExsist, SetErrorMessage);
 	};
 
 	const upDateEndTime = async (timeEnd, index) => {
@@ -63,17 +53,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 		const newEndTimeValue = {
 			duration: duration,
 		};
-		try {
-			updateConferenceInfo(id, newEndTimeValue);
-		} catch (error) {
-			if (error.response && error.response.data.code === 124) {
-				await updateAccesToken();
-				return await updateConferenceInfo(id, newEndTimeValue, SetErrorExsist, SetErrorMessage);
-			} else if (error.response.data.code === 429) {
-				SetErrorExsist(true), SetErrorMessage(limitErrorMessage);
-			}
-			console.error('Ошибка при редактировании времени конференции:', error);
-		}
+		updateConferenceInfo(id, newEndTimeValue, SetErrorExsist, SetErrorMessage);
 	};
 
 	const handleEditBtn = (index) => {
@@ -92,18 +72,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 		const newTopicValue = {
 			topic: editingValue,
 		};
-		try {
-			updateConferenceInfo(id, newTopicValue);
-		} catch (error) {
-			if (error.response && error.response.data.code === 124) {
-				await updateAccesToken();
-				return await updateConferenceInfo(id, newTopicValue, SetErrorExsist, SetErrorMessage);
-			} else if (error.response.data.code === 429) {
-				SetErrorExsist(true), SetErrorMessage(limitErrorMessage);
-			}
-			console.error('Ошибка при редактировании конференции:', error);
-		}
-
+		updateConferenceInfo(id, newTopicValue, SetErrorExsist, SetErrorMessage);
 		setPulledTasks(updatedTasks);
 		setisEditingIndex(null);
 	};
@@ -115,25 +84,15 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 	const handleDeleteBtn = async (index) => {
 		const updatedTasks = pulledTasks.filter((_, i) => i !== index);
 		const id = pulledTasks[index].meetingId;
-		try {
-			const deleteConferenceRsponse = deleteConference(id);
-			if (!deleteConferenceRsponse) return;
-			setPulledTasks(updatedTasks);
-			if (index === isEditingIndex) {
-				setisEditingIndex(null);
-			}
-			if (pulledTasks.length <= 1) {
-				setTaggedDates((prevDates) => prevDates.filter((date) => date !== activeDate));
-			}
-		} catch (error) {
-			if (error.response && error.response.status === 401) {
-				console.log('прошел час ');
-				await updateAccesToken();
-				return await deleteConference(index);
-			} else if (error.response.data.code === 429) {
-				SetErrorExsist(true), SetErrorMessage(limitErrorMessage);
-			}
-			console.error('Ошибка при удалении задачи:', error);
+		const deleteConferenceRsponse = await deleteConference(id, SetErrorExsist, SetErrorMessage);
+		console.log(deleteConferenceRsponse.status);
+		if (deleteConferenceRsponse) return;
+		setPulledTasks(updatedTasks);
+		if (index === isEditingIndex) {
+			setisEditingIndex(null);
+		}
+		if (pulledTasks.length <= 1) {
+			setTaggedDates((prevDates) => prevDates.filter((date) => date !== activeDate));
 		}
 	};
 
