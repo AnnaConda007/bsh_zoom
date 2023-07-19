@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint src/**/*.jsx --fix.",
+    "lint": "eslint . --ext .jsx --fix",
     "prettier": "npx prettier --write .",
     "formatter": "npx prettier --write ."
   },
