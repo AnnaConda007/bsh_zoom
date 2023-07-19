@@ -24,3 +24,4 @@ npm run styles-fix
 npm run lint
 
 //npx prettier --write .
+// $ npx eslint src/components/addedTasks/addedTasks.jsx --fix

@@ -3,7 +3,6 @@ import Authorization from '../routes/authorization/authorization.component'
 import Home from '../routes/home/home.component'
 import { Providers } from './contexts/providers'
 function App() {
-  const d = 'xx'
   return (
     <Providers>
       <Routes>

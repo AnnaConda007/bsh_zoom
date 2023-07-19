@@ -40,6 +40,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
       timeStart.$d,
       pulledTasks[index].timeEnd
     )
+
     SetErrorExsist(compareResponse)
     SetErrorMessage(errorMessageForCompareErrorTime)
     if (compareResponse) return

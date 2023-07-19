@@ -16,8 +16,8 @@ function AuthorizationForm() {
   }, [])
 
   const formValueDefault = {
-    email: 'user@mail.ru', // очистить
-    password: '111111', // очистить
+    email: 'user@mail.ru', // Очистить
+    password: '111111', // Очистить
   }
   const [formValue, setFormValue] = useState(formValueDefault)
   let { email, password } = formValue
