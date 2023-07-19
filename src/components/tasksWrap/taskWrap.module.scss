@@ -4,17 +4,16 @@
   display: flex;
   justify-content: center;
   align-content: space-evenly;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
 }
- .date{
+.date {
   width: 100%;
   display: flex;
-justify-content: flex-start; 
-font-weight: bolder;
-  font-family:  'Montserrat-Italic';
- 
- }
+  justify-content: flex-start;
+  font-weight: bolder;
+  font-family: "Montserrat-Italic";
+}
 
- .datedisabledDate{
-  color:rgb(223, 62, 62)
- }
+.datedisabledDate {
+  color: rgb(223, 62, 62);
+}

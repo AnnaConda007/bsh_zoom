@@ -1,17 +1,22 @@
 {
   "overrides": [
     {
-      "files": ["src/**/*.{js,jsx,json}"],
+      "files": [
+        "src/**/*.{js,jsx,json}",
+        "utils/**/*.{js,jsx,json}",
+        "routes/**/*.{js,jsx,json}"
+      ],
       "options": {
         "printWidth": 90,
         "useTabs": false,
         "tabWidth": 2,
         "singleQuote": true,
         "jsxSingleQuote": true,
-        "semi": false
-
+        "semi": false,
+        "trailingComma": "es5",
+        "bracketSpacing": true,
+        "bracketSameLine": false
       }
-
     },
     {
       "files": "*.json",

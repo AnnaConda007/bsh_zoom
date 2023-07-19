@@ -1,18 +1,26 @@
-# установка 
+# установка
+
 git clone https://github.com/AnnaConda007/bsh_zoom.git
 npm i
 
-# запуск 
+# запуск
+
 npm run dev
 
-# сборка 
+# сборка
+
 npm run build
 
-# запустить версию после сборки 
+# запустить версию после сборки
+
 npm run preview
 
-# форматирование файлов со стилями 
+# форматирование файлов со стилями
+
 npm run styles-fix
 
-# запуск eslint 
+# запуск eslint
+
 npm run lint
+
+//npx prettier --write .

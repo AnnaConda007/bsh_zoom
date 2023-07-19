@@ -60,15 +60,16 @@ const theme = createTheme({
         },
       },
     },
-    MuiTextField: { // 
+    MuiTextField: {
+      //
       styleOverrides: {
-        root: { // обводка вокруг input для ввода задач
-          '& > div':{
-            '& > fieldset':{
-                border:"none"
-               } 
-          }
-           
+        root: {
+          // обводка вокруг input для ввода задач
+          '& > div': {
+            '& > fieldset': {
+              border: 'none',
+            },
+          },
         },
       },
     },
