@@ -22,7 +22,6 @@ export const getZoomTokens = async (redirect, SetErrorExsist, SetErrorMessage) =
     }
   } catch (error) {
     console.error('Ошибка при попытке получения токена', error)
-
     SetErrorExsist(true)
     SetErrorMessage(`${serverErrorMessage}:getZoomTokens`)
   }
@@ -68,8 +67,6 @@ export const getTaggedDate = async (SetErrorExsist, SetErrorMessage) => {
   } catch (error) {
     if (error.response && error.response.data.code === 124) {
       console.log('обновление токена')
-      console.error(error.response.data)
-
       await updateAccesToken()
       return await getTaggedDate(SetErrorExsist, SetErrorMessage)
     } else {
