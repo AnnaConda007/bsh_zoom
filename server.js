@@ -28,7 +28,7 @@ app.get("/exchangeCode", async (req, res) => {
     const accessToken = response.data.access_token;
     res.send({ refresh_token: refreshToken, access_token: accessToken });
   } catch (error) {
-    console.log("Ошибка при получении токенов", error);
+    console.error("Ошибка при получении токенов", error);
     res.status(500).send("Error exchanging code for token");
   }
 });
@@ -55,7 +55,7 @@ app.post("/refreshToken", async (req, res) => {
       refresh_token: newRefreshToken,
     });
   } catch (error) {
-    console.log("Ошибка при получении refreshToken", error);
+    console.error("Ошибка при получении refreshToken", error);
     res.status(500).send("Error refreshing access token");
   }
 });
@@ -64,7 +64,6 @@ app.get("/newConference", async (req, res) => {
   const accessToken = req.query.token;
   const conferenceTopic = req.query.conferenceTopic;
   const timeStart = req.query.timeStart;
-  console.log(timeStart);
   const conferenceDuration = req.query.conferenceDuration;
   try {
     const meetingResponse = await axios.post(
@@ -88,7 +87,7 @@ app.get("/newConference", async (req, res) => {
     );
     res.send({ meeting: meetingResponse.data });
   } catch (error) {
-    console.log("Error retrieving meetings:", error);
+    console.error("Error retrieving meetings:", error);
     if (
       (error.response && error.response.data.code === 124) ||
       error.response.data.code === 429
@@ -96,7 +95,7 @@ app.get("/newConference", async (req, res) => {
       console.log("обновление токена");
       res.status(401).send(error.response.data);
     } else {
-      console.log("Ошибка при создании новой конференции", error);
+      console.error("Ошибка при создании новой конференции", error);
       res.status(500).send(error);
     }
   }
@@ -123,7 +122,7 @@ app.get("/listMeetings", async (req, res) => {
     } while (nextPageToken);
     res.send({ meetings: allMeetings });
   } catch (error) {
-    console.log("Error retrieving meetings:", error);
+    console.error("Error retrieving meetings:", error);
     if (
       (error.response && error.response.data.code === 124) ||
       error.response.data.code === 429
@@ -131,7 +130,7 @@ app.get("/listMeetings", async (req, res) => {
       console.log("обновление токена");
       res.status(401).send(error.response.data);
     } else {
-      console.log("Ошибка при получении listMeetings", error);
+      console.error("Ошибка при получении listMeetings", error);
 
       res.status(500).send(error);
     }
@@ -159,7 +158,7 @@ app.patch("/updateConferenceInfo", async (req, res) => {
       console.log("обновление токена");
       res.status(401).send(error.response.data);
     } else {
-      console.log("Ошибка при редактировании конференции", error);
+      console.error("Ошибка при редактировании конференции", error);
       res.status(500).send(error);
     }
   }
@@ -186,12 +185,12 @@ app.delete("/deleteConference", async (req, res) => {
       console.log("обновление токена");
       res.status(401).send(error.response.data);
     } else {
-      console.log("Ошибка при удалении конференции", error);
+      console.error("Ошибка при удалении конференции", error);
       res.status(500).send(error);
     }
   }
 });
 
 app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
+  console.error(`Server listening at http://localhost:${port}`);
 });
