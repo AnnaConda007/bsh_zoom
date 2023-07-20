@@ -15,13 +15,10 @@ npm run build
 
 npm run preview
 
-# форматирование файлов со стилями
+# форматирование файлов  
 
-npm run styles-fix
+npm run formatter
 
-# запуск eslint
+ 
 
-npm run lint
-
-//npx prettier --write .
-// $ npx eslint src/components/addedTasks/addedTasks.jsx --fix
+ 
