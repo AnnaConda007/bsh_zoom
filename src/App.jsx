@@ -12,5 +12,4 @@ function App() {
     </Providers>
   )
 }
-
 export default App

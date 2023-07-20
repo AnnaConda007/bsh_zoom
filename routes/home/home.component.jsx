@@ -4,7 +4,7 @@ import { getcurrentTime } from '../../utils/currentTime.utils'
 import Calendar from '../../src/components/calendar/calendar.component'
 const Home = () => {
   const navigate = useNavigate()
-  const autosaveTime = 604800000 //неделя
+  const autosaveTime = 604800000 //Неделя
   const authorizationTime = parseInt(localStorage.getItem('authorizationTime'))
   const [currentTime, setCurrentTime] = useState(null)
   useEffect(() => {

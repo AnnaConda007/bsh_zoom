@@ -45,14 +45,14 @@ function AuthorizationForm() {
         const data = await response.json()
         const errorMessage = data.error.message
         switch (errorMessage) {
-          case 'INVALID_PASSWORD':
-            setError('Неверный пароль')
-            break
-          case 'EMAIL_NOT_FOUND':
-            setError('Неверный email')
-            break
-          default:
-            console.log(error)
+        case 'INVALID_PASSWORD':
+          setError('Неверный пароль')
+          break
+        case 'EMAIL_NOT_FOUND':
+          setError('Неверный email')
+          break
+        default:
+          console.log(error)
         }
       }
     } catch (error) {

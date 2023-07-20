@@ -20,7 +20,7 @@ export const formatedDateFromUTStoDMY = (UTSTime) => {
     '-' +
     date.getUTCFullYear()
 
-  return formattedDate // dd-mm-year
+  return formattedDate // Dd-mm-year
 }
 
 export const formateTimeFromUTCtoHumanReadable = (time) => {

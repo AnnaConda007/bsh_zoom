@@ -15,7 +15,6 @@ export const getcurrentTime = async () => {
   return currentTime
 }
 
-const f = 'lll'
 export const checkPastDate = async (activeDate) => {
   const dateToUnix = (date) => {
     const dateString = DateTime.fromFormat(date, 'dd-MM-yyyy')

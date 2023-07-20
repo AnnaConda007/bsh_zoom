@@ -7,9 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint . --ext .jsx --fix",
-    "prettier": "npx prettier --write .",
-    "formatter": "npx prettier --write ."
+    "formatter": "npx prettier --write . && eslint . --ext .jsx --fix "
   },
   "dependencies": {
     "@date-io/dayjs": "^2.16.0",
