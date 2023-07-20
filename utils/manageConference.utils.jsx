@@ -18,7 +18,7 @@ export const createMeet = async (
       creator: userName,
       value: conferenceTopic,
     }
-    const response = await axios.get('http://localhost:3000/newConference', {
+    await axios.get('http://localhost:3000/newConference', {
       params: {
         conferenceTopic: JSON.stringify(topicValue),
         timeStart: timeStart,
@@ -26,7 +26,6 @@ export const createMeet = async (
         token: accessToken,
       },
     })
-    console.log(response.data.meeting)
   } catch (error) {
     if (error.response && error.response.data.code === 124) {
       console.log('Обновление токена')

@@ -100,7 +100,6 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
       SetErrorExsist,
       SetErrorMessage
     )
-    console.log(deleteConferenceRsponse.status)
     if (deleteConferenceRsponse) return
     setPulledTasks(updatedTasks)
     if (index === isEditingIndex) {

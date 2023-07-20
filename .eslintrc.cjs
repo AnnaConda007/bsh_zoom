@@ -35,5 +35,6 @@ module.exports = {
     indent: ["error", 2],
     "brace-style": ["error", "1tbs"],
     "block-spacing": ["error", "always"],
+    "no-console": ["error", { allow: ["warn", "error"] }],
   },
 };

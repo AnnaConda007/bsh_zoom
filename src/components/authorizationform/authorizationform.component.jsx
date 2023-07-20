@@ -52,12 +52,12 @@ function AuthorizationForm() {
           setError('Неверный email')
           break
         default:
-          console.log(error)
+          console.error(error)
         }
       }
     } catch (error) {
       setError('Серверная ошибка')
-      console.log(error)
+      console.error(error)
     }
   }
 

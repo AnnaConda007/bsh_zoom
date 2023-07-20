@@ -17,7 +17,6 @@ const TaskWrap = () => {
     const getTask = async () => {
       try {
         const task = await getConferenceInfo(activeDate, SetErrorExsist, SetErrorMessage)
-        console.log(task)
         setPulledTasks(task)
       } catch (error) {
         console.error(
