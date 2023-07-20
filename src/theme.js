@@ -9,24 +9,24 @@ const theme = createTheme({
     MuiDateCalendar: {
       styleOverrides: {
         root: {
-          //root
+          //Root
           width: '100%',
           height: '100%',
           maxHeight: '700px',
           overflow: 'auto',
         },
         viewTransitionContainer: {
-          // главная обертка для календаря
+          // Главная обертка для календаря
           width: '100%',
           height: '100%',
           '& > div': {
-            // общая обертка для названия дней недели и календаря
+            // Общая обертка для названия дней недели и календаря
             height: '100%',
             '& > div': {
-              // грид-
+              // Грид-
               height: '100%',
               '& > div:first-of-type': {
-                // название дней недели
+                // Название дней недели
                 justifyContent: 'space-evenly',
                 backgroundColor: '#dbdbeb', //!!!!!!заменить на primary
                 '& > span': {
@@ -36,18 +36,18 @@ const theme = createTheme({
                 '& > span[aria-label="воскресенье"]': { color: '#e58787' },
               },
               '& > div:last-child': {
-                // контейнер для дат
+                // Контейнер для дат
                 height: '80%',
                 marginTop: '30px',
 
                 '& > div': {
-                  // промежуточный контейнер
+                  // Промежуточный контейнер
                   height: '100%',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
                   '& > div': {
-                    justifyContent: 'space-evenly', // контейнер для дней недели
+                    justifyContent: 'space-evenly', // Контейнер для дней недели
                     '& > button': {
                       fontWeight: '800',
                       fontSize: '1rem',
@@ -60,15 +60,16 @@ const theme = createTheme({
         },
       },
     },
-    MuiTextField: { // 
+    MuiTextField: {
+      //
       styleOverrides: {
-        root: { // обводка вокруг input для ввода задач
-          '& > div':{
-            '& > fieldset':{
-                border:"none"
-               } 
-          }
-           
+        root: {
+          // Обводка вокруг input для ввода задач
+          '& > div': {
+            '& > fieldset': {
+              border: 'none',
+            },
+          },
         },
       },
     },

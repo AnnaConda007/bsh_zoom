@@ -1,11 +1,12 @@
-import { ActiveDateProvider } from './activeDateContext';
-import { TaggetDatesProvider } from './taggedDates';
+import { DatesProvider } from './dates.context'
+import { DisabledCProvider } from './disabled.context'
+import { TaskInfoProvider } from './taskInfo.context'
 export const Providers = ({ children }) => {
-	return (
-		<ActiveDateProvider>
-			<TaggetDatesProvider>
-				 {children}
-			</TaggetDatesProvider>
-		</ActiveDateProvider>
-	);
-};
+  return (
+    <DatesProvider>
+      <TaskInfoProvider>
+        <DisabledCProvider>{children} </DisabledCProvider>
+      </TaskInfoProvider>
+    </DatesProvider>
+  )
+}

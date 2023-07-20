@@ -1,6 +1,6 @@
-import AuthorizationForm from '../../src/components/authorizationform/authorizationform.component';
+import AuthorizationForm from '../../src/components/authorizationform/authorizationform.component'
 function Authorization() {
-	return <AuthorizationForm />;
+  return <AuthorizationForm />
 }
 
-export default Authorization;
+export default Authorization
