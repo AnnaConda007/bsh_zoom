@@ -9,8 +9,9 @@ export const getZoomTokens = async (redirect, SetErrorExsist, SetErrorMessage) =
   console.log('redirect', redirect)
   try {
     const urlParams = new URLSearchParams(window.location.search)
-    console.log('urlParams', urlParams)
+
     const authorizationCode = urlParams.get('code')
+    console.log('authorizationCode', authorizationCode)
     if (!localStorage.getItem('zoomRefreshToken')) {
       const response = await axios.get('https://serverzoom.onrender.com/exchangeCode', {
         params: {
