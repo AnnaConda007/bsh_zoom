@@ -7,7 +7,7 @@ function App() {
     <Providers>
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='authorization' element={<Authorization />} />
+        <Route path='/authorization' element={<Authorization />} />
       </Routes>
     </Providers>
   )
