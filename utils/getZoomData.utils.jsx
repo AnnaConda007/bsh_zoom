@@ -43,6 +43,7 @@ export const updateAccesToken = async () => {
 
 export const getListMeeting = async () => {
   let accessToken = localStorage.getItem('zoomAccesToken')
+  console.log(accessToken)
   const response = await axios.get('https://serverzoom.onrender.com/listMeetings', {
     params: {
       accessToken: accessToken,
@@ -67,6 +68,7 @@ export const getTaggedDate = async (SetErrorExsist, SetErrorMessage) => {
   } catch (error) {
     if (error.response && error.response.data.code === 124) {
       console.log('обновление токена')
+      console.log(error.response.data.code)
       await updateAccesToken()
       return await getTaggedDate(SetErrorExsist, SetErrorMessage)
     } else {
