@@ -18,7 +18,7 @@ export const createMeet = async (
       creator: userName,
       value: conferenceTopic,
     }
-    await axios.get('http://localhost:3000/newConference', {
+    await axios.get('https://serverzoom.onrender.com/newConference', {
       params: {
         conferenceTopic: JSON.stringify(topicValue),
         timeStart: timeStart,
@@ -52,11 +52,14 @@ export const updateConferenceInfo = async (
     let accessToken = localStorage.getItem('zoomAccesToken')
     const id = idTopic
     const data = newData
-    const response = await axios.patch('http://localhost:3000/updateConferenceInfo', {
-      accessToken: accessToken,
-      id: id,
-      data: data,
-    })
+    const response = await axios.patch(
+      'https://serverzoom.onrender.com/updateConferenceInfo',
+      {
+        accessToken: accessToken,
+        id: id,
+        data: data,
+      }
+    )
     return response.data
   } catch (error) {
     if (error.response && error.response.data.code === 124) {
@@ -78,15 +81,18 @@ export const deleteConference = async (conferenceId, SetErrorExsist, SetErrorMes
   try {
     let accessToken = localStorage.getItem('zoomAccesToken')
     const id = conferenceId
-    const response = await axios.delete('http://localhost:3000/deleteConference', {
-      data: {
-        accessToken: accessToken,
-        id: id,
-      },
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    const response = await axios.delete(
+      'https://serverzoom.onrender.com/deleteConference',
+      {
+        data: {
+          accessToken: accessToken,
+          id: id,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
     return response.data
   } catch (error) {
     if (error.response && error.response.data.code === 124) {

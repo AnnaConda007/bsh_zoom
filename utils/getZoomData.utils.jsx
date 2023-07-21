@@ -10,7 +10,7 @@ export const getZoomTokens = async (redirect, SetErrorExsist, SetErrorMessage) =
     const urlParams = new URLSearchParams(window.location.search)
     const authorizationCode = urlParams.get('code')
     if (!localStorage.getItem('zoomRefreshToken')) {
-      const response = await axios.get('http://localhost:3000/exchangeCode', {
+      const response = await axios.get('https://serverzoom.onrender.com/exchangeCode', {
         params: {
           code: authorizationCode,
           redirecturl: redirect,
@@ -30,7 +30,7 @@ export const getZoomTokens = async (redirect, SetErrorExsist, SetErrorMessage) =
 export const updateAccesToken = async () => {
   try {
     const refreshToken = localStorage.getItem('zoomRefreshToken')
-    const response = await axios.post('http://localhost:3000/refreshToken', {
+    const response = await axios.post('https://serverzoom.onrender.com/refreshToken', {
       refreshToken: refreshToken,
     })
     localStorage.setItem('zoomRefreshToken', response.data.refresh_token)
@@ -43,7 +43,7 @@ export const updateAccesToken = async () => {
 
 export const getListMeeting = async () => {
   let accessToken = localStorage.getItem('zoomAccesToken')
-  const response = await axios.get('http://localhost:3000/listMeetings', {
+  const response = await axios.get('https://serverzoom.onrender.com/listMeetings', {
     params: {
       accessToken: accessToken,
     },
