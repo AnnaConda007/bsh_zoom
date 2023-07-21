@@ -6,10 +6,8 @@ import {
 import { calculatTimeEnd } from './calculat.utils'
 import { serverErrorMessage } from '../contains'
 export const getZoomTokens = async (redirect, SetErrorExsist, SetErrorMessage) => {
-  console.log('redirect', redirect)
-  try {
+   try {
     const urlParams = new URLSearchParams(window.location.search)
-
     const authorizationCode = urlParams.get('code')
     console.log('authorizationCode', authorizationCode)
     if (!localStorage.getItem('zoomRefreshToken')) {
