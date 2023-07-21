@@ -6,8 +6,8 @@ function App() {
   return (
     <Providers>
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='authorization' element={<Authorization />} />
+        <Route path='/' element={<Authorization />} />
+        <Route path='calendar' element={<Home />} />
       </Routes>
     </Providers>
   )
