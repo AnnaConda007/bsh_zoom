@@ -6,8 +6,10 @@ import {
 import { calculatTimeEnd } from './calculat.utils'
 import { serverErrorMessage } from '../contains'
 export const getZoomTokens = async (redirect, SetErrorExsist, SetErrorMessage) => {
+  console.log('redirect', redirect)
   try {
     const urlParams = new URLSearchParams(window.location.search)
+    console.log('urlParams', urlParams)
     const authorizationCode = urlParams.get('code')
     if (!localStorage.getItem('zoomRefreshToken')) {
       const response = await axios.get('https://serverzoom.onrender.com/exchangeCode', {
@@ -43,7 +45,6 @@ export const updateAccesToken = async () => {
 
 export const getListMeeting = async () => {
   let accessToken = localStorage.getItem('zoomAccesToken')
-  console.log(accessToken)
   const response = await axios.get('https://serverzoom.onrender.com/listMeetings', {
     params: {
       accessToken: accessToken,
