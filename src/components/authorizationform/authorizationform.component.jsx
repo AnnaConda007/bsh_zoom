@@ -28,7 +28,7 @@ function AuthorizationForm() {
 
   const sendAuthorizationData = async () => {
     try {
-      const apiKey = import.meta.env.VITE_DB_API
+      const apiKey = ' AIzaSyB4c4RDOCAaTXro1HTbNH857drwGWX - K20'
       const authorizationUrl =
         'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='
       const response = await fetch(`${authorizationUrl}${apiKey}`, {
@@ -45,14 +45,14 @@ function AuthorizationForm() {
         const data = await response.json()
         const errorMessage = data.error.message
         switch (errorMessage) {
-        case 'INVALID_PASSWORD':
-          setError('Неверный пароль')
-          break
-        case 'EMAIL_NOT_FOUND':
-          setError('Неверный email')
-          break
-        default:
-          console.error(error)
+          case 'INVALID_PASSWORD':
+            setError('Неверный пароль')
+            break
+          case 'EMAIL_NOT_FOUND':
+            setError('Неверный email')
+            break
+          default:
+            console.error(error)
         }
       }
     } catch (error) {
