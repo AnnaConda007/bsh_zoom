@@ -28,8 +28,7 @@ function AuthorizationForm() {
 
   const sendAuthorizationData = async () => {
     try {
-      const apiKey = ' AIzaSyB4c4RDOCAaTXro1HTbNH857drwGWX - K20'
-      console.log("apiKey", apiKey)
+      const apiKey = import.meta.env.VITE_DB_API
       const authorizationUrl =
         'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='
       const response = await fetch(`${authorizationUrl}${apiKey}`, {
