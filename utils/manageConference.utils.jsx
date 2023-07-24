@@ -18,7 +18,7 @@ export const createMeet = async (
       creator: userName,
       value: conferenceTopic,
     }
-    await axios.get('http://localhost:3000/newConference', {
+    await axios.get('https://serverzoom.onrender.com/newConference', {
       params: {
         conferenceTopic: JSON.stringify(topicValue),
         timeStart: timeStart,
@@ -53,7 +53,7 @@ export const updateConferenceInfo = async (
     const id = idTopic
     const data = newData
     const response = await axios.patch(
-      'http://localhost:3000/updateConferenceInfo',
+      'https://serverzoom.onrender.com/updateConferenceInfo',
       {
         accessToken: accessToken,
         id: id,
@@ -82,7 +82,7 @@ export const deleteConference = async (conferenceId, SetErrorExsist, SetErrorMes
     let accessToken = localStorage.getItem('zoomAccesToken')
     const id = conferenceId
     const response = await axios.delete(
-      'http://localhost:3000/deleteConference',
+      'https://serverzoom.onrender.com/deleteConference',
       {
         data: {
           accessToken: accessToken,
