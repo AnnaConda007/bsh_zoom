@@ -22,6 +22,11 @@ const Calendar = () => {
   const { SetDisabledDate, SetErrorExsist, SetErrorMessage, errorExsist, errorMessage } =
     useContext(DisabledContext)
 
+  const vebHook = async () => {
+    await axios.post('http://localhost:3000/webhookCreateConference')
+  }
+  vebHook()
+
   useEffect(() => {
     const getTokens = async () => {
       await getZoomTokens(homeUrL, SetErrorExsist, SetErrorMessage)
