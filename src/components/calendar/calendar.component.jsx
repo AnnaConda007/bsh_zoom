@@ -24,6 +24,7 @@ const Calendar = () => {
 
   const vebHook = async () => {
     await axios.post('http://localhost:3000/webhookCreateConference')
+    console.log('******')
   }
   vebHook()
 
