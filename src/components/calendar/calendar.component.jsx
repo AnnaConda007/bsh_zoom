@@ -17,6 +17,14 @@ import { DatesContext } from '../../contexts/dates.context'
 import styles from './calendar.module.scss'
 
 const Calendar = () => {
+  const ws = new WebSocket('ws://localhost:3001')
+  ws.onopen = () => {
+    console.log('открыто')
+  }
+  ws.onmessage = (event) => {
+    console.log('Сервер прислал: ' + event.data)
+  }
+
   const [modal, setModal] = useState(false)
   const { setActiveDate, taggedDates, setTaggedDates } = useContext(DatesContext)
   const { SetDisabledDate, SetErrorExsist, SetErrorMessage, errorExsist, errorMessage } =
