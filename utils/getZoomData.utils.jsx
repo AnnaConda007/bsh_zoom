@@ -9,6 +9,7 @@ export const getZoomTokens = async (redirect, SetErrorExsist, SetErrorMessage) =
   try {
     const urlParams = new URLSearchParams(window.location.search)
     const authorizationCode = urlParams.get('code')
+    
     if (!localStorage.getItem('zoomRefreshToken')) {
       const response = await axios.get(`${serverUrl}/exchangeCode`, {
         params: {
@@ -71,7 +72,7 @@ export const getTaggedDate = async (SetErrorExsist, SetErrorMessage) => {
       await updateAccesToken()
       return await getTaggedDate(SetErrorExsist, SetErrorMessage)
     } else {
-      console.error("Ошибка при попытке получения ListMeeting", error)
+      console.error('Ошибка при попытке получения ListMeeting', error)
       SetErrorExsist(true)
       SetErrorMessage(`${serverErrorMessage}`)
       throw error
