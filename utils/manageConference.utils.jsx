@@ -1,6 +1,6 @@
 import { updateAccesToken } from './getZoomData.utils'
 import { calculateDuration } from './calculat.utils'
-import { limitErrorMessage, serverErrorMessage } from '../contains'
+import { limitErrorMessage, serverErrorMessage, serverUrl } from '../contains'
 import axios from 'axios'
 
 export const createMeet = async (
@@ -18,7 +18,7 @@ export const createMeet = async (
       creator: userName,
       value: conferenceTopic,
     }
-    await axios.get('https://serverzoom.onrender.com/newConference', {
+    await axios.get(`${serverUrl}/newConference`, {
       params: {
         conferenceTopic: JSON.stringify(topicValue),
         timeStart: timeStart,
@@ -37,7 +37,7 @@ export const createMeet = async (
       SetErrorExsist(true), SetErrorMessage(limitErrorMessage)
     } else {
       console.error('Ошибка сервера при создании конференции:', error)
-      SetErrorExsist(true), SetErrorMessage(`${serverErrorMessage}:createMeet`)
+      SetErrorExsist(true), SetErrorMessage(`${serverErrorMessage}`)
     }
   }
 }
@@ -52,14 +52,11 @@ export const updateConferenceInfo = async (
     let accessToken = localStorage.getItem('zoomAccesToken')
     const id = idTopic
     const data = newData
-    const response = await axios.patch(
-      'https://serverzoom.onrender.com/updateConferenceInfo',
-      {
-        accessToken: accessToken,
-        id: id,
-        data: data,
-      }
-    )
+    const response = await axios.patch(`${serverUrl}/updateConferenceInfo`, {
+      accessToken: accessToken,
+      id: id,
+      data: data,
+    })
     return response.data
   } catch (error) {
     if (error.response && error.response.data.code === 124) {
@@ -71,8 +68,8 @@ export const updateConferenceInfo = async (
     } else if (error.respons && error.response.data.code === 429) {
       SetErrorExsist(true), SetErrorMessage(limitErrorMessage)
     } else {
-      console.error(' ошибка сервера при редактирвоании данных', error)
-      SetErrorExsist(true), SetErrorMessage(`${serverErrorMessage}:updateConferenceInfo`)
+      console.error('ошибка сервера при редактирвоании данных', error)
+      SetErrorExsist(true), SetErrorMessage(`${serverErrorMessage}`)
     }
   }
 }
@@ -81,18 +78,15 @@ export const deleteConference = async (conferenceId, SetErrorExsist, SetErrorMes
   try {
     let accessToken = localStorage.getItem('zoomAccesToken')
     const id = conferenceId
-    const response = await axios.delete(
-      'https://serverzoom.onrender.com/deleteConference',
-      {
-        data: {
-          accessToken: accessToken,
-          id: id,
-        },
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
+    const response = await axios.delete(`${serverUrl}/deleteConference`, {
+      data: {
+        accessToken: accessToken,
+        id: id,
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
     return response.data
   } catch (error) {
     if (error.response && error.response.data.code === 124) {
@@ -106,7 +100,7 @@ export const deleteConference = async (conferenceId, SetErrorExsist, SetErrorMes
     } else {
       console.error(' ошибка сервера при удалении данных', error)
       SetErrorExsist(true)
-      SetErrorMessage(`${serverErrorMessage}:deleteConference`)
+      SetErrorMessage(`${serverErrorMessage}`)
     }
   }
 }
