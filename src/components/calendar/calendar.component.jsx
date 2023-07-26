@@ -17,13 +17,13 @@ import { DatesContext } from '../../contexts/dates.context'
 import styles from './calendar.module.scss'
 
 const Calendar = () => {
-  /*const ws = new WebSocket('wss://serverzoom.onrender.com')
+  const ws = new WebSocket('wss://localhost:3001')
   ws.onopen = () => {
     console.log('открыто')
   }
   ws.onmessage = (event) => {
     console.log('Сервер прислал: ' + event.data)
-  }*/
+  }
 
   const [modal, setModal] = useState(false)
   const { setActiveDate, taggedDates, setTaggedDates } = useContext(DatesContext)
