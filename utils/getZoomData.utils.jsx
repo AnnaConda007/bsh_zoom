@@ -29,7 +29,7 @@ export const getZoomTokens = async (redirect, SetErrorExsist, SetErrorMessage) =
         SetErrorMessage(zoomAutenficationErrorMassage)
         SetErrorExsist(true)
         setTimeout(() => {
-          //window.location.href = 'https://zoom.us/profile'
+          window.location.href = 'https://zoom.us/profile'
         }, 4000)
       } else {
         SetErrorMessage(serverErrorMessage)
