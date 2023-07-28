@@ -1,6 +1,6 @@
-export const clientId = "wYILEd3tQnCCk4CE6Jihxg";
-export const clientSecret = "nRPLBGGecg3O2VaUre8c6C7xPvJTboaZ";
-export const homeUrL = "https://snazzy-muffin-3a5123.netlify.app/";
+export const clientId = "mkQg8GOmTSem7YxdUujxAA";
+export const clientSecret = "YQElNfVwH7Wo7zhvF0WV5HmIZw6jqDr0";
+export const homeUrL = "http://localhost:5173/";
 export const redirectHomeUrL = `https://zoom.us/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
   homeUrL
 )}`;
@@ -14,4 +14,4 @@ export const limitErrorMessage =
 export const serverErrorMessage = "Ошибка при запросе к сервреру";
 
 export const zoomAutenficationErrorMassage =
-  "Похоже, введены неверные данные аккаунта ZOOM или используется неправильный аккаунт. Пожалуйста, убедитесь, что вы вводите правильные данные и повторите попытку входа.";
+  "Похоже, введены неверные данные аккаунта ZOOM или используется неправильный аккаунт. Пожалуйста, убедитесь, что вы вводите правильные данные и повторите попытку входа: Логин - annnaf@internet.ru, пароль An19628411, они так же указаны в сопроводителньом письме";
