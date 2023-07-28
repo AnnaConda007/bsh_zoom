@@ -4,12 +4,11 @@ import {
   formateTimeFromUTCtoHumanReadable,
 } from './formatting.utils'
 import { calculatTimeEnd } from './calculat.utils'
-import { zoomAutenficationErrorMassage } from '../contains'
+import { serverErrorMessage, zoomAutenficationErrorMassage } from '../contains'
 export const getZoomTokens = async (redirect, SetErrorExsist, SetErrorMessage) => {
+  const urlParams = new URLSearchParams(window.location.search)
+  const authorizationCode = urlParams.get('code')
   try {
-    const urlParams = new URLSearchParams(window.location.search)
-
-    const authorizationCode = urlParams.get('code')
     if (!localStorage.getItem('zoomRefreshToken')) {
       const response = await axios.get('https://servzoom.onrender.com/exchangeCode', {
         params: {
@@ -23,18 +22,15 @@ export const getZoomTokens = async (redirect, SetErrorExsist, SetErrorMessage) =
     }
   } catch (error) {
     console.error('Ошибка при попытке получения токена', error)
-    {
-      console.error("'Ошибка при попытке получения токена", error)
-      if (!localStorage.getItem('zoomRefreshToken')) {
-        SetErrorMessage(zoomAutenficationErrorMassage)
-        SetErrorExsist(true)
-        setTimeout(() => {
-          window.location.href = 'https://zoom.us/profile'
-        }, 4000)
-      } else {
-        SetErrorMessage(serverErrorMessage)
-        SetErrorExsist(true)
-      }
+    if (authorizationCode === null) {
+      SetErrorMessage(zoomAutenficationErrorMassage)
+      SetErrorExsist(true)
+      setTimeout(() => {
+        window.location.href = 'https://zoom.us/profile'
+      }, 4000)
+    } else {
+      SetErrorMessage(serverErrorMessage)
+      SetErrorExsist(true)
     }
   }
 }
