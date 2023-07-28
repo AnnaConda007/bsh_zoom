@@ -1,6 +1,6 @@
 export const clientId = "wYILEd3tQnCCk4CE6Jihxg";
 export const clientSecret = "nRPLBGGecg3O2VaUre8c6C7xPvJTboaZ";
-export const homeUrL = "https://zippy-faun-486654.netlify.app/";
+export const homeUrL = "https://52fb-212-58-114-241.ngrok-free.app";
 export const redirectHomeUrL = `https://zoom.us/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
   homeUrL
 )}`;
