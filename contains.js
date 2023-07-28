@@ -13,3 +13,5 @@ export const errorMessageForPastTimeError =
 export const limitErrorMessage =
   "Вы достигли предельного количества запросов. Пожалуйста, попробуйте снова после 03:00 по времени Москве.";
 export const serverErrorMessage = "Ошибка при запросе к сервреру";
+export const zoomAutenficationErrorMassage =
+  "Кажется вы ввели неверные данные аккаунта ZOOM, пожалуйста зайдите под правильным логином и повторите попытку";

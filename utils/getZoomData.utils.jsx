@@ -4,12 +4,12 @@ import {
   formateTimeFromUTCtoHumanReadable,
 } from './formatting.utils'
 import { calculatTimeEnd } from './calculat.utils'
-import { serverErrorMessage, serverUrl } from '../contains'
-export const getZoomTokens = async (redirect, SetErrorExsist, SetErrorMessage) => {
+import { serverErrorMessage, serverUrl, zoomAutenficationErrorMassage } from '../contains'
+export const getZoomTokens = async (redirect, setErrorExsist, setErrorMessage) => {
   try {
     const urlParams = new URLSearchParams(window.location.search)
     const authorizationCode = urlParams.get('code')
-    
+
     if (!localStorage.getItem('zoomRefreshToken')) {
       const response = await axios.get(`${serverUrl}/exchangeCode`, {
         params: {
@@ -23,8 +23,16 @@ export const getZoomTokens = async (redirect, SetErrorExsist, SetErrorMessage) =
     }
   } catch (error) {
     console.error("'Ошибка при попытке получения токена", error)
-    SetErrorExsist(true)
-    SetErrorMessage(`${serverErrorMessage}`)
+    if (!localStorage.getItem('zoomRefreshToken')) {
+      setErrorMessage(zoomAutenficationErrorMassage)
+      setErrorExsist(true)
+      setTimeout(() => {
+        window.location.href = 'https://zoom.us/profile'
+      }, 4000)
+    } else {
+      setErrorMessage(`${serverErrorMessage}`)
+      setErrorExsist(true)
+    }
   }
 }
 
@@ -52,7 +60,7 @@ export const getListMeeting = async () => {
   return response.data
 }
 
-export const getTaggedDate = async (SetErrorExsist, SetErrorMessage) => {
+export const getTaggedDate = async (setErrorExsist, setErrorMessage) => {
   try {
     const taggedDateArr = []
     const conferenceData = await getListMeeting()
@@ -70,11 +78,11 @@ export const getTaggedDate = async (SetErrorExsist, SetErrorMessage) => {
       console.log('обновление токена')
       console.log(error.response.data.code)
       await updateAccesToken()
-      return await getTaggedDate(SetErrorExsist, SetErrorMessage)
+      return await getTaggedDate(setErrorExsist, setErrorMessage)
     } else {
       console.error('Ошибка при попытке получения ListMeeting', error)
-      SetErrorExsist(true)
-      SetErrorMessage(`${serverErrorMessage}`)
+      setErrorExsist(true)
+      setErrorMessage(`${serverErrorMessage}`)
       throw error
     }
   }
@@ -82,8 +90,8 @@ export const getTaggedDate = async (SetErrorExsist, SetErrorMessage) => {
 
 export const getConferenceInfo = async (
   selectedDate,
-  SetErrorExsist,
-  SetErrorMessage
+  setErrorExsist,
+  setErrorMessage
 ) => {
   try {
     const tasks = {}
@@ -119,12 +127,12 @@ export const getConferenceInfo = async (
     if (error.response && error.response.data.code === 124) {
       console.log('обновление токена')
       console.error(error.response.data)
-      await updateAccesToken(SetErrorExsist, SetErrorMessage)
+      await updateAccesToken(setErrorExsist, setErrorMessage)
       return await getConferenceInfo(selectedDate)
     } else {
       console.error(serverErrorMessage, error)
-      SetErrorExsist(true)
-      SetErrorMessage(`${serverErrorMessage}`)
+      setErrorExsist(true)
+      setErrorMessage(`${serverErrorMessage}`)
       throw error
     }
   }

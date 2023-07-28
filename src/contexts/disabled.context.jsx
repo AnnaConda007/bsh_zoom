@@ -2,24 +2,24 @@ import { createContext, useState } from 'react'
 
 export const DisabledContext = createContext({
   disabledDate: '',
-  SetDisabledDate: () => {},
+  setDisabledDate: () => {},
   errorExsist: '',
-  SetErrorExsist: () => {},
+  setErrorExsist: () => {},
   errorMessage: false,
-  SetErrorMessage: () => {},
+  setErrorMessage: () => {},
 })
 
 export const DisabledCProvider = ({ children }) => {
-  const [disabledDate, SetDisabledDate] = useState('')
-  const [errorExsist, SetErrorExsist] = useState(false)
-  const [errorMessage, SetErrorMessage] = useState('')
+  const [disabledDate, setDisabledDate] = useState('')
+  const [errorExsist, setErrorExsist] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const value = {
     disabledDate,
-    SetDisabledDate,
+    setDisabledDate,
     errorExsist,
-    SetErrorExsist,
+    setErrorExsist,
     errorMessage,
-    SetErrorMessage,
+    setErrorMessage,
   }
   return <DisabledContext.Provider value={value}>{children}</DisabledContext.Provider>
 }

@@ -20,7 +20,7 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
   const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' }
   const [newTaskObj, setNewTaskObj] = useState(defaultTask)
   const { activeDate, taggedDates, setTaggedDates } = useContext(DatesContext)
-  const { disabledDate, errorExsist, SetErrorExsist, SetErrorMessage } =
+  const { disabledDate, errorExsist, setErrorExsist, setErrorMessage } =
     useContext(DisabledContext)
   const {
     conferenceTopic,
@@ -32,8 +32,8 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
   } = useContext(TaskInfoContext)
   const fullnessTimeForNewTask = async (selectedTime, timeKey) => {
     const errorExsistResponse = await checkPastTime(selectedTime, activeDate)
-    SetErrorExsist(errorExsistResponse)
-    SetErrorMessage(errorMessageForPastTimeError)
+    setErrorExsist(errorExsistResponse)
+    setErrorMessage(errorMessageForPastTimeError)
     setNewTaskObj((prevTask) => ({
       ...prevTask,
       [timeKey]: selectedTime,
@@ -60,8 +60,8 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
       newTaskObj.timeStart.$d,
       newTaskObj.timeEnd.$d
     )
-    SetErrorExsist(compareRes)
-    SetErrorMessage(errorMessageForCompareErrorTime)
+    setErrorExsist(compareRes)
+    setErrorMessage(errorMessageForCompareErrorTime)
     if (errorExsist === true || compareRes === true) return
     if (
       newTaskObj.taskValue.trim() === '' ||
@@ -69,7 +69,7 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
       newTaskObj.timeEnd === ''
     )
       return
-    await createMeet(SetErrorExsist, SetErrorMessage, conferenceTopic, timeStart, timeEnd)
+    await createMeet(setErrorExsist, setErrorMessage, conferenceTopic, timeStart, timeEnd)
     const updatedTasks = [...pulledTasks]
     updatedTasks.push(newTaskObj)
     setPulledTasks(updatedTasks)

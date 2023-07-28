@@ -4,8 +4,8 @@ import { limitErrorMessage, serverErrorMessage, serverUrl } from '../contains'
 import axios from 'axios'
 
 export const createMeet = async (
-  SetErrorExsist,
-  SetErrorMessage,
+  setErrorExsist,
+  setErrorMessage,
   conferenceTopic,
   timeStart,
   timeEnd
@@ -34,10 +34,10 @@ export const createMeet = async (
       await updateAccesToken()
       return await createMeet(conferenceTopic, timeStart, timeEnd)
     } else if (error.response && error.response.data.code === 429) {
-      SetErrorExsist(true), SetErrorMessage(limitErrorMessage)
+      setErrorExsist(true), setErrorMessage(limitErrorMessage)
     } else {
       console.error('Ошибка сервера при создании конференции:', error)
-      SetErrorExsist(true), SetErrorMessage(`${serverErrorMessage}`)
+      setErrorExsist(true), setErrorMessage(`${serverErrorMessage}`)
     }
   }
 }
@@ -45,8 +45,8 @@ export const createMeet = async (
 export const updateConferenceInfo = async (
   idTopic,
   newData,
-  SetErrorExsist,
-  SetErrorMessage
+  setErrorExsist,
+  setErrorMessage
 ) => {
   try {
     let accessToken = localStorage.getItem('zoomAccesToken')
@@ -66,15 +66,15 @@ export const updateConferenceInfo = async (
 
       return await updateConferenceInfo(idTopic, newData)
     } else if (error.respons && error.response.data.code === 429) {
-      SetErrorExsist(true), SetErrorMessage(limitErrorMessage)
+      setErrorExsist(true), setErrorMessage(limitErrorMessage)
     } else {
       console.error('ошибка сервера при редактирвоании данных', error)
-      SetErrorExsist(true), SetErrorMessage(`${serverErrorMessage}`)
+      setErrorExsist(true), setErrorMessage(`${serverErrorMessage}`)
     }
   }
 }
 
-export const deleteConference = async (conferenceId, SetErrorExsist, SetErrorMessage) => {
+export const deleteConference = async (conferenceId, setErrorExsist, setErrorMessage) => {
   try {
     let accessToken = localStorage.getItem('zoomAccesToken')
     const id = conferenceId
@@ -96,11 +96,11 @@ export const deleteConference = async (conferenceId, SetErrorExsist, SetErrorMes
 
       return await deleteConference(conferenceId)
     } else if (error.respons && error.response.data.code === 429) {
-      SetErrorExsist(true), SetErrorMessage(limitErrorMessage)
+      setErrorExsist(true), setErrorMessage(limitErrorMessage)
     } else {
       console.error(' ошибка сервера при удалении данных', error)
-      SetErrorExsist(true)
-      SetErrorMessage(`${serverErrorMessage}`)
+      setErrorExsist(true)
+      setErrorMessage(`${serverErrorMessage}`)
     }
   }
 }

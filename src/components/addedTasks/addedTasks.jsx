@@ -27,20 +27,20 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
   const [isEditingIndex, setisEditingIndex] = useState(null)
   const [editingValue, setEditingValue] = useState('')
   const { activeDate, setTaggedDates } = useContext(DatesContext)
-  const { disabledDate, SetErrorExsist, SetErrorMessage } = useContext(DisabledContext)
+  const { disabledDate, setErrorExsist, setErrorMessage } = useContext(DisabledContext)
 
   const upDateStartTime = async (timeStart, index) => {
     const checkPastTimeResponse = await checkPastTime(timeStart, activeDate)
-    SetErrorExsist(checkPastTimeResponse)
-    SetErrorMessage(errorMessageForPastTimeError)
+    setErrorExsist(checkPastTimeResponse)
+    setErrorMessage(errorMessageForPastTimeError)
     if (checkPastTimeResponse) return
     const compareResponse = compareStartEndMeeting(
       timeStart.$d,
       pulledTasks[index].timeEnd
     )
 
-    SetErrorExsist(compareResponse)
-    SetErrorMessage(errorMessageForCompareErrorTime)
+    setErrorExsist(compareResponse)
+    setErrorMessage(errorMessageForCompareErrorTime)
     if (compareResponse) return
     const duration = calculateDuration(timeStart, pulledTasks[index].timeEnd)
     const id = pulledTasks[index].meetingId
@@ -48,7 +48,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
       duration: duration,
       start_time: formatedDateToUTS(timeStart, activeDate),
     }
-    await updateConferenceInfo(id, newStartTimeValue, SetErrorExsist, SetErrorMessage)
+    await updateConferenceInfo(id, newStartTimeValue, setErrorExsist, setErrorMessage)
   }
 
   const upDateEndTime = async (timeEnd, index) => {
@@ -56,15 +56,15 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
       pulledTasks[index].timeStart,
       timeEnd.$d
     )
-    SetErrorExsist(compareResponse)
-    SetErrorMessage(errorMessageForCompareErrorTime)
+    setErrorExsist(compareResponse)
+    setErrorMessage(errorMessageForCompareErrorTime)
     if (compareResponse) return
     const duration = calculateDuration(pulledTasks[index].timeStart, timeEnd)
     const id = pulledTasks[index].meetingId
     const newEndTimeValue = {
       duration: duration,
     }
-    updateConferenceInfo(id, newEndTimeValue, SetErrorExsist, SetErrorMessage)
+    updateConferenceInfo(id, newEndTimeValue, setErrorExsist, setErrorMessage)
   }
 
   const handleEditBtn = (index) => {
@@ -83,7 +83,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
     const newTopicValue = {
       topic: editingValue,
     }
-    updateConferenceInfo(id, newTopicValue, SetErrorExsist, SetErrorMessage)
+    updateConferenceInfo(id, newTopicValue, setErrorExsist, setErrorMessage)
     setPulledTasks(updatedTasks)
     setisEditingIndex(null)
   }
@@ -97,8 +97,8 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
     const id = pulledTasks[index].meetingId
     const deleteConferenceRsponse = await deleteConference(
       id,
-      SetErrorExsist,
-      SetErrorMessage
+      setErrorExsist,
+      setErrorMessage
     )
     if (deleteConferenceRsponse) return
     setPulledTasks(updatedTasks)

@@ -9,14 +9,14 @@ import styles from './taskWrap.module.scss'
 
 const TaskWrap = () => {
   const { activeDate } = useContext(DatesContext)
-  const { disabledDate, errorExsist, errorMessage, SetErrorExsist, SetErrorMessage } =
+  const { disabledDate, errorExsist, errorMessage, setErrorExsist, setErrorMessage } =
     useContext(DisabledContext)
 
   const [pulledTasks, setPulledTasks] = useState([])
   useEffect(() => {
     const getTask = async () => {
       try {
-        const task = await getConferenceInfo(activeDate, SetErrorExsist, SetErrorMessage)
+        const task = await getConferenceInfo(activeDate, setErrorExsist, setErrorMessage)
         setPulledTasks(task)
       } catch (error) {
         console.error(
@@ -32,7 +32,7 @@ const TaskWrap = () => {
     if (reason === 'clickaway') {
       return
     }
-    SetErrorExsist(false)
+    setErrorExsist(false)
   }
 
   return (

@@ -25,18 +25,18 @@ const Calendar = () => {
 
   const [modal, setModal] = useState(false)
   const { setActiveDate, taggedDates, setTaggedDates } = useContext(DatesContext)
-  const { SetDisabledDate, SetErrorExsist, SetErrorMessage, errorExsist, errorMessage } =
+  const { setDisabledDate, setErrorExsist, setErrorMessage, errorExsist, errorMessage } =
     useContext(DisabledContext)
 
   useEffect(() => {
     const getTokens = async () => {
-      await getZoomTokens(homeUrL, SetErrorExsist, SetErrorMessage)
+      await getZoomTokens(homeUrL, setErrorExsist, setErrorMessage)
     }
     getTokens()
 
     const getDates = async () => {
       try {
-        setTaggedDates(await getTaggedDate(SetErrorExsist, SetErrorMessage))
+        setTaggedDates(await getTaggedDate(setErrorExsist, setErrorMessage))
       } catch (error) {
         console.error('Ошибка при попытке получения TaggedDates ', error)
       }
@@ -48,7 +48,7 @@ const Calendar = () => {
     const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY')
     setActiveDate(formattedDate)
     const disabledDateDate = await checkPastDate(formattedDate)
-    SetDisabledDate(disabledDateDate)
+    setDisabledDate(disabledDateDate)
     setModal(true)
   }
 
@@ -67,7 +67,7 @@ const Calendar = () => {
     if (reason === 'clickaway') {
       return
     }
-    SetErrorExsist(false)
+    setErrorExsist(false)
   }
   const ServerDay = (props) => {
     const { day, isDateInArray, ...other } = props
