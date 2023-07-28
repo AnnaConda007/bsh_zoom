@@ -24,8 +24,6 @@ export const getZoomTokens = async (redirect, SetErrorExsist, SetErrorMessage) =
     }
   } catch (error) {
     console.error('Ошибка при попытке получения токена', error)
-    SetErrorExsist(true)
-    SetErrorMessage(`${serverErrorMessage}:getZoomTokens`)
   }
 }
 
@@ -73,8 +71,7 @@ export const getTaggedDate = async (SetErrorExsist, SetErrorMessage) => {
       return await getTaggedDate(SetErrorExsist, SetErrorMessage)
     } else {
       console.error('Ошибка при попытке получения ListMeeting:', error)
-      SetErrorExsist(true)
-      SetErrorMessage(`${serverErrorMessage}: getTaggedDate`)
+
       throw error
     }
   }
@@ -123,8 +120,7 @@ export const getConferenceInfo = async (
       return await getConferenceInfo(selectedDate)
     } else {
       console.error('Ошибка при попытке получения ListMeeting:', error)
-      SetErrorExsist(true)
-      SetErrorMessage(`${serverErrorMessage}: getConferenceInfo`)
+
       throw error
     }
   }
