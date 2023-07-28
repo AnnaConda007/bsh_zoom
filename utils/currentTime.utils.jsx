@@ -4,7 +4,7 @@ import { formatedDateToUTS } from './formatting.utils'
 export const getcurrentTime = async () => {
   let currentTime
   try {
-    const response = await fetch('http://worldtimeapi.org/api/timezone/Europe/Moscow')
+    const response = await fetch('https://worldtimeapi.org/api/timezone/Europe/Moscow')
     const data = await response.json()
     const dateTime = DateTime.fromISO(data.datetime).setZone('Europe/Moscow')
     const timestamp = Math.floor(dateTime.toSeconds())
