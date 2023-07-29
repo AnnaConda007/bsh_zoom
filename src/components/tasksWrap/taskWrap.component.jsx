@@ -6,18 +6,17 @@ import { getConferenceInfo } from '../../../utils/getZoomData.utils'
 import { DisabledContext } from '../../contexts/disabled.context'
 import { DatesContext } from '../../contexts/dates.context'
 import styles from './taskWrap.module.scss'
-
+import { TaskInfoContext } from '../../contexts/taskInfo.context'
 const TaskWrap = () => {
   const { activeDate } = useContext(DatesContext)
   const { disabledDate, errorExsist, errorMessage, setErrorExsist, setErrorMessage } =
     useContext(DisabledContext)
-
-  const [pulledTasks, setPulledTasks] = useState([])
+  const { tasksForActiveDate, setTasksForActiveDate } = useContext(TaskInfoContext)
   useEffect(() => {
     const getTask = async () => {
       try {
         const task = await getConferenceInfo(activeDate, setErrorExsist, setErrorMessage)
-        setPulledTasks(task)
+        setTasksForActiveDate(task)
       } catch (error) {
         console.error(
           'Ошибка при попытке получения информации о конференциях на выбранную дату ',
@@ -48,8 +47,14 @@ const TaskWrap = () => {
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
           />
         </div>
-        <AddNewTask pulledTasks={pulledTasks} setPulledTasks={setPulledTasks} />
-        <AddedTasks pulledTasks={pulledTasks} setPulledTasks={setPulledTasks} />
+        <AddNewTask
+          tasksForActiveDate={tasksForActiveDate}
+          setTasksForActiveDate={setTasksForActiveDate}
+        />
+        <AddedTasks
+          tasksForActiveDate={tasksForActiveDate}
+          setTasksForActiveDate={setTasksForActiveDate}
+        />
       </div>
     </>
   )

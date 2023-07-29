@@ -10,23 +10,47 @@ import Header from '../header/header'
 import ModalBox from '../modal/modal'
 import { getTaggedDate } from '../../../utils/getZoomData.utils'
 import { homeUrL } from '../../../contains'
-import { getZoomTokens } from '../../../utils/getZoomData.utils'
+import { getZoomTokens, getConferenceInfo } from '../../../utils/getZoomData.utils'
 import { checkPastDate } from '../../../utils/currentTime.utils'
 import { DisabledContext } from '../../contexts/disabled.context'
 import { DatesContext } from '../../contexts/dates.context'
+import { TaskInfoContext } from '../../contexts/taskInfo.context'
 import styles from './calendar.module.scss'
-
 const Calendar = () => {
-  let ws = new WebSocket('ws://localhost:3001')
-
-  ws.onopen = () => {
-    console.log('открыто')
-  }
-
+  const { setTasksForActiveDate } = useContext(TaskInfoContext)
+  const { activeDate } = useContext(DatesContext)
   const [modal, setModal] = useState(false)
   const { setActiveDate, taggedDates, setTaggedDates } = useContext(DatesContext)
   const { setDisabledDate, setErrorExsist, setErrorMessage, errorExsist, errorMessage } =
     useContext(DisabledContext)
+  let ws = new WebSocket('ws://localhost:3001')
+  ws.onmessage = () => {
+    const getDates = async () => {
+      try {
+        setTaggedDates(await getTaggedDate(setErrorExsist, setErrorMessage))
+      } catch (error) {
+        console.error('Ошибка при попытке получения TaggedDates ', error)
+      }
+    }
+    getDates()
+
+    const getTask = async () => {
+      if (!activeDate) return
+      try {
+        const task = await getConferenceInfo(activeDate, setErrorExsist, setErrorMessage)
+        setTasksForActiveDate(task)
+      } catch (error) {
+        console.error(
+          'Ошибка при попытке получения информации о конференциях на выбранную дату ',
+          error
+        )
+      }
+    }
+    getTask()
+  }
+  ws.onerror = (error) => {
+    console.error('WebSocket Error:', error)
+  }
 
   useEffect(() => {
     const getTokens = async () => {

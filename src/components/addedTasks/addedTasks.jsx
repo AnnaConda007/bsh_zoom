@@ -23,7 +23,7 @@ import {
   errorMessageForCompareErrorTime,
   errorMessageForPastTimeError,
 } from '../../../contains'
-const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
+const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
   const [isEditingIndex, setisEditingIndex] = useState(null)
   const [editingValue, setEditingValue] = useState('')
   const { activeDate, setTaggedDates } = useContext(DatesContext)
@@ -36,14 +36,14 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
     if (checkPastTimeResponse) return
     const compareResponse = compareStartEndMeeting(
       timeStart.$d,
-      pulledTasks[index].timeEnd
+      tasksForActiveDate[index].timeEnd
     )
 
     setErrorExsist(compareResponse)
     setErrorMessage(errorMessageForCompareErrorTime)
     if (compareResponse) return
-    const duration = calculateDuration(timeStart, pulledTasks[index].timeEnd)
-    const id = pulledTasks[index].meetingId
+    const duration = calculateDuration(timeStart, tasksForActiveDate[index].timeEnd)
+    const id = tasksForActiveDate[index].meetingId
     const newStartTimeValue = {
       duration: duration,
       start_time: formatedDateToUTS(timeStart, activeDate),
@@ -53,14 +53,14 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 
   const upDateEndTime = async (timeEnd, index) => {
     const compareResponse = compareStartEndMeeting(
-      pulledTasks[index].timeStart,
+      tasksForActiveDate[index].timeStart,
       timeEnd.$d
     )
     setErrorExsist(compareResponse)
     setErrorMessage(errorMessageForCompareErrorTime)
     if (compareResponse) return
-    const duration = calculateDuration(pulledTasks[index].timeStart, timeEnd)
-    const id = pulledTasks[index].meetingId
+    const duration = calculateDuration(tasksForActiveDate[index].timeStart, timeEnd)
+    const id = tasksForActiveDate[index].meetingId
     const newEndTimeValue = {
       duration: duration,
     }
@@ -69,7 +69,7 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
 
   const handleEditBtn = (index) => {
     setisEditingIndex(index)
-    setEditingValue(pulledTasks[index].taskValue)
+    setEditingValue(tasksForActiveDate[index].taskValue)
   }
 
   const handleTaskInputChange = (newValue) => {
@@ -77,14 +77,14 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
   }
 
   const handleSaveEdit = async (index) => {
-    const updatedTasks = [...pulledTasks]
+    const updatedTasks = [...tasksForActiveDate]
     updatedTasks[index].taskValue = editingValue
-    const id = pulledTasks[index].meetingId
+    const id = tasksForActiveDate[index].meetingId
     const newTopicValue = {
       topic: editingValue,
     }
     updateConferenceInfo(id, newTopicValue, setErrorExsist, setErrorMessage)
-    setPulledTasks(updatedTasks)
+    setTasksForActiveDate(updatedTasks)
     setisEditingIndex(null)
   }
 
@@ -93,31 +93,31 @@ const AddedTasks = ({ pulledTasks, setPulledTasks }) => {
   }
 
   const handleDeleteBtn = async (index) => {
-    const updatedTasks = pulledTasks.filter((_, i) => i !== index)
-    const id = pulledTasks[index].meetingId
+    const updatedTasks = tasksForActiveDate.filter((_, i) => i !== index)
+    const id = tasksForActiveDate[index].meetingId
     const deleteConferenceRsponse = await deleteConference(
       id,
       setErrorExsist,
       setErrorMessage
     )
     if (deleteConferenceRsponse) return
-    setPulledTasks(updatedTasks)
+    setTasksForActiveDate(updatedTasks)
     if (index === isEditingIndex) {
       setisEditingIndex(null)
     }
-    if (pulledTasks.length <= 1) {
+    if (tasksForActiveDate.length <= 1) {
       setTaggedDates((prevDates) => prevDates.filter((date) => date !== activeDate))
     }
   }
 
   const handleZoomBtn = (index) => {
-    window.location.href = pulledTasks[index].meetingUrl
+    window.location.href = tasksForActiveDate[index].meetingUrl
   }
 
   return (
     <>
       <FormControl className={styles.tasks}>
-        {pulledTasks.map((task, index) => {
+        {tasksForActiveDate.map((task, index) => {
           return (
             <div
               className={styles.tasks__task}
