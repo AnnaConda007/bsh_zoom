@@ -26,6 +26,7 @@ export const getZoomTokens = async (redirect, SetErrorExsist, SetErrorMessage) =
       SetErrorMessage(zoomAutenficationErrorMassage)
       SetErrorExsist(true)
       setTimeout(() => {
+        localStorage.removeItem('authorizationTime')
         window.location.href = 'https://zoom.us/profile'
       }, 4000)
     } else {

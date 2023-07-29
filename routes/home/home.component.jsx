@@ -16,7 +16,6 @@ const Home = () => {
   useEffect(() => {
     const isExpired = authorizationTime + autosaveTime
     if (!authorizationTime || currentTime > isExpired) {
-      localStorage.removeItem('authorizationTime')
       window.location.href = `${homeUrL}/authorization`
     }
   }, [currentTime])
