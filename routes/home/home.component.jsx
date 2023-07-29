@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getcurrentTime } from '../../utils/currentTime.utils'
+import { homeUrL } from '../../contains'
 import Calendar from '../../src/components/calendar/calendar.component'
 const Home = () => {
   const autosaveTime = 604800000 //Неделя
@@ -15,7 +16,7 @@ const Home = () => {
   useEffect(() => {
     const isExpired = authorizationTime + autosaveTime
     if (!authorizationTime || currentTime > isExpired) {
-      window.location.href = 'http://localhost:5173/authorization'
+      window.location.href = `${homeUrL}/authorization`
     }
   }, [currentTime])
 
