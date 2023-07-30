@@ -9,21 +9,28 @@ import 'dayjs/locale/ru'
 import Header from '../header/header'
 import ModalBox from '../modal/modal'
 import { getTaggedDate } from '../../../utils/getZoomData.utils'
-import { homeUrL } from '../../../contains'
+import { homeUrL, vebSocketUrl } from '../../../contains'
 import { getZoomTokens, getConferenceInfo } from '../../../utils/getZoomData.utils'
 import { checkPastDate } from '../../../utils/currentTime.utils'
-import { DisabledContext } from '../../contexts/disabled.context'
+import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
-import { TaskInfoContext } from '../../contexts/taskInfo.context'
+import { TasksContext } from '../../contexts/tasks.context'
 import styles from './calendar.module.scss'
 const Calendar = () => {
-  const { setTasksForActiveDate } = useContext(TaskInfoContext)
+  const { setTasksForActiveDate } = useContext(TasksContext)
   const { activeDate } = useContext(DatesContext)
   const [modal, setModal] = useState(false)
   const { setActiveDate, taggedDates, setTaggedDates } = useContext(DatesContext)
-  const { setDisabledDate, setErrorExsist, setErrorMessage, errorExsist, errorMessage } =
-    useContext(DisabledContext)
-  let ws = new WebSocket('ws://localhost:3001')
+  const {
+    setDisabledDate,
+    setErrorExsist,
+    setErrorMessage,
+    errorExsist,
+    errorMessage,
+    autoHide,
+  } = useContext(ErrorContext)
+
+  const ws = new WebSocket(vebSocketUrl)
   ws.onmessage = () => {
     const getDates = async () => {
       try {
@@ -93,6 +100,7 @@ const Calendar = () => {
     }
     setErrorExsist(false)
   }
+
   const ServerDay = (props) => {
     const { day, isDateInArray, ...other } = props
     return (
@@ -109,7 +117,7 @@ const Calendar = () => {
     <div className={styles.wrap}>
       <Snackbar
         open={errorExsist}
-        onClose={handleSnackbarClose}
+        onClose={autoHide === true ? handleSnackbarClose : null}
         autoHideDuration={4000}
         message={errorMessage}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}

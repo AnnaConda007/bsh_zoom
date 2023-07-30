@@ -1,17 +1,15 @@
-import { useState, useEffect, useContext } from 'react'
-import { Snackbar } from '@mui/material'
+import { useEffect, useContext } from 'react'
 import AddNewTask from '../addNewTask/addNewTask'
 import AddedTasks from '../addedTasks/addedTasks'
 import { getConferenceInfo } from '../../../utils/getZoomData.utils'
-import { DisabledContext } from '../../contexts/disabled.context'
+import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
 import styles from './taskWrap.module.scss'
-import { TaskInfoContext } from '../../contexts/taskInfo.context'
+import { TasksContext } from '../../contexts/tasks.context'
 const TaskWrap = () => {
   const { activeDate } = useContext(DatesContext)
-  const { disabledDate, errorExsist, errorMessage, setErrorExsist, setErrorMessage } =
-    useContext(DisabledContext)
-  const { tasksForActiveDate, setTasksForActiveDate } = useContext(TaskInfoContext)
+  const { disabledDate, setErrorExsist, setErrorMessage } = useContext(ErrorContext)
+  const { tasksForActiveDate, setTasksForActiveDate } = useContext(TasksContext)
   useEffect(() => {
     const getTask = async () => {
       try {
@@ -27,25 +25,11 @@ const TaskWrap = () => {
     getTask()
   }, [activeDate])
 
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return
-    }
-    setErrorExsist(false)
-  }
-
   return (
     <>
       <div className={styles.planner}>
         <div className={`${styles.date} ${disabledDate ? styles.datedisabledDate : ''}`}>
           {activeDate}
-          <Snackbar
-            open={errorExsist}
-            onClose={handleSnackbarClose}
-            autoHideDuration={4000}
-            message={errorMessage}
-            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-          />
         </div>
         <AddNewTask
           tasksForActiveDate={tasksForActiveDate}

@@ -17,17 +17,18 @@ import {
 import { checkPastTime } from '../../../utils/currentTime.utils'
 import { formatedDateToUTS } from '../../../utils/formatting.utils'
 import { calculateDuration, compareStartEndMeeting } from '../../../utils/calculat.utils'
-import { DisabledContext } from '../../contexts/disabled.context'
+import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
 import {
   errorMessageForCompareErrorTime,
   errorMessageForPastTimeError,
 } from '../../../contains'
+
 const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
   const [isEditingIndex, setisEditingIndex] = useState(null)
   const [editingValue, setEditingValue] = useState('')
   const { activeDate, setTaggedDates } = useContext(DatesContext)
-  const { disabledDate, setErrorExsist, setErrorMessage } = useContext(DisabledContext)
+  const { disabledDate, setErrorExsist, setErrorMessage } = useContext(ErrorContext)
 
   const upDateStartTime = async (timeStart, index) => {
     const checkPastTimeResponse = await checkPastTime(timeStart, activeDate)
@@ -38,7 +39,6 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
       timeStart.$d,
       tasksForActiveDate[index].timeEnd
     )
-
     setErrorExsist(compareResponse)
     setErrorMessage(errorMessageForCompareErrorTime)
     if (compareResponse) return

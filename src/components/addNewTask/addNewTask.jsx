@@ -9,9 +9,9 @@ import { formatedDateToUTS } from '../../../utils/formatting.utils'
 import { checkPastTime } from '../../../utils/currentTime.utils'
 import { compareStartEndMeeting } from '../../../utils/calculat.utils'
 import { createMeet } from '../../../utils/manageConference.utils'
-import { DisabledContext } from '../../contexts/disabled.context'
+import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
-import { TaskInfoContext } from '../../contexts/taskInfo.context'
+import { TasksContext } from '../../contexts/tasks.context'
 import {
   errorMessageForCompareErrorTime,
   errorMessageForPastTimeError,
@@ -21,7 +21,7 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
   const [newTaskObj, setNewTaskObj] = useState(defaultTask)
   const { activeDate, taggedDates, setTaggedDates } = useContext(DatesContext)
   const { disabledDate, errorExsist, setErrorExsist, setErrorMessage } =
-    useContext(DisabledContext)
+    useContext(ErrorContext)
   const {
     conferenceTopic,
     setConferenceTopic,
@@ -29,7 +29,7 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
     setTimeStart,
     timeEnd,
     setTimeEnd,
-  } = useContext(TaskInfoContext)
+  } = useContext(TasksContext)
   const fullnessTimeForNewTask = async (selectedTime, timeKey) => {
     const errorExsistResponse = await checkPastTime(selectedTime, activeDate)
     setErrorExsist(errorExsistResponse)

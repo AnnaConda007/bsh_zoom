@@ -4,12 +4,12 @@ import {
   formateTimeFromUTCtoHumanReadable,
 } from './formatting.utils'
 import { calculatTimeEnd } from './calculat.utils'
-import { serverErrorMessage, serverUrl, zoomAutenficationErrorMassage } from '../contains'
+import { serverErrorMessage, serverUrl } from '../contains'
+
 export const getZoomTokens = async (redirect, setErrorExsist, setErrorMessage) => {
   try {
     const urlParams = new URLSearchParams(window.location.search)
     const authorizationCode = urlParams.get('code')
-
     if (!localStorage.getItem('zoomRefreshToken')) {
       const response = await axios.get(`${serverUrl}/exchangeCode`, {
         params: {
@@ -22,17 +22,9 @@ export const getZoomTokens = async (redirect, setErrorExsist, setErrorMessage) =
       return response.data
     }
   } catch (error) {
-    console.error("'Ошибка при попытке получения токена", error)
-    if (!localStorage.getItem('zoomRefreshToken')) {
-      setErrorMessage(zoomAutenficationErrorMassage)
-      setErrorExsist(true)
-      setTimeout(() => {
-        window.location.href = 'https://zoom.us/profile'
-      }, 4000)
-    } else {
-      setErrorMessage(`${serverErrorMessage}`)
-      setErrorExsist(true)
-    }
+    console.error('Ошибка при попытке получения токена', error)
+    setErrorMessage(serverErrorMessage)
+    setErrorExsist(true)
   }
 }
 
@@ -75,8 +67,6 @@ export const getTaggedDate = async (setErrorExsist, setErrorMessage) => {
     return taggedDateArr
   } catch (error) {
     if (error.response && error.response.data.code === 124) {
-      console.log('обновление токена')
-      console.log(error.response.data.code)
       await updateAccesToken()
       return await getTaggedDate(setErrorExsist, setErrorMessage)
     } else {
@@ -125,8 +115,6 @@ export const getConferenceInfo = async (
     return tasksForDay
   } catch (error) {
     if (error.response && error.response.data.code === 124) {
-      console.log('обновление токена')
-      console.error(error.response.data)
       await updateAccesToken(setErrorExsist, setErrorMessage)
       return await getConferenceInfo(selectedDate)
     } else {
@@ -135,5 +123,31 @@ export const getConferenceInfo = async (
       setErrorMessage(`${serverErrorMessage}`)
       throw error
     }
+  }
+}
+
+export const getDates = async (setTaggedDates, setErrorExsist, setErrorMessage) => {
+  try {
+    setTaggedDates(await getTaggedDate(setErrorExsist, setErrorMessage))
+  } catch (error) {
+    console.error('Ошибка при попытке получения TaggedDates ', error)
+  }
+}
+
+export const getTask = async (
+  activeDate,
+  setErrorExsist,
+  setErrorMessage,
+  setTasksForActiveDate
+) => {
+  if (!activeDate) return
+  try {
+    const task = await getConferenceInfo(activeDate, setErrorExsist, setErrorMessage)
+    setTasksForActiveDate(task)
+  } catch (error) {
+    console.error(
+      'Ошибка при попытке получения информации о конференциях на выбранную дату ',
+      error
+    )
   }
 }

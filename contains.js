@@ -13,5 +13,5 @@ export const errorMessageForPastTimeError =
 export const limitErrorMessage =
   "Вы достигли предельного количества запросов. Пожалуйста, попробуйте снова после 03:00 по времени Москве.";
 export const serverErrorMessage = "Ошибка при запросе к сервреру";
-export const zoomAutenficationErrorMassage =
-  "Похоже, введены неверные данные аккаунта ZOOM или используется неправильный аккаунт. Пожалуйста, убедитесь, что вы вводите правильные данные и повторите попытку входа.";
+
+export const vebSocketUrl = "ws://localhost:3001";

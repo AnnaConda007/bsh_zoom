@@ -28,16 +28,13 @@ export const createMeet = async (
     })
   } catch (error) {
     if (error.response && error.response.data.code === 124) {
-      console.log('Обновление токена')
-      console.error(error.response.data)
-
       await updateAccesToken()
       return await createMeet(conferenceTopic, timeStart, timeEnd)
     } else if (error.response && error.response.data.code === 429) {
       setErrorExsist(true), setErrorMessage(limitErrorMessage)
     } else {
       console.error('Ошибка сервера при создании конференции:', error)
-      setErrorExsist(true), setErrorMessage(`${serverErrorMessage}`)
+      setErrorExsist(true), setErrorMessage(serverErrorMessage)
     }
   }
 }
@@ -61,15 +58,12 @@ export const updateConferenceInfo = async (
   } catch (error) {
     if (error.response && error.response.data.code === 124) {
       await updateAccesToken()
-      console.log('обновлние токена')
-      console.error(error.response.data)
-
       return await updateConferenceInfo(idTopic, newData)
     } else if (error.respons && error.response.data.code === 429) {
       setErrorExsist(true), setErrorMessage(limitErrorMessage)
     } else {
       console.error('ошибка сервера при редактирвоании данных', error)
-      setErrorExsist(true), setErrorMessage(`${serverErrorMessage}`)
+      setErrorExsist(true), setErrorMessage(serverErrorMessage)
     }
   }
 }
@@ -91,16 +85,13 @@ export const deleteConference = async (conferenceId, setErrorExsist, setErrorMes
   } catch (error) {
     if (error.response && error.response.data.code === 124) {
       await updateAccesToken()
-      console.log('обновлние токена')
-      console.error(error.response.data)
-
       return await deleteConference(conferenceId)
     } else if (error.respons && error.response.data.code === 429) {
       setErrorExsist(true), setErrorMessage(limitErrorMessage)
     } else {
       console.error(' ошибка сервера при удалении данных', error)
       setErrorExsist(true)
-      setErrorMessage(`${serverErrorMessage}`)
+      setErrorMessage(serverErrorMessage)
     }
   }
 }

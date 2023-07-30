@@ -19,7 +19,6 @@ export const formatedDateFromUTStoDMY = (UTSTime) => {
     ('0' + (date.getUTCMonth() + 1)).slice(-2) +
     '-' +
     date.getUTCFullYear()
-
   return formattedDate // Dd-mm-year
 }
 
@@ -53,6 +52,5 @@ export const formateTimeFromUTCtoHumanReadable = (time) => {
     .padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds
     .toString()
     .padStart(2, '0')} `
-
   return formattedDate // Sat Jul 15 2023 09:00:00
 }
