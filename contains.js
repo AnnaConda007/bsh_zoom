@@ -5,7 +5,8 @@ export const redirectHomeUrL = `https://zoom.us/oauth/authorize?response_type=co
   homeUrL
 )}`;
 export const serverUrl = "https://localhost:3000";
-
+export const dataBaseUrl =
+  "https://test-f176b-default-rtdb.firebaseio.com/timeArr.json";
 export const errorMessageForCompareErrorTime =
   "Время начала конференции не может быть позже времени её окончания";
 export const errorMessageForPastTimeError =
@@ -13,5 +14,8 @@ export const errorMessageForPastTimeError =
 export const limitErrorMessage =
   "Вы достигли предельного количества запросов. Пожалуйста, попробуйте снова после 03:00 по времени Москве.";
 export const serverErrorMessage = "Ошибка при запросе к сервреру";
+export const crossingTimeMessage =
+  "Вы пытаетесь создать конференцию на время, которое уже занято или пересекается с другой встречей";
+export const sendErrorMessage = "Ошибка при отправке данных";
 
 export const vebSocketUrl = "ws://localhost:3001";

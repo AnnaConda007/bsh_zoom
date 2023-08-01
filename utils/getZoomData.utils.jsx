@@ -4,7 +4,8 @@ import {
   formateTimeFromUTCtoHumanReadable,
 } from './formatting.utils'
 import { calculatTimeEnd } from './calculat.utils'
-import { serverErrorMessage, serverUrl } from '../contains'
+import { limitErrorMessage, serverErrorMessage, serverUrl } from '../contains'
+let hasRetried = false
 
 export const getZoomTokens = async (redirect, setErrorExsist, setErrorMessage) => {
   try {
@@ -23,12 +24,14 @@ export const getZoomTokens = async (redirect, setErrorExsist, setErrorMessage) =
     }
   } catch (error) {
     console.error('Ошибка при попытке получения токена', error)
-    setErrorMessage(serverErrorMessage)
-    setErrorExsist(true)
+    if (error.code === 'ERR_NETWORK') {
+      setErrorMessage(serverErrorMessage)
+      setErrorExsist(true)
+    }
   }
 }
 
-export const updateAccesToken = async () => {
+export const updateAccesToken = async (setErrorExsist, setErrorMessage) => {
   try {
     const refreshToken = localStorage.getItem('zoomRefreshToken')
     const response = await axios.post(`${serverUrl}/refreshToken`, {
@@ -42,20 +45,32 @@ export const updateAccesToken = async () => {
   }
 }
 
-export const getListMeeting = async () => {
-  let accessToken = localStorage.getItem('zoomAccesToken')
-  const response = await axios.get(`${serverUrl}/listMeetings`, {
-    params: {
-      accessToken: accessToken,
-    },
-  })
-  return response.data
+export const getListMeeting = async (setErrorExsist, setErrorMessage) => {
+  try {
+    let accessToken = localStorage.getItem('zoomAccesToken')
+    const response = await axios.get(`${serverUrl}/listMeetings`, {
+      params: {
+        accessToken: accessToken,
+      },
+    })
+    return response.data
+  } catch (error) {
+    console.error('Ошибка при попытке получения ListMeeting', error)
+    if (error.response && error.response.data.code === 429) {
+      setErrorExsist(true)
+      setErrorMessage(limitErrorMessage)
+    } else if (error.code === 'ERR_NETWORK') {
+      setErrorMessage(serverErrorMessage)
+      setErrorExsist(true)
+    }
+    throw error
+  }
 }
 
 export const getTaggedDate = async (setErrorExsist, setErrorMessage) => {
   try {
     const taggedDateArr = []
-    const conferenceData = await getListMeeting()
+    const conferenceData = await getListMeeting(setErrorExsist, setErrorMessage)
     const meetings = conferenceData.meetings
     meetings.forEach((miting) => {
       const startTime = miting.start_time
@@ -66,15 +81,13 @@ export const getTaggedDate = async (setErrorExsist, setErrorMessage) => {
     })
     return taggedDateArr
   } catch (error) {
-    if (error.response && error.response.data.code === 124) {
+    console.error('Ошибка при попытке получения ListMeeting', error)
+    if (error.response && error.response.data.code === 124 && hasRetried === false) {
+      hasRetried = true
       await updateAccesToken()
       return await getTaggedDate(setErrorExsist, setErrorMessage)
-    } else {
-      console.error('Ошибка при попытке получения ListMeeting', error)
-      setErrorExsist(true)
-      setErrorMessage(`${serverErrorMessage}`)
-      throw error
     }
+    throw error
   }
 }
 
@@ -85,7 +98,7 @@ export const getConferenceInfo = async (
 ) => {
   try {
     const tasks = {}
-    const conferenceData = await getListMeeting()
+    const conferenceData = await getListMeeting(setErrorExsist, setErrorMessage)
     const meetings = conferenceData.meetings
     meetings.forEach((meeting) => {
       const timeStart = meeting.start_time
@@ -114,15 +127,13 @@ export const getConferenceInfo = async (
     const tasksForDay = tasks[selectedDate] || []
     return tasksForDay
   } catch (error) {
-    if (error.response && error.response.data.code === 124) {
+    console.error('Ошибка при попытке получения getConferenceInfo')
+    if (error.response && error.response.data.code === 124 && hasRetried === false) {
+      hasRetried = true
       await updateAccesToken(setErrorExsist, setErrorMessage)
       return await getConferenceInfo(selectedDate)
-    } else {
-      console.error(serverErrorMessage, error)
-      setErrorExsist(true)
-      setErrorMessage(`${serverErrorMessage}`)
-      throw error
     }
+    throw error
   }
 }
 

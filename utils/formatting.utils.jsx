@@ -54,3 +54,10 @@ export const formateTimeFromUTCtoHumanReadable = (time) => {
     .padStart(2, '0')} `
   return formattedDate // Sat Jul 15 2023 09:00:00
 }
+
+export const formatTimeFromUTSToUnix = (utsTime) => {
+  const isoDateString = utsTime
+  const date = new Date(isoDateString)
+  const unixTimestamp = Math.floor(date.getTime() / 1000)
+  return unixTimestamp // 43243243
+}

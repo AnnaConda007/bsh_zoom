@@ -14,7 +14,7 @@ import {
   deleteConference,
   updateConferenceInfo,
 } from '../../../utils/manageConference.utils'
-import { checkPastTime } from '../../../utils/currentTime.utils'
+import { checkPastTime, clearMettingTimeArr } from '../../../utils/useTime.utils'
 import { formatedDateToUTS } from '../../../utils/formatting.utils'
 import { calculateDuration, compareStartEndMeeting } from '../../../utils/calculat.utils'
 import { ErrorContext } from '../../contexts/error.context'
@@ -22,6 +22,7 @@ import { DatesContext } from '../../contexts/dates.context'
 import {
   errorMessageForCompareErrorTime,
   errorMessageForPastTimeError,
+  crossingTimeMessage,
 } from '../../../contains'
 
 const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
@@ -48,6 +49,7 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
       duration: duration,
       start_time: formatedDateToUTS(timeStart, activeDate),
     }
+
     await updateConferenceInfo(id, newStartTimeValue, setErrorExsist, setErrorMessage)
   }
 
@@ -95,12 +97,16 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
   const handleDeleteBtn = async (index) => {
     const updatedTasks = tasksForActiveDate.filter((_, i) => i !== index)
     const id = tasksForActiveDate[index].meetingId
+    const startTime = tasksForActiveDate[index].timeStart
+    const startEnd = tasksForActiveDate[index].timeEnd
     const deleteConferenceRsponse = await deleteConference(
       id,
       setErrorExsist,
-      setErrorMessage
+      setErrorMessage,
+      startTime,
+      startEnd
     )
-    if (deleteConferenceRsponse) return
+    if (deleteConferenceRsponse.status === 200) return
     setTasksForActiveDate(updatedTasks)
     if (index === isEditingIndex) {
       setisEditingIndex(null)
@@ -109,7 +115,6 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
       setTaggedDates((prevDates) => prevDates.filter((date) => date !== activeDate))
     }
   }
-
   const handleZoomBtn = (index) => {
     window.location.href = tasksForActiveDate[index].meetingUrl
   }

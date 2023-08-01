@@ -6,7 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { TimePicker } from '@mui/x-date-pickers/TimePicker'
 import styles from './addNewTask.module.scss'
 import { formatedDateToUTS } from '../../../utils/formatting.utils'
-import { checkPastTime } from '../../../utils/currentTime.utils'
+import { checkPastTime, checkMatchMettingTimeArr } from '../../../utils/useTime.utils'
 import { compareStartEndMeeting } from '../../../utils/calculat.utils'
 import { createMeet } from '../../../utils/manageConference.utils'
 import { ErrorContext } from '../../contexts/error.context'
@@ -15,8 +15,9 @@ import { TasksContext } from '../../contexts/tasks.context'
 import {
   errorMessageForCompareErrorTime,
   errorMessageForPastTimeError,
+  crossingTimeMessage,
 } from '../../../contains'
-const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
+const AddNewTask = ({ tasksForActiveDate, setTasksForActiveDate }) => {
   const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' }
   const [newTaskObj, setNewTaskObj] = useState(defaultTask)
   const { activeDate, taggedDates, setTaggedDates } = useContext(DatesContext)
@@ -47,7 +48,7 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
     }
   }
 
-  const fullnessValueForNewTask = (value) => {
+  const fullnessValueForNewTask = async (value) => {
     setNewTaskObj((prevTask) => ({
       ...prevTask,
       taskValue: value,
@@ -69,10 +70,17 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
       newTaskObj.timeEnd === ''
     )
       return
-    await createMeet(setErrorExsist, setErrorMessage, conferenceTopic, timeStart, timeEnd)
-    const updatedTasks = [...pulledTasks]
+    const createMeetReponse = await createMeet(
+      setErrorExsist,
+      setErrorMessage,
+      conferenceTopic,
+      timeStart,
+      timeEnd
+    )
+    if (!createMeetReponse) return
+    const updatedTasks = [...tasksForActiveDate]
     updatedTasks.push(newTaskObj)
-    setPulledTasks(updatedTasks)
+    setTasksForActiveDate(updatedTasks)
     setNewTaskObj(defaultTask)
     if (!taggedDates.includes(activeDate)) {
       setTaggedDates((prevDates) => [...prevDates, activeDate])

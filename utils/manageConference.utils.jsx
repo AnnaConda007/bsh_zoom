@@ -1,8 +1,9 @@
 import { updateAccesToken } from './getZoomData.utils'
 import { calculateDuration } from './calculat.utils'
-import { limitErrorMessage, serverErrorMessage, serverUrl } from '../contains'
+import { limitErrorMessage, serverUrl } from '../contains'
 import axios from 'axios'
-
+import { checkMatchMettingTimeArr, clearMettingTimeArr } from './useTime.utils'
+import { crossingTimeMessage } from '../contains'
 export const createMeet = async (
   setErrorExsist,
   setErrorMessage,
@@ -18,24 +19,30 @@ export const createMeet = async (
       creator: userName,
       value: conferenceTopic,
     }
-    await axios.get(`${serverUrl}/newConference`, {
-      params: {
-        conferenceTopic: JSON.stringify(topicValue),
-        timeStart: timeStart,
-        conferenceDuration: conferenceDuration,
-        token: accessToken,
-      },
-    })
+    if (checkTime) {
+      setErrorExsist(true), setErrorMessage(crossingTimeMessage)
+      return
+    } else {
+      const response = await axios.get(`${serverUrl}/newConference`, {
+        params: {
+          conferenceTopic: JSON.stringify(topicValue),
+          timeStart: timeStart,
+          conferenceDuration: conferenceDuration,
+          token: accessToken,
+        },
+      })
+
+      return response
+    }
   } catch (error) {
     if (error.response && error.response.data.code === 124) {
-      await updateAccesToken()
+      await updateAccesToken(setErrorExsist, setErrorMessage)
       return await createMeet(conferenceTopic, timeStart, timeEnd)
     } else if (error.response && error.response.data.code === 429) {
-      setErrorExsist(true), setErrorMessage(limitErrorMessage)
-    } else {
-      console.error('Ошибка сервера при создании конференции:', error)
-      setErrorExsist(true), setErrorMessage(serverErrorMessage)
+      setErrorExsist(true)
+      setErrorMessage(limitErrorMessage)
     }
+    console.error('Ошибка сервера при создании конференции:', error)
   }
 }
 
@@ -59,19 +66,27 @@ export const updateConferenceInfo = async (
     if (error.response && error.response.data.code === 124) {
       await updateAccesToken()
       return await updateConferenceInfo(idTopic, newData)
-    } else if (error.respons && error.response.data.code === 429) {
-      setErrorExsist(true), setErrorMessage(limitErrorMessage)
-    } else {
-      console.error('ошибка сервера при редактирвоании данных', error)
-      setErrorExsist(true), setErrorMessage(serverErrorMessage)
+    } else if (error.response && error.response.data.code === 429) {
+      setErrorExsist(true)
+      setErrorMessage(limitErrorMessage)
     }
+    console.error('ошибка сервера при редактирвоании данных', error)
   }
 }
 
-export const deleteConference = async (conferenceId, setErrorExsist, setErrorMessage) => {
+export const deleteConference = async (
+  conferenceId,
+  setErrorExsist,
+  setErrorMessage,
+  startTime,
+  startEnd
+) => {
   try {
     let accessToken = localStorage.getItem('zoomAccesToken')
     const id = conferenceId
+    const clearedMetting = await clearMettingTimeArr(startTime, startEnd)
+
+    if (!clearedMetting) return
     const response = await axios.delete(`${serverUrl}/deleteConference`, {
       data: {
         accessToken: accessToken,
@@ -86,12 +101,10 @@ export const deleteConference = async (conferenceId, setErrorExsist, setErrorMes
     if (error.response && error.response.data.code === 124) {
       await updateAccesToken()
       return await deleteConference(conferenceId)
-    } else if (error.respons && error.response.data.code === 429) {
-      setErrorExsist(true), setErrorMessage(limitErrorMessage)
-    } else {
-      console.error(' ошибка сервера при удалении данных', error)
+    } else if (error.response && error.response.data.code === 429) {
       setErrorExsist(true)
-      setErrorMessage(serverErrorMessage)
+      setErrorMessage(limitErrorMessage)
     }
+    console.error(' ошибка сервера при удалении данных ', error)
   }
 }

@@ -11,7 +11,7 @@ import ModalBox from '../modal/modal'
 import { getTaggedDate } from '../../../utils/getZoomData.utils'
 import { homeUrL, vebSocketUrl } from '../../../contains'
 import { getZoomTokens, getConferenceInfo } from '../../../utils/getZoomData.utils'
-import { checkPastDate } from '../../../utils/currentTime.utils'
+import { checkPastDate } from '../../../utils/useTime.utils'
 import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
 import { TasksContext } from '../../contexts/tasks.context'
@@ -31,7 +31,7 @@ const Calendar = () => {
   } = useContext(ErrorContext)
 
   const ws = new WebSocket(vebSocketUrl)
-  ws.onmessage = () => {
+  ws.onmessage = (message) => {
     const getDates = async () => {
       try {
         setTaggedDates(await getTaggedDate(setErrorExsist, setErrorMessage))
