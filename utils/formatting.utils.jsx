@@ -56,8 +56,17 @@ export const formateTimeFromUTCtoHumanReadable = (time) => {
 }
 
 export const formatTimeFromUTSToUnix = (utsTime) => {
-  const isoDateString = utsTime
-  const date = new Date(isoDateString)
-  const unixTimestamp = Math.floor(date.getTime() / 1000)
-  return unixTimestamp // 43243243
+  let dateStr = utsTime
+  let date = new Date(dateStr)
+  const timeStart = Math.floor(
+    Date.UTC(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds()
+    ) / 1000
+  )
+  return timeStart //5445495498489
 }

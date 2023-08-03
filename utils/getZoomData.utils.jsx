@@ -4,8 +4,17 @@ import {
   formateTimeFromUTCtoHumanReadable,
 } from './formatting.utils'
 import { calculatTimeEnd } from './calculat.utils'
-import { limitErrorMessage, serverErrorMessage, serverUrl } from '../contains'
+import {
+  limitErrorMessage,
+  serverErrorMessage,
+  serverUrl,
+  clientId,
+  clientSecret,
+} from '../contains'
 let hasRetried = false
+setInterval(() => {
+  hasRetried = true
+}, 3540000) // 59 минут
 
 export const getZoomTokens = async (redirect, setErrorExsist, setErrorMessage) => {
   try {
@@ -16,6 +25,8 @@ export const getZoomTokens = async (redirect, setErrorExsist, setErrorMessage) =
         params: {
           code: authorizationCode,
           redirecturl: redirect,
+          clientId: clientId,
+          clientSecret: clientSecret,
         },
       })
       localStorage.setItem('zoomRefreshToken', response.data.refresh_token)
@@ -36,6 +47,8 @@ export const updateAccesToken = async (setErrorExsist, setErrorMessage) => {
     const refreshToken = localStorage.getItem('zoomRefreshToken')
     const response = await axios.post(`${serverUrl}/refreshToken`, {
       refreshToken: refreshToken,
+      clientId: clientId,
+      clientSecret: clientSecret,
     })
     localStorage.setItem('zoomRefreshToken', response.data.refresh_token)
     localStorage.setItem('zoomAccesToken', response.data.access_token)

@@ -15,7 +15,6 @@ import { TasksContext } from '../../contexts/tasks.context'
 import {
   errorMessageForCompareErrorTime,
   errorMessageForPastTimeError,
-  crossingTimeMessage,
 } from '../../../contains'
 const AddNewTask = ({ tasksForActiveDate, setTasksForActiveDate }) => {
   const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' }
@@ -31,6 +30,7 @@ const AddNewTask = ({ tasksForActiveDate, setTasksForActiveDate }) => {
     timeEnd,
     setTimeEnd,
   } = useContext(TasksContext)
+  
   const fullnessTimeForNewTask = async (selectedTime, timeKey) => {
     const errorExsistResponse = await checkPastTime(selectedTime, activeDate)
     setErrorExsist(errorExsistResponse)
@@ -77,7 +77,7 @@ const AddNewTask = ({ tasksForActiveDate, setTasksForActiveDate }) => {
       timeStart,
       timeEnd
     )
-    if (!createMeetReponse) return
+    if (!createMeetReponse || createMeetReponse.status !== 200) return
     const updatedTasks = [...tasksForActiveDate]
     updatedTasks.push(newTaskObj)
     setTasksForActiveDate(updatedTasks)

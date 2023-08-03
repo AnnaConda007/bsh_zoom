@@ -4,6 +4,7 @@ import { limitErrorMessage, serverUrl } from '../contains'
 import axios from 'axios'
 import { checkMatchMettingTimeArr, clearMettingTimeArr } from './useTime.utils'
 import { crossingTimeMessage } from '../contains'
+
 export const createMeet = async (
   setErrorExsist,
   setErrorMessage,
@@ -19,21 +20,23 @@ export const createMeet = async (
       creator: userName,
       value: conferenceTopic,
     }
-    if (checkTime) {
-      setErrorExsist(true), setErrorMessage(crossingTimeMessage)
-      return
-    } else {
-      const response = await axios.get(`${serverUrl}/newConference`, {
-        params: {
-          conferenceTopic: JSON.stringify(topicValue),
-          timeStart: timeStart,
-          conferenceDuration: conferenceDuration,
-          token: accessToken,
-        },
-      })
+    const checkTime = await checkMatchMettingTimeArr(
+      timeStart,
+      timeEnd,
+      setErrorExsist,
+      setErrorMessage
+    )
+    if (!checkTime) return
+    const response = await axios.get(`${serverUrl}/newConference`, {
+      params: {
+        conferenceTopic: JSON.stringify(topicValue),
+        timeStart: timeStart,
+        conferenceDuration: conferenceDuration,
+        token: accessToken,
+      },
+    })
 
-      return response
-    }
+    return response
   } catch (error) {
     if (error.response && error.response.data.code === 124) {
       await updateAccesToken(setErrorExsist, setErrorMessage)

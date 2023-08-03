@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { useEffect, useState, useContext } from 'react'
 import { Badge } from '@mui/material'
 import { pickersDay } from './pickersDay-style'
@@ -9,7 +10,12 @@ import 'dayjs/locale/ru'
 import Header from '../header/header'
 import ModalBox from '../modal/modal'
 import { getTaggedDate } from '../../../utils/getZoomData.utils'
-import { homeUrL, vebSocketUrl } from '../../../contains'
+import {
+  homeUrL,
+  vebSocketUrl,
+  zoomVebHookSecretToken,
+  serverUrl,
+} from '../../../contains'
 import { getZoomTokens, getConferenceInfo } from '../../../utils/getZoomData.utils'
 import { checkPastDate } from '../../../utils/useTime.utils'
 import { ErrorContext } from '../../contexts/error.context'

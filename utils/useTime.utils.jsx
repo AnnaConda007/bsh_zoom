@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
-import { formatedDateToUTS } from './formatting.utils'
-import { dataBaseUrl } from '../contains'
+import { formatedDateToUTS, formatTimeFromUTSToUnix } from './formatting.utils'
+import { dataBaseUrl, crossingTimeMessage } from '../contains'
+
 export const getcurrentTime = async () => {
   let currentTime
   try {
@@ -50,32 +51,47 @@ export const checkPastTime = async (time, activeDate) => {
   }
 }
 
-export const checkMatchMettingTimeArr = async (start, end) => {
-  let getTimeArr
-  getTimeArr = await fetch(dataBaseUrl)
+export const checkMatchSlotTime = async (start, end, setErrorExsist, setErrorMessage) => {
+  const getTimeArr = await fetch(dataBaseUrl)
   const timeArrJSon = await getTimeArr.json()
   const timeArr = timeArrJSon || []
   const timeStart = Math.floor(new Date(start).getTime() / 1000)
   const timeEnd = Math.floor(new Date(end).getTime() / 1000)
-  const checkMatchTimeArr = timeArr.some((time) => {
+  const checkMatchTimeArr = timeArr.filter((time) => {
     return time >= timeStart && time <= timeEnd
   })
-  if (!checkMatchTimeArr) {
-    timeArr.push(timeStart)
-    const minutDuration = (timeEnd - timeStart) / 60
-    for (let i = 1; i <= minutDuration; i++) {
-      const minut = timeStart + i * 60
-      timeArr.push(minut)
-    }
-    await fetch(dataBaseUrl, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(timeArr),
-    })
-    return false
+  return checkMatchTimeArr
+}
+
+export const setSlotTime = async (start, end) => {
+  const getTimeArr = await fetch(dataBaseUrl)
+  const timeArrJSon = await getTimeArr.json()
+  const timeArr = timeArrJSon || []
+  const timeStart = Math.floor(new Date(start).getTime() / 1000)
+  const timeEnd = Math.floor(new Date(end).getTime() / 1000)
+
+  timeArr.push(timeStart)
+  const minutDuration = (timeEnd - timeStart) / 60
+  for (let i = 1; i <= minutDuration; i++) {
+    const minut = timeStart + i * 60
+    timeArr.push(minut)
+  }
+  return timeArr
+}
+
+export const checkMatchMettingTimeArr = async (
+  start,
+  end,
+  setErrorExsist,
+  setErrorMessage
+) => {
+  const checkRes = await checkMatchSlotTime(start, end, setErrorExsist, setErrorMessage)
+  if (checkRes.length !== 0) {
+    setErrorExsist(true)
+    setErrorMessage(crossingTimeMessage)
   } else {
+    const slotTime = await setSlotTime(start, end)
+    await pushTimeSlot(slotTime)
     return true
   }
 }
@@ -86,41 +102,24 @@ export const clearMettingTimeArr = async (start, end) => {
   const timeArrJSon = await getTimeArr.json()
   const timeArr = timeArrJSon || []
   let newTimeArr = []
-  let dateStr = start
-  let date = new Date(dateStr)
-  const timeStart = Math.floor(
-    Date.UTC(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      date.getHours(),
-      date.getMinutes(),
-      date.getSeconds()
-    ) / 1000
-  )
-  dateStr = end
-  date = new Date(dateStr)
-  const timeEnd = Math.floor(
-    Date.UTC(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      date.getHours(),
-      date.getMinutes(),
-      date.getSeconds()
-    ) / 1000
-  )
+  const timeStart = formatTimeFromUTSToUnix(start)
+  const timeEnd = formatTimeFromUTSToUnix(end)
   timeArr.forEach((time) => {
     if (time < timeStart || time > timeEnd) {
       newTimeArr.push(time)
     }
   })
-  await fetch(dataBaseUrl, {
+  await pushTimeSlot(newTimeArr)
+  return true
+}
+
+export const pushTimeSlot = async (data) => {
+  const res = await fetch(dataBaseUrl, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(newTimeArr),
+    body: JSON.stringify(data),
   })
-  return true
+  return res
 }

@@ -14,7 +14,7 @@ import {
   deleteConference,
   updateConferenceInfo,
 } from '../../../utils/manageConference.utils'
-import { checkPastTime, clearMettingTimeArr } from '../../../utils/useTime.utils'
+import { checkPastTime } from '../../../utils/useTime.utils'
 import { formatedDateToUTS } from '../../../utils/formatting.utils'
 import { calculateDuration, compareStartEndMeeting } from '../../../utils/calculat.utils'
 import { ErrorContext } from '../../contexts/error.context'
