@@ -24,6 +24,7 @@ import {
   errorMessageForPastTimeError,
   crossingTimeMessage,
 } from '../../../contains'
+import { updateTimeSlots } from '../../../utils/useTime.utils'
 
 const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
   const [isEditingIndex, setisEditingIndex] = useState(null)
@@ -32,6 +33,14 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
   const { disabledDate, setErrorExsist, setErrorMessage } = useContext(ErrorContext)
 
   const upDateStartTime = async (timeStart, index) => {
+    updateTimeSlots(
+      tasksForActiveDate[index].timeStart,
+      timeStart,
+      tasksForActiveDate[index].timeEnd,
+      activeDate,
+      setErrorExsist,
+      setErrorMessage
+    )
     const checkPastTimeResponse = await checkPastTime(timeStart, activeDate)
     setErrorExsist(checkPastTimeResponse)
     setErrorMessage(errorMessageForPastTimeError)

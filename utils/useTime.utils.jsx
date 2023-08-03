@@ -58,6 +58,10 @@ export const checkMatchSlotTime = async (start, end, setErrorExsist, setErrorMes
   const timeStart = Math.floor(new Date(start).getTime() / 1000)
   const timeEnd = Math.floor(new Date(end).getTime() / 1000)
   const checkMatchTimeArr = timeArr.filter((time) => {
+    if (time >= timeStart && time <= timeEnd) {
+      return false
+    }
+
     return time >= timeStart && time <= timeEnd
   })
   return checkMatchTimeArr
@@ -92,25 +96,58 @@ export const checkMatchMettingTimeArr = async (
   } else {
     const slotTime = await setSlotTime(start, end)
     await pushTimeSlot(slotTime)
-    return true
+     return true
   }
 }
 
 export const clearMettingTimeArr = async (start, end) => {
+  console.log("start", start)
   let getTimeArr
   getTimeArr = await fetch(dataBaseUrl)
   const timeArrJSon = await getTimeArr.json()
   const timeArr = timeArrJSon || []
   let newTimeArr = []
   const timeStart = formatTimeFromUTSToUnix(start)
+  console.log("timeStart", timeStart)
+
   const timeEnd = formatTimeFromUTSToUnix(end)
+
   timeArr.forEach((time) => {
     if (time < timeStart || time > timeEnd) {
       newTimeArr.push(time)
     }
   })
+
   await pushTimeSlot(newTimeArr)
   return true
+}
+const formateUTS_Unix = (time, activeDate) => {
+   const utsTime = formatedDateToUTS(time, activeDate)
+  const stringTime = utsTime.replace('T', ' ').replace('Z', '')
+  const formatedtTme = DateTime.fromFormat(stringTime, 'yyyy-MM-dd HH:mm:ss')
+   return formatedtTme
+}
+
+export const updateTimeSlots = async (
+  obsoleteStart,
+  newStart,
+  end,
+  activeDate,
+  setErrorExsist,
+  setErrorMessage
+) => {
+  const obsoleteTimeStartValue = formateUTS_Unix(obsoleteStart, activeDate)
+  const newTimeStsrtValue = formateUTS_Unix(newStart, activeDate)
+  const timeEnd = formateUTS_Unix(end, activeDate)
+
+  const checkMatch = await checkMatchSlotTime(newTimeStsrtValue, timeEnd)
+  if (checkMatch.length === 0) {
+    await clearMettingTimeArr(obsoleteTimeStartValue, timeEnd)
+    const st = formatedDateToUTS(newStart, activeDate)
+    const ed = formatedDateToUTS(end, activeDate)
+    checkMatchMettingTimeArr(st, ed, setErrorExsist, setErrorMessage)
+    return
+  }
 }
 
 export const pushTimeSlot = async (data) => {
