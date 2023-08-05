@@ -31,34 +31,46 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
   const [editingValue, setEditingValue] = useState('')
   const { activeDate, setTaggedDates } = useContext(DatesContext)
   const { disabledDate, setErrorExsist, setErrorMessage } = useContext(ErrorContext)
+  const taskCreator = localStorage.getItem('email')
 
   const upDateStartTime = async (timeStart, index) => {
-    updateTimeSlots(
-      tasksForActiveDate[index].timeStart,
-      timeStart,
-      tasksForActiveDate[index].timeEnd,
-      activeDate,
-      setErrorExsist,
-      setErrorMessage
+    const checkPastTimeResponse = await checkPastTime(
+      formatedDateToUTS(timeStart, activeDate)
     )
-    const checkPastTimeResponse = await checkPastTime(timeStart, activeDate)
-    setErrorExsist(checkPastTimeResponse)
-    setErrorMessage(errorMessageForPastTimeError)
-    if (checkPastTimeResponse) return
+    if (checkPastTimeResponse) {
+      setErrorExsist(true)
+      setErrorMessage(errorMessageForPastTimeError)
+      return
+    }
     const compareResponse = compareStartEndMeeting(
       timeStart.$d,
       tasksForActiveDate[index].timeEnd
     )
-    setErrorExsist(compareResponse)
-    setErrorMessage(errorMessageForCompareErrorTime)
-    if (compareResponse) return
+    if (compareStartEndMeeting) {
+      setErrorExsist(compareResponse)
+      setErrorMessage(errorMessageForCompareErrorTime)
+      return
+    }
+    const updateTimeSlotsResponse = await updateTimeSlots(
+      `${tasksForActiveDate[index].timeStart}Z`,
+      formatedDateToUTS(timeStart, activeDate),
+      `${tasksForActiveDate[index].timeEnd}Z`,
+      setErrorExsist,
+      setErrorMessage,
+      taskCreator,
+      tasksForActiveDate[index].creator
+    )
+    if (!updateTimeSlotsResponse) {
+      setErrorExsist(true)
+      setErrorMessage(crossingTimeMessage)
+      return
+    }
     const duration = calculateDuration(timeStart, tasksForActiveDate[index].timeEnd)
     const id = tasksForActiveDate[index].meetingId
     const newStartTimeValue = {
       duration: duration,
       start_time: formatedDateToUTS(timeStart, activeDate),
     }
-
     await updateConferenceInfo(id, newStartTimeValue, setErrorExsist, setErrorMessage)
   }
 
@@ -124,6 +136,7 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
       setTaggedDates((prevDates) => prevDates.filter((date) => date !== activeDate))
     }
   }
+  
   const handleZoomBtn = (index) => {
     window.location.href = tasksForActiveDate[index].meetingUrl
   }

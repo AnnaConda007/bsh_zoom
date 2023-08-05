@@ -5,7 +5,7 @@ export const ErrorContext = createContext({
   setDisabledDate: () => {},
   errorExsist: '',
   setErrorExsist: () => {},
-  errorMessage: false,
+  errorMessage: '',
   setErrorMessage: () => {},
   autoHide: true,
   setAutoHide: () => {},

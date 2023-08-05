@@ -1,17 +1,15 @@
 import { formateTimeFromUTCtoHumanReadable } from './formatting.utils'
+import { DateTime } from 'luxon'
 
-export const calculatTimeEnd = (time, durationTime) => {
-  const startTime = time
-  const duration = durationTime
-  const startDate = new Date(startTime)
-  startDate.setMinutes(startDate.getMinutes() + duration)
-  const endTime = startDate.toISOString()
-  const formatedTimeEnd = formateTimeFromUTCtoHumanReadable(endTime)
-  return formatedTimeEnd
+export const calculatTimeEnd = (start, duraion) => {
+  const startTime = DateTime.fromISO(start, { zone: 'utc' })
+  const timeEnd = startTime.plus({ minutes: duraion })
+  const dateStr = timeEnd.toFormat("yyyy-MM-dd'T'HH:mm:ss")
+  return dateStr
 }
 
-export const calculateDuration = (date1, date2) => {
-  const diffInMilliseconds = Math.abs(new Date(date2) - new Date(date1))
+export const calculateDuration = (timeStart, timeEnd) => {
+  const diffInMilliseconds = new Date(timeEnd) - new Date(timeStart)
   const minutes = Math.floor(diffInMilliseconds / (1000 * 60))
   return minutes
 }

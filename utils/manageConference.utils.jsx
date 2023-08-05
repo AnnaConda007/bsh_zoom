@@ -2,15 +2,14 @@ import { updateAccesToken } from './getZoomData.utils'
 import { calculateDuration } from './calculat.utils'
 import { limitErrorMessage, serverUrl } from '../contains'
 import axios from 'axios'
-import { checkMatchMettingTimeArr, clearMettingTimeArr } from './useTime.utils'
+import { processTimeSlot, clearMettingTimeArr } from './useTime.utils'
 import { crossingTimeMessage } from '../contains'
 
 export const createMeet = async (
-  setErrorExsist,
-  setErrorMessage,
   conferenceTopic,
   timeStart,
-  timeEnd
+  timeEnd,
+  setErrorMessage
 ) => {
   try {
     let accessToken = localStorage.getItem('zoomAccesToken')
@@ -20,13 +19,7 @@ export const createMeet = async (
       creator: userName,
       value: conferenceTopic,
     }
-    const checkTime = await checkMatchMettingTimeArr(
-      timeStart,
-      timeEnd,
-      setErrorExsist,
-      setErrorMessage
-    )
-    if (!checkTime) return
+
     const response = await axios.get(`${serverUrl}/newConference`, {
       params: {
         conferenceTopic: JSON.stringify(topicValue),
@@ -35,14 +28,12 @@ export const createMeet = async (
         token: accessToken,
       },
     })
-
     return response
   } catch (error) {
     if (error.response && error.response.data.code === 124) {
-      await updateAccesToken(setErrorExsist, setErrorMessage)
-      return await createMeet(conferenceTopic, timeStart, timeEnd)
+      await updateAccesToken()
+      return await createMeet(conferenceTopic, timeStart, timeEnd, setErrorMessage)
     } else if (error.response && error.response.data.code === 429) {
-      setErrorExsist(true)
       setErrorMessage(limitErrorMessage)
     }
     console.error('Ошибка сервера при создании конференции:', error)

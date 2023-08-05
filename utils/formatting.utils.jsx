@@ -1,4 +1,5 @@
 export const formatedDateToUTS = (selectedTime, activeDate) => {
+  // забирает время из мюи и приводит к нужному чвсовому поясу ++++++++++++
   const timeObj = new Date(selectedTime)
   const dateSegments = activeDate.split('-').reverse()
   const dateObj = new Date(dateSegments.join('-'))
@@ -12,7 +13,7 @@ export const formatedDateToUTS = (selectedTime, activeDate) => {
 }
 
 export const formatedDateFromUTStoDMY = (UTSTime) => {
-  let date = new Date(UTSTime)
+  let date = new Date(UTSTime) // для теггет дат
   let formattedDate =
     ('0' + date.getUTCDate()).slice(-2) +
     '-' +
@@ -23,6 +24,7 @@ export const formatedDateFromUTStoDMY = (UTSTime) => {
 }
 
 export const formateTimeFromUTCtoHumanReadable = (time) => {
+  // из зума в мюи
   const inputDate = time
   const date = new Date(inputDate)
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']

@@ -10,12 +10,7 @@ import 'dayjs/locale/ru'
 import Header from '../header/header'
 import ModalBox from '../modal/modal'
 import { getTaggedDate } from '../../../utils/getZoomData.utils'
-import {
-  homeUrL,
-  vebSocketUrl,
-  zoomVebHookSecretToken,
-  serverUrl,
-} from '../../../contains'
+import { homeUrL, vebSocketUrl, serverErrorMessage } from '../../../contains'
 import { getZoomTokens, getConferenceInfo } from '../../../utils/getZoomData.utils'
 import { checkPastDate } from '../../../utils/useTime.utils'
 import { ErrorContext } from '../../contexts/error.context'
@@ -66,16 +61,25 @@ const Calendar = () => {
   }
 
   useEffect(() => {
-    const getTokens = async () => {
-      await getZoomTokens(homeUrL, setErrorExsist, setErrorMessage)
+    if (!localStorage.getItem('zoomRefreshToken')) {
+      const getTokens = async () => {
+        const tokenResponse = await getZoomTokens(homeUrL)
+        if (!tokenResponse) {
+          setErrorExsist(true)
+          setErrorMessage('serverErrorMessage')
+        }
+      }
+      getTokens()
     }
-    getTokens()
+  }, [])
 
+  useEffect(() => {
     const getDates = async () => {
       try {
         setTaggedDates(await getTaggedDate(setErrorExsist, setErrorMessage))
       } catch (error) {
         console.error('Ошибка при попытке получения TaggedDates ', error)
+        setErrorMessage(serverErrorMessage)
       }
     }
     getDates()
@@ -89,6 +93,12 @@ const Calendar = () => {
     setModal(true)
   }
 
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+    setErrorExsist(false)
+  }
   const slotProps = {
     day: (date) => {
       const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY')
@@ -99,14 +109,6 @@ const Calendar = () => {
       }
     },
   }
-
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return
-    }
-    setErrorExsist(false)
-  }
-
   const ServerDay = (props) => {
     const { day, isDateInArray, ...other } = props
     return (

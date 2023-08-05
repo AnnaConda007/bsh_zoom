@@ -16,28 +16,25 @@ setInterval(() => {
   hasRetried = true
 }, 3540000) // 59 минут
 
-export const getZoomTokens = async (redirect, setErrorExsist, setErrorMessage) => {
+export const getZoomTokens = async (redirect) => {
   try {
     const urlParams = new URLSearchParams(window.location.search)
     const authorizationCode = urlParams.get('code')
-    if (!localStorage.getItem('zoomRefreshToken')) {
-      const response = await axios.get(`${serverUrl}/exchangeCode`, {
-        params: {
-          code: authorizationCode,
-          redirecturl: redirect,
-          clientId: clientId,
-          clientSecret: clientSecret,
-        },
-      })
-      localStorage.setItem('zoomRefreshToken', response.data.refresh_token)
-      localStorage.setItem('zoomAccesToken', response.data.access_token)
-      return response.data
-    }
+    const response = await axios.get(`${serverUrl}/exchangeCode`, {
+      params: {
+        code: authorizationCode,
+        redirecturl: redirect,
+        clientId: clientId,
+        clientSecret: clientSecret,
+      },
+    })
+    localStorage.setItem('zoomRefreshToken', response.data.refresh_token)
+    localStorage.setItem('zoomAccesToken', response.data.access_token)
+    return response.data
   } catch (error) {
     console.error('Ошибка при попытке получения токена', error)
     if (error.code === 'ERR_NETWORK') {
-      setErrorMessage(serverErrorMessage)
-      setErrorExsist(true)
+      return false
     }
   }
 }
@@ -58,7 +55,7 @@ export const updateAccesToken = async (setErrorExsist, setErrorMessage) => {
   }
 }
 
-export const getListMeeting = async (setErrorExsist, setErrorMessage) => {
+export const getListMeeting = async () => {
   try {
     let accessToken = localStorage.getItem('zoomAccesToken')
     const response = await axios.get(`${serverUrl}/listMeetings`, {
@@ -69,13 +66,6 @@ export const getListMeeting = async (setErrorExsist, setErrorMessage) => {
     return response.data
   } catch (error) {
     console.error('Ошибка при попытке получения ListMeeting', error)
-    if (error.response && error.response.data.code === 429) {
-      setErrorExsist(true)
-      setErrorMessage(limitErrorMessage)
-    } else if (error.code === 'ERR_NETWORK') {
-      setErrorMessage(serverErrorMessage)
-      setErrorExsist(true)
-    }
     throw error
   }
 }
@@ -83,7 +73,7 @@ export const getListMeeting = async (setErrorExsist, setErrorMessage) => {
 export const getTaggedDate = async (setErrorExsist, setErrorMessage) => {
   try {
     const taggedDateArr = []
-    const conferenceData = await getListMeeting(setErrorExsist, setErrorMessage)
+    const conferenceData = await getListMeeting()
     const meetings = conferenceData.meetings
     meetings.forEach((miting) => {
       const startTime = miting.start_time
@@ -99,6 +89,12 @@ export const getTaggedDate = async (setErrorExsist, setErrorMessage) => {
       hasRetried = true
       await updateAccesToken()
       return await getTaggedDate(setErrorExsist, setErrorMessage)
+    } else if (error.response && error.response.data.code === 429) {
+      setErrorExsist(true)
+      setErrorMessage(limitErrorMessage)
+    } else {
+      setErrorMessage(serverErrorMessage)
+      setErrorExsist(true)
     }
     throw error
   }
@@ -111,7 +107,7 @@ export const getConferenceInfo = async (
 ) => {
   try {
     const tasks = {}
-    const conferenceData = await getListMeeting(setErrorExsist, setErrorMessage)
+    const conferenceData = await getListMeeting()
     const meetings = conferenceData.meetings
     meetings.forEach((meeting) => {
       const timeStart = meeting.start_time
@@ -126,7 +122,7 @@ export const getConferenceInfo = async (
       const task = {
         creator: topicObject.creator,
         taskValue: topicObject.value,
-        timeStart: formateTimeFromUTCtoHumanReadable(timeStart),
+        timeStart: timeStart.replace('Z', ''),
         timeEnd: calculatTimeEnd(timeStart, duration),
         meetingUrl: meeting.join_url,
         meetingId: meeting.id,
@@ -145,6 +141,12 @@ export const getConferenceInfo = async (
       hasRetried = true
       await updateAccesToken(setErrorExsist, setErrorMessage)
       return await getConferenceInfo(selectedDate)
+    } else if (error.response && error.response.data.code === 429) {
+      setErrorExsist(true)
+      setErrorMessage(limitErrorMessage)
+    } else if (error.code === 'ERR_NETWORK') {
+      setErrorMessage(serverErrorMessage)
+      setErrorExsist(true)
     }
     throw error
   }

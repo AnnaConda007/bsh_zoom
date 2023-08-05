@@ -4,6 +4,9 @@ import { getcurrentTime } from '../../utils/useTime.utils'
 import Calendar from '../../src/components/calendar/calendar.component'
 import { ErrorContext } from '../../src/contexts/error.context'
 import zoomAutenficationErrorMassage from '../../src/components/zoomAutenficationErrorMassage/zoomAutenficationErrorMassage.component'
+import { DateTime } from 'luxon'
+import { formateTimeFromUTCtoHumanReadable } from '../../utils/formatting.utils'
+
 const Home = () => {
   const navigate = useNavigate()
   const autosaveTime = 604800000 //Неделя
@@ -16,14 +19,20 @@ const Home = () => {
       setCurrentTime(time)
     }
     fetchCurrentTime()
+  }, [])
 
-    const urlParams = new URLSearchParams(window.location.search)
-    const authorizationCode = urlParams.get('code')
-    if (authorizationCode === null) {
-      setErrorMessage(zoomAutenficationErrorMassage)
-      setAutoHide(false)
-      setErrorExsist(true)
+  useEffect(() => {
+    const checkZoomAuthorization = () => {
+      const urlParams = new URLSearchParams(window.location.search)
+      const authorizationCode = urlParams.get('code')
+      if (authorizationCode === null) {
+        setErrorExsist(true)
+        setErrorMessage(zoomAutenficationErrorMassage)
+        setAutoHide(false)
+        setErrorExsist(true)
+      }
     }
+    checkZoomAuthorization()
   }, [])
 
   useEffect(() => {
