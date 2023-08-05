@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { useEffect, useState, useContext } from 'react'
 import { Badge } from '@mui/material'
 import { pickersDay } from './pickersDay-style'
@@ -9,27 +8,21 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/ru'
 import Header from '../header/header'
 import ModalBox from '../modal/modal'
-import { getTaggedDate } from '../../../utils/getZoomData.utils'
+import { getTaggedDate, getConferenceInfo } from '../../../utils/getZoomData/meetingData.utils'
 import { homeUrL, vebSocketUrl, serverErrorMessage } from '../../../contains'
-import { getZoomTokens, getConferenceInfo } from '../../../utils/getZoomData.utils'
+import { getZoomTokens } from '../../../utils/getZoomData/tokens.utils'
 import { checkPastDate } from '../../../utils/useTime.utils'
 import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
 import { TasksContext } from '../../contexts/tasks.context'
 import styles from './calendar.module.scss'
+
 const Calendar = () => {
   const { setTasksForActiveDate } = useContext(TasksContext)
   const { activeDate } = useContext(DatesContext)
   const [modal, setModal] = useState(false)
   const { setActiveDate, taggedDates, setTaggedDates } = useContext(DatesContext)
-  const {
-    setDisabledDate,
-    setErrorExsist,
-    setErrorMessage,
-    errorExsist,
-    errorMessage,
-    autoHide,
-  } = useContext(ErrorContext)
+  const { setDisabledDate, setErrorExsist, setErrorMessage, errorExsist, errorMessage, autoHide } = useContext(ErrorContext)
 
   const ws = new WebSocket(vebSocketUrl)
   ws.onmessage = (message) => {
@@ -48,10 +41,7 @@ const Calendar = () => {
         const task = await getConferenceInfo(activeDate, setErrorExsist, setErrorMessage)
         setTasksForActiveDate(task)
       } catch (error) {
-        console.error(
-          'Ошибка при попытке получения информации о конференциях на выбранную дату ',
-          error
-        )
+        console.error('Ошибка при попытке получения информации о конференциях на выбранную дату ', error)
       }
     }
     getTask()
@@ -112,11 +102,7 @@ const Calendar = () => {
   const ServerDay = (props) => {
     const { day, isDateInArray, ...other } = props
     return (
-      <Badge
-        key={day.toString()}
-        overlap='circular'
-        badgeContent={isDateInArray ? '🟢' : undefined}
-      >
+      <Badge key={day.toString()} overlap='circular' badgeContent={isDateInArray ? '🟢' : undefined}>
         <PickersDay {...other} day={day} sx={pickersDay} />
       </Badge>
     )

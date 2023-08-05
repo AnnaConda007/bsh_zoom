@@ -1,59 +1,13 @@
+import { updateAccesToken } from './tokens.utils'
 import axios from 'axios'
-import {
-  formatedDateFromUTStoDMY,
-  formateTimeFromUTCtoHumanReadable,
-} from './formatting.utils'
-import { calculatTimeEnd } from './calculat.utils'
-import {
-  limitErrorMessage,
-  serverErrorMessage,
-  serverUrl,
-  clientId,
-  clientSecret,
-} from '../contains'
+import { formatedDateFromUTStoDMY } from '../formatting.utils'
+import { calculatTimeEnd } from '../useTime.utils'
+import { limitErrorMessage, serverErrorMessage, serverUrl } from '../../contains'
+
 let hasRetried = false
 setInterval(() => {
   hasRetried = true
 }, 3540000) // 59 минут
-
-export const getZoomTokens = async (redirect) => {
-  try {
-    const urlParams = new URLSearchParams(window.location.search)
-    const authorizationCode = urlParams.get('code')
-    const response = await axios.get(`${serverUrl}/exchangeCode`, {
-      params: {
-        code: authorizationCode,
-        redirecturl: redirect,
-        clientId: clientId,
-        clientSecret: clientSecret,
-      },
-    })
-    localStorage.setItem('zoomRefreshToken', response.data.refresh_token)
-    localStorage.setItem('zoomAccesToken', response.data.access_token)
-    return response.data
-  } catch (error) {
-    console.error('Ошибка при попытке получения токена', error)
-    if (error.code === 'ERR_NETWORK') {
-      return false
-    }
-  }
-}
-
-export const updateAccesToken = async (setErrorExsist, setErrorMessage) => {
-  try {
-    const refreshToken = localStorage.getItem('zoomRefreshToken')
-    const response = await axios.post(`${serverUrl}/refreshToken`, {
-      refreshToken: refreshToken,
-      clientId: clientId,
-      clientSecret: clientSecret,
-    })
-    localStorage.setItem('zoomRefreshToken', response.data.refresh_token)
-    localStorage.setItem('zoomAccesToken', response.data.access_token)
-    return response.data
-  } catch (error) {
-    console.error('Ошибка при обновлении токена', error)
-  }
-}
 
 export const getListMeeting = async () => {
   try {
@@ -139,7 +93,7 @@ export const getConferenceInfo = async (
     console.error('Ошибка при попытке получения getConferenceInfo')
     if (error.response && error.response.data.code === 124 && hasRetried === false) {
       hasRetried = true
-      await updateAccesToken(setErrorExsist, setErrorMessage)
+      await updateAccesToken()
       return await getConferenceInfo(selectedDate)
     } else if (error.response && error.response.data.code === 429) {
       setErrorExsist(true)
@@ -149,31 +103,5 @@ export const getConferenceInfo = async (
       setErrorExsist(true)
     }
     throw error
-  }
-}
-
-export const getDates = async (setTaggedDates, setErrorExsist, setErrorMessage) => {
-  try {
-    setTaggedDates(await getTaggedDate(setErrorExsist, setErrorMessage))
-  } catch (error) {
-    console.error('Ошибка при попытке получения TaggedDates ', error)
-  }
-}
-
-export const getTask = async (
-  activeDate,
-  setErrorExsist,
-  setErrorMessage,
-  setTasksForActiveDate
-) => {
-  if (!activeDate) return
-  try {
-    const task = await getConferenceInfo(activeDate, setErrorExsist, setErrorMessage)
-    setTasksForActiveDate(task)
-  } catch (error) {
-    console.error(
-      'Ошибка при попытке получения информации о конференциях на выбранную дату ',
-      error
-    )
   }
 }

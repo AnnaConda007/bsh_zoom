@@ -10,22 +10,14 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
 import styles from './addedTasks.module.scss'
-import {
-  deleteConference,
-  updateConferenceInfo,
-} from '../../../utils/manageConference.utils'
-import { checkPastTime } from '../../../utils/useTime.utils'
+import { deleteConference, updateConferenceInfo } from '../../../utils/manageConference.utils'
+import { calculateDuration, compareStartEndMeeting } from '../../../utils/useTime.utils'
 import { formatedDateToUTS } from '../../../utils/formatting.utils'
-import { calculateDuration, compareStartEndMeeting } from '../../../utils/calculat.utils'
 import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
-import {
-  errorMessageForCompareErrorTime,
-  errorMessageForPastTimeError,
-  crossingTimeMessage,
-} from '../../../contains'
-import { updateTimeSlots } from '../../../utils/useTime.utils'
-
+import { errorMessageForCompareErrorTime, disabledMeeting } from '../../../contains'
+import { preLaunchCheckUpdateStartTime } from '../../../utils/check.utils'
+import { clearMettingTimeArr } from '../../../utils/slots/upDateSlots.utils'
 const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
   const [isEditingIndex, setisEditingIndex] = useState(null)
   const [editingValue, setEditingValue] = useState('')
@@ -34,60 +26,35 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
   const taskCreator = localStorage.getItem('email')
 
   const upDateStartTime = async (timeStart, index) => {
-    const checkPastTimeResponse = await checkPastTime(
-      formatedDateToUTS(timeStart, activeDate)
-    )
-    if (checkPastTimeResponse) {
-      setErrorExsist(true)
-      setErrorMessage(errorMessageForPastTimeError)
-      return
-    }
-    const compareResponse = compareStartEndMeeting(
-      timeStart.$d,
-      tasksForActiveDate[index].timeEnd
-    )
-    if (compareResponse) {
-      setErrorExsist(compareResponse)
-      setErrorMessage(errorMessageForCompareErrorTime)
-      return
-    }
-    const updateTimeSlotsResponse = await updateTimeSlots(
-      `${tasksForActiveDate[index].timeStart}Z`,
-      formatedDateToUTS(timeStart, activeDate),
-      `${tasksForActiveDate[index].timeEnd}Z`,
+    const checkResponse = await preLaunchCheckUpdateStartTime({
+      timeStart,
+      index,
       setErrorExsist,
       setErrorMessage,
-      taskCreator,
-      tasksForActiveDate[index].creator
-    )
-    if (!updateTimeSlotsResponse) {
-      setErrorExsist(true)
-      setErrorMessage(crossingTimeMessage)
-      return
-    }
+      tasksForActiveDate,
+      activeDate,
+    })
+    if (checkResponse) return
     const duration = calculateDuration(timeStart, tasksForActiveDate[index].timeEnd)
-    const id = tasksForActiveDate[index].meetingId
+    const meetingId = tasksForActiveDate[index].meetingId
     const newStartTimeValue = {
       duration: duration,
       start_time: formatedDateToUTS(timeStart, activeDate),
     }
-    await updateConferenceInfo(id, newStartTimeValue, setErrorExsist, setErrorMessage)
+    await updateConferenceInfo({ meetingId, newStartTimeValue, setErrorExsist, setErrorMessage })
   }
 
   const upDateEndTime = async (timeEnd, index) => {
-    const compareResponse = compareStartEndMeeting(
-      tasksForActiveDate[index].timeStart,
-      timeEnd.$d
-    )
+    const compareResponse = compareStartEndMeeting({ startTime: tasksForActiveDate[index].timeStart, endTime: timeEnd.$d })
     setErrorExsist(compareResponse)
     setErrorMessage(errorMessageForCompareErrorTime)
     if (compareResponse) return
-    const duration = calculateDuration(tasksForActiveDate[index].timeStart, timeEnd)
-    const id = tasksForActiveDate[index].meetingId
+    const duration = calculateDuration({ timeStart: tasksForActiveDate[index].timeStart, timeEnd })
+    const meetingId = tasksForActiveDate[index].meetingId
     const newEndTimeValue = {
       duration: duration,
     }
-    updateConferenceInfo(id, newEndTimeValue, setErrorExsist, setErrorMessage)
+    updateConferenceInfo({ meetingId, newEndTimeValue, setErrorExsist, setErrorMessage })
   }
 
   const handleEditBtn = (index) => {
@@ -102,11 +69,11 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
   const handleSaveEdit = async (index) => {
     const updatedTasks = [...tasksForActiveDate]
     updatedTasks[index].taskValue = editingValue
-    const id = tasksForActiveDate[index].meetingId
+    const meetingId = tasksForActiveDate[index].meetingId
     const newTopicValue = {
       topic: editingValue,
     }
-    updateConferenceInfo(id, newTopicValue, setErrorExsist, setErrorMessage)
+    updateConferenceInfo({ meetingId, newTopicValue, setErrorExsist, setErrorMessage })
     setTasksForActiveDate(updatedTasks)
     setisEditingIndex(null)
   }
@@ -116,17 +83,16 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
   }
 
   const handleDeleteBtn = async (index) => {
+    if (taskCreator !== tasksForActiveDate[index].creator) {
+      setErrorExsist(true)
+      setErrorMessage(disabledMeeting)
+      return
+    }
     const updatedTasks = tasksForActiveDate.filter((_, i) => i !== index)
-    const id = tasksForActiveDate[index].meetingId
+    const meetingId = tasksForActiveDate[index].meetingId
     const startTime = tasksForActiveDate[index].timeStart
     const startEnd = tasksForActiveDate[index].timeEnd
-    const deleteConferenceRsponse = await deleteConference(
-      id,
-      setErrorExsist,
-      setErrorMessage,
-      startTime,
-      startEnd
-    )
+    const deleteConferenceRsponse = await deleteConference({ meetingId, setErrorExsist, setErrorMessage, startTime, startEnd })
     if (deleteConferenceRsponse.status === 200) return
     setTasksForActiveDate(updatedTasks)
     if (index === isEditingIndex) {
@@ -146,10 +112,7 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
       <FormControl className={styles.tasks}>
         {tasksForActiveDate.map((task, index) => {
           return (
-            <div
-              className={styles.tasks__task}
-              key={`${index}-${task.timeStart} ${task.timeEnd}`}
-            >
+            <div className={styles.tasks__task} key={`${index}-${task.timeStart} ${task.timeEnd}`}>
               <span className={styles.tasks__user}>Организатор: {task.creator}</span>
               <TextField
                 sx={{ border: '1px solid', borderRadius: '5px' }}

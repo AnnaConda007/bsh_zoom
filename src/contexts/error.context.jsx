@@ -3,7 +3,7 @@ import { createContext, useState } from 'react'
 export const ErrorContext = createContext({
   disabledDate: '',
   setDisabledDate: () => {},
-  errorExsist: '',
+  errorExsist: false,
   setErrorExsist: () => {},
   errorMessage: '',
   setErrorMessage: () => {},
