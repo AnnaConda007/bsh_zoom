@@ -1,5 +1,4 @@
 export const formatedDateToUTS = (selectedTime, activeDate) => {
-  // забирает время из мюи и приводит к нужному чвсовому поясу ++++++++++++
   const timeObj = new Date(selectedTime)
   const dateSegments = activeDate.split('-').reverse()
   const dateObj = new Date(dateSegments.join('-'))
@@ -13,7 +12,7 @@ export const formatedDateToUTS = (selectedTime, activeDate) => {
 }
 
 export const formatedDateFromUTStoDMY = (UTSTime) => {
-  let date = new Date(UTSTime) // для теггет дат
+  let date = new Date(UTSTime) // используется для определения taggedDate
   let formattedDate =
     ('0' + date.getUTCDate()).slice(-2) +
     '-' +
@@ -21,40 +20,6 @@ export const formatedDateFromUTStoDMY = (UTSTime) => {
     '-' +
     date.getUTCFullYear()
   return formattedDate // Dd-mm-year
-}
-
-export const formateTimeFromUTCtoHumanReadable = (time) => {
-  // из зума в мюи
-  const inputDate = time
-  const date = new Date(inputDate)
-  const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-  const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ]
-  const dayOfWeek = daysOfWeek[date.getUTCDay()]
-  const month = months[date.getUTCMonth()]
-  const day = date.getUTCDate()
-  const year = date.getUTCFullYear()
-  const hours = date.getUTCHours()
-  const minutes = date.getUTCMinutes()
-  const seconds = date.getUTCSeconds()
-  const formattedDate = `${dayOfWeek} ${month} ${day} ${year} ${hours
-    .toString()
-    .padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds
-    .toString()
-    .padStart(2, '0')} `
-  return formattedDate // Sat Jul 15 2023 09:00:00
 }
 
 export const formatTimeFromUTSToUnix = (utsTime) => {

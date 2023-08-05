@@ -13,6 +13,7 @@ const Header = () => {
             onClick={() => {
               localStorage.removeItem('authorizationTime')
               localStorage.removeItem('zoomRefreshToken')
+              localStorage.removeItem('zoomAccesToken')
             }}
           >
             выйти

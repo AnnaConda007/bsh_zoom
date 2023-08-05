@@ -4,15 +4,16 @@ import { getcurrentTime } from '../../utils/useTime.utils'
 import Calendar from '../../src/components/calendar/calendar.component'
 import { ErrorContext } from '../../src/contexts/error.context'
 import zoomAutenficationErrorMassage from '../../src/components/zoomAutenficationErrorMassage/zoomAutenficationErrorMassage.component'
-import { DateTime } from 'luxon'
-import { formateTimeFromUTCtoHumanReadable } from '../../utils/formatting.utils'
+import { autosaveTime, homeUrL } from '../../contains'
+import { getZoomTokens } from '../../utils/getZoomData/tokens.utils'
 
 const Home = () => {
   const navigate = useNavigate()
-  const autosaveTime = 604800000 //Неделя
+  const timeToAutosave = autosaveTime
   const authorizationTime = parseInt(localStorage.getItem('authorizationTime'))
   const [currentTime, setCurrentTime] = useState(null)
   const { setErrorMessage, setErrorExsist, setAutoHide } = useContext(ErrorContext)
+
   useEffect(() => {
     const fetchCurrentTime = async () => {
       const time = await getcurrentTime()
@@ -36,7 +37,16 @@ const Home = () => {
   }, [])
 
   useEffect(() => {
-    const isExpired = authorizationTime + autosaveTime
+    if (!localStorage.getItem('zoomRefreshToken')) {
+      const getTokens = async () => {
+        await getZoomTokens(homeUrL)
+      }
+      getTokens()
+    }
+  }, [])
+
+  useEffect(() => {
+    const isExpired = authorizationTime + timeToAutosave
     if (!authorizationTime || currentTime > isExpired) {
       navigate('authorization')
     }

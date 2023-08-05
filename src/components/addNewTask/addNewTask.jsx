@@ -6,37 +6,30 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { TimePicker } from '@mui/x-date-pickers/TimePicker'
 import styles from './addNewTask.module.scss'
 import { formatedDateToUTS } from '../../../utils/formatting.utils'
-import { checkPastTime, processTimeSlot } from '../../../utils/useTime.utils'
-import { compareStartEndMeeting } from '../../../utils/calculat.utils'
+import { checkPastTime, compareStartEndMeeting } from '../../../utils/useTime.utils'
 import { createMeet } from '../../../utils/manageConference.utils'
 import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
 import { TasksContext } from '../../contexts/tasks.context'
-import {
-  crossingTimeMessage,
-  errorMessageForCompareErrorTime,
-  errorMessageForPastTimeError,
-  sendErrorMessage,
-} from '../../../contains'
+import { processTimeSlot } from '../../../utils/slots/addSlots.utils'
+import { crossingTimeMessage, errorMessageForCompareErrorTime, errorMessageForPastTimeError, sendErrorMessage } from '../../../contains'
 const AddNewTask = ({ tasksForActiveDate, setTasksForActiveDate }) => {
-  const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' }
+  const defaultTask = {
+    taskValue: '',
+    timeStart: '',
+    timeEnd: '',
+    meetingUrl: '',
+  }
   const [newTaskObj, setNewTaskObj] = useState(defaultTask)
   const { activeDate, taggedDates, setTaggedDates } = useContext(DatesContext)
-  const { disabledDate, errorExsist, setErrorExsist, setErrorMessage } =
-    useContext(ErrorContext)
-  const {
-    conferenceTopic,
-    setConferenceTopic,
-    timeStart,
-    setTimeStart,
-    timeEnd,
-    setTimeEnd,
-  } = useContext(TasksContext)
+  const { disabledDate, setErrorExsist, setErrorMessage } = useContext(ErrorContext)
+  const { conferenceTopic, setConferenceTopic, timeStart, setTimeStart, timeEnd, setTimeEnd } = useContext(TasksContext)
 
   const fullnessTimeForNewTask = async (selectedTime, timeKey) => {
     const date = formatedDateToUTS(selectedTime, activeDate)
-    const errorExsistResponse = await checkPastTime(date)
-    if (errorExsistResponse) {
+    const checkPastTimeResponse = await checkPastTime(date)
+    if (checkPastTimeResponse) {
+      setErrorExsist(true)
       setErrorMessage(errorMessageForPastTimeError)
     }
     setNewTaskObj((prevTask) => ({
@@ -60,17 +53,13 @@ const AddNewTask = ({ tasksForActiveDate, setTasksForActiveDate }) => {
   }
 
   const handleAddTaskBtn = async () => {
-    const startLessEnd = compareStartEndMeeting(timeStart, timeEnd)
+    const startLessEnd = compareStartEndMeeting({ startTime: timeStart, endTime: timeEnd })
     if (startLessEnd) {
       setErrorExsist(true)
       setErrorMessage(errorMessageForCompareErrorTime)
       return
     }
-    if (
-      newTaskObj.taskValue.trim() === '' ||
-      newTaskObj.timeStart === '' ||
-      newTaskObj.timeEnd === ''
-    ) {
+    if (newTaskObj.taskValue.trim() === '' || newTaskObj.timeStart === '' || newTaskObj.timeEnd === '') {
       return
     }
     const createTimeSlot = await processTimeSlot(timeStart, timeEnd)
@@ -79,12 +68,7 @@ const AddNewTask = ({ tasksForActiveDate, setTasksForActiveDate }) => {
       setErrorMessage(crossingTimeMessage)
       return
     }
-    const createMeetReponse = await createMeet(
-      conferenceTopic,
-      timeStart,
-      timeEnd,
-      setErrorMessage
-    )
+    const createMeetReponse = await createMeet({ conferenceTopic, timeStart, timeEnd, setErrorExsist, setErrorMessage })
     if (!createMeetReponse || createMeetReponse.status !== 200) {
       setErrorExsist(true)
       setErrorMessage(sendErrorMessage)
