@@ -116,7 +116,6 @@ export const updateTimeSlots = async (
   const timeEnd = dateToNumber(end)
   const newTime = checkMatch.filter((time) => {
     if (time >= timebsoleteStart && time <= timeEnd && taskСreator === taskEditor) {
-      alert('ff')
       return false
     }
     return (

@@ -46,7 +46,7 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
       timeStart.$d,
       tasksForActiveDate[index].timeEnd
     )
-    if (compareStartEndMeeting) {
+    if (compareResponse) {
       setErrorExsist(compareResponse)
       setErrorMessage(errorMessageForCompareErrorTime)
       return
@@ -136,7 +136,7 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
       setTaggedDates((prevDates) => prevDates.filter((date) => date !== activeDate))
     }
   }
-  
+
   const handleZoomBtn = (index) => {
     window.location.href = tasksForActiveDate[index].meetingUrl
   }
