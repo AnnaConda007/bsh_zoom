@@ -1,9 +1,8 @@
-export const clientId = 'wYILEd3tQnCCk4CE6Jihxg'
-export const clientSecret = 'nRPLBGGecg3O2VaUre8c6C7xPvJTboaZ'
-export const zoomVebHookSecretToken = 'cLdi2VzFS3GIyTD5qYR3hQ'
+export const clientId = 'mkQg8GOmTSem7YxdUujxAA'
+export const clientSecret = 'YQElNfVwH7Wo7zhvF0WV5HmIZw6jqDr0'
 export const homeUrL = 'http://localhost:5173'
 export const redirectHomeUrL = `https://zoom.us/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(homeUrL)}`
-export const serverUrl = 'https://localhost:3000'
+export const serverUrl = 'https://servzoom.onrender.com'
 export const dataBaseUrl = 'https://test-f176b-default-rtdb.firebaseio.com/timeArr.json'
 export const autosaveTime = 604800000 // неделя
 export const disabledMeeting = 'Редактирование чужих задач невозможно'
