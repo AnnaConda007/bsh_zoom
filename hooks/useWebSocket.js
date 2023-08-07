@@ -5,12 +5,12 @@ import { DatesContext } from '../src/contexts/dates.context'
 const useWebSocket = () => {
   const { setUpDateTaggedDateNeed } = useContext(DatesContext)
 
-  const ws = new WebSocket(vebSocketUrl)
-  ws.onmessage = (message) => {
+  const wss = new WebSocket(vebSocketUrl)
+  wss.onmessage = (message) => {
     console.log(message)
     setUpDateTaggedDateNeed(true)
   }
-  ws.onerror = (error) => {
+  wss.onerror = (error) => {
     console.error(' ошибка webSocket :', error)
   }
 }
