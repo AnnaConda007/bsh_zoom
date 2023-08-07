@@ -6,7 +6,6 @@ export const clearMettingTimeArr = async ({ start, end }) => {
   let getTimeSlotsResponse = await fetch(dataBaseUrl)
   const timeSlotsJSON = await getTimeSlotsResponse.json()
   const timeSlots = timeSlotsJSON || []
- // console.log('получили слоты из бд для удаления', timeSlots)
   const newTimeSlot = []
   const timeStart = dateToNumber(start)
   const timeEnd = dateToNumber(end)

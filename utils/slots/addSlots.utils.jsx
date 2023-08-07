@@ -16,7 +16,6 @@ export const setSlotTime = async (start, end) => {
   const getTimeSlotsResponse = await fetch(dataBaseUrl)
   const timeSlotsJSON = await getTimeSlotsResponse.json()
   const timeSlots = timeSlotsJSON || []
-  //console.log('получили слоты из БД', timeSlots)
   const timeStart = dateToNumber(start)
   const timeEnd = dateToNumber(end)
   timeSlots.push(timeStart)
@@ -25,8 +24,6 @@ export const setSlotTime = async (start, end) => {
     const minut = timeStart + i * 60
     timeSlots.push(minut)
   }
-  //console.log('отправили  слоты в БД', timeSlots)
-
   return timeSlots
 }
 
