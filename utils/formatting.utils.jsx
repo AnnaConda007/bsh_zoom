@@ -12,28 +12,14 @@ export const formatedDateToUTS = (selectedTime, activeDate) => {
 }
 
 export const formatedDateFromUTStoDMY = (UTSTime) => {
-  let date = new Date(UTSTime) // используется для определения taggedDate
-  let formattedDate =
-    ('0' + date.getUTCDate()).slice(-2) +
-    '-' +
-    ('0' + (date.getUTCMonth() + 1)).slice(-2) +
-    '-' +
-    date.getUTCFullYear()
+  let date = new Date(UTSTime) // Используется для определения taggedDate
+  let formattedDate = ('0' + date.getUTCDate()).slice(-2) + '-' + ('0' + (date.getUTCMonth() + 1)).slice(-2) + '-' + date.getUTCFullYear()
   return formattedDate // Dd-mm-year
 }
 
 export const formatTimeFromUTSToUnix = (utsTime) => {
   let dateStr = utsTime
   let date = new Date(dateStr)
-  const timeStart = Math.floor(
-    Date.UTC(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      date.getHours(),
-      date.getMinutes(),
-      date.getSeconds()
-    ) / 1000
-  )
+  const timeStart = Math.floor(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()) / 1000)
   return timeStart //5445495498489
 }

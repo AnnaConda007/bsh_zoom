@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { serverUrl, clientId, clientSecret } from '../../contains'
+import { serverUrl, clientId, clientSecret } from '../contains'
 
 export const getZoomTokens = async (redirect) => {
   try {
@@ -34,5 +34,19 @@ export const updateAccesToken = async () => {
     return response.data
   } catch (error) {
     console.error('Ошибка при обновлении токена', error)
+  }
+}
+
+export const getListMeeting = async () => {
+  try {
+    let accessToken = localStorage.getItem('zoomAccesToken')
+    const response = await axios.get(`${serverUrl}/listMeetings`, {
+      params: {
+        accessToken: accessToken,
+      },
+    })
+    return response.data
+  } catch (error) {
+    throw error
   }
 }

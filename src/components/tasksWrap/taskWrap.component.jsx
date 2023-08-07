@@ -1,27 +1,16 @@
-import { useEffect, useContext } from 'react'
+import { useContext } from 'react'
 import AddNewTask from '../addNewTask/addNewTask'
 import AddedTasks from '../addedTasks/addedTasks'
-import { getConferenceInfo } from '../../../utils/getZoomData/meetingData.utils'
 import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
 import styles from './taskWrap.module.scss'
 import { TasksContext } from '../../contexts/tasks.context'
+import { useConferenceInfo } from '../../../hooks/useMeetingData'
 const TaskWrap = () => {
   const { activeDate } = useContext(DatesContext)
-  const { disabledDate, setErrorExsist, setErrorMessage } = useContext(ErrorContext)
+  const { disabledDate } = useContext(ErrorContext)
   const { tasksForActiveDate, setTasksForActiveDate } = useContext(TasksContext)
-  useEffect(() => {
-    const getTask = async () => {
-      try {
-        const task = await getConferenceInfo(activeDate, setErrorExsist, setErrorMessage)
-        setTasksForActiveDate(task)
-      } catch (error) {
-        console.error('Ошибка при попытке получения информации о конференциях на выбранную дату ', error)
-      }
-    }
-    getTask()
-  }, [activeDate])
-
+  useConferenceInfo()
   return (
     <>
       <div className={styles.planner}>

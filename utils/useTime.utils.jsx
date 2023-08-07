@@ -51,7 +51,7 @@ export const calculateDuration = ({ timeStart, timeEnd }) => {
   return minutes
 }
 
-export const compareStartEndMeeting = ({startTime, endTime}) => {
+export const compareStartEndMeeting = ({ startTime, endTime }) => {
   if (new Date(startTime) > new Date(endTime)) {
     return true
   } else {

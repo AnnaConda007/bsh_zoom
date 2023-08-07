@@ -10,13 +10,7 @@ const ModalBox = ({ setModal, modal }) => {
 
   return (
     <>
-      <Modal
-        onClose={handleClose}
-        className={styles.modal}
-        open={modal}
-        aria-labelledby='modal-modal-title'
-        aria-describedby='modal-modal-description'
-      >
+      <Modal onClose={handleClose} className={styles.modal} open={modal} aria-labelledby='modal-modal-title' aria-describedby='modal-modal-description'>
         <Box className={styles.box}>
           <div className={styles.btn_wrap}>
             <Button onClick={handleClose}>

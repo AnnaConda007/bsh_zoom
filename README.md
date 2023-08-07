@@ -15,10 +15,6 @@ npm run build
 
 npm run preview
 
-# форматирование файлов  
+# форматирование файлов
 
 npm run formatter
-
- 
-
- 

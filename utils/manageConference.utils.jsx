@@ -1,4 +1,4 @@
-import { updateAccesToken } from './getZoomData/tokens.utils'
+import { updateAccesToken } from './getZoomData'
 import { calculateDuration } from './useTime.utils'
 import { limitErrorMessage, serverUrl, serverErrorMessage } from '../contains'
 import axios from 'axios'
@@ -63,6 +63,7 @@ export const updateConferenceInfo = async ({ meetingId, newMeetingData, setError
     console.error('ошибка сервера при редактирвоании данных', error)
   }
 }
+
 export const deleteConference = async ({ meetingId, setErrorExsist, setErrorMessage, startTime, startEnd }) => {
   try {
     let accessToken = localStorage.getItem('zoomAccesToken')

@@ -5,7 +5,7 @@ import Calendar from '../../src/components/calendar/calendar.component'
 import { ErrorContext } from '../../src/contexts/error.context'
 import zoomAutenficationErrorMassage from '../../src/components/zoomAutenficationErrorMassage/zoomAutenficationErrorMassage.component'
 import { autosaveTime, homeUrL } from '../../contains'
-import { getZoomTokens } from '../../utils/getZoomData/tokens.utils'
+import { getZoomTokens } from '../../utils/getZoomData'
 
 const Home = () => {
   const navigate = useNavigate()

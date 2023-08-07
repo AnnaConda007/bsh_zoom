@@ -9,7 +9,7 @@ export const serverUrl = "https://localhost:3000";
 export const dataBaseUrl =
   "https://test-f176b-default-rtdb.firebaseio.com/timeArr.json";
 export const autosaveTime = 604800000; // неделя
-export const disabledMeeting = "чужая задача";
+export const disabledMeeting = "Редактирование чужих задач невозможно";
 export const errorMessageForCompareErrorTime =
   "Время начала конференции не может быть позже времени её окончания или совпадать с ней";
 export const errorMessageForPastTimeError =

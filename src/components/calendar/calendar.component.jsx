@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react'
+import { useState, useContext } from 'react'
 import { Badge } from '@mui/material'
 import { pickersDay } from './pickersDay-style'
 import { LocalizationProvider, DateCalendar, PickersDay } from '@mui/x-date-pickers'
@@ -8,58 +8,19 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/ru'
 import Header from '../header/header'
 import ModalBox from '../modal/modal'
-import { getTaggedDate, getConferenceInfo } from '../../../utils/getZoomData/meetingData.utils'
-import { vebSocketUrl } from '../../../contains'
 import { checkPastDate } from '../../../utils/useTime.utils'
 import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
-import { TasksContext } from '../../contexts/tasks.context'
+import useWebSocket from '../../../hooks/useWebSocket'
 import styles from './calendar.module.scss'
+import { useTaggedDates } from '../../../hooks/useMeetingData'
 
 const Calendar = () => {
-  const { setTasksForActiveDate } = useContext(TasksContext)
-  const { activeDate } = useContext(DatesContext)
   const [modal, setModal] = useState(false)
-  const { setActiveDate, taggedDates, setTaggedDates } = useContext(DatesContext)
-  const { setDisabledDate, setErrorExsist, setErrorMessage, errorExsist, errorMessage, autoHide } = useContext(ErrorContext)
-
-  const ws = new WebSocket(vebSocketUrl)
-  ws.onmessage = (message) => {
-    console.log('****')
-    const getDates = async () => {
-      try {
-        setTaggedDates(await getTaggedDate(setErrorExsist, setErrorMessage))
-      } catch (error) {
-        console.error('Ошибка при попытке получения TaggedDates ', error)
-      }
-    }
-    getDates()
-
-    const getTask = async () => {
-      if (!activeDate) return
-      try {
-        const task = await getConferenceInfo(activeDate, setErrorExsist, setErrorMessage)
-        setTasksForActiveDate(task)
-      } catch (error) {
-        console.error('Ошибка при попытке получения информации о конференциях на выбранную дату ', error)
-      }
-    }
-    getTask()
-  }
-  ws.onerror = (error) => {
-    console.error('WebSocket Error:', error)
-  }
-
-  useEffect(() => {
-    const getDates = async () => {
-      try {
-        setTaggedDates(await getTaggedDate(setErrorExsist, setErrorMessage))
-      } catch (error) {
-        console.error('Ошибка при попытке получения TaggedDates ', error)
-      }
-    }
-    getDates()
-  }, [])
+  const { setActiveDate, taggedDates } = useContext(DatesContext)
+  const { setDisabledDate, setErrorExsist, errorExsist, errorMessage, autoHide } = useContext(ErrorContext)
+  useWebSocket()
+  useTaggedDates()
 
   const handleDateClick = async (date) => {
     const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY')
@@ -75,6 +36,7 @@ const Calendar = () => {
     }
     setErrorExsist(false)
   }
+
   const slotProps = {
     day: (date) => {
       const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY')

@@ -13,13 +13,9 @@ import { DatesContext } from '../../contexts/dates.context'
 import { TasksContext } from '../../contexts/tasks.context'
 import { processTimeSlot } from '../../../utils/slots/addSlots.utils'
 import { crossingTimeMessage, errorMessageForCompareErrorTime, errorMessageForPastTimeError, sendErrorMessage } from '../../../contains'
+
 const AddNewTask = ({ tasksForActiveDate, setTasksForActiveDate }) => {
-  const defaultTask = {
-    taskValue: '',
-    timeStart: '',
-    timeEnd: '',
-    meetingUrl: '',
-  }
+  const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' }
   const [newTaskObj, setNewTaskObj] = useState(defaultTask)
   const { activeDate, taggedDates, setTaggedDates } = useContext(DatesContext)
   const { disabledDate, setErrorExsist, setErrorMessage } = useContext(ErrorContext)

@@ -11,13 +11,12 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
 import styles from './addedTasks.module.scss'
 import { deleteConference, updateConferenceInfo } from '../../../utils/manageConference.utils'
-import { calculateDuration, compareStartEndMeeting } from '../../../utils/useTime.utils'
+import { calculateDuration, compareStartEndMeeting, checkPastTime } from '../../../utils/useTime.utils'
 import { formatedDateToUTS } from '../../../utils/formatting.utils'
 import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
-import { errorMessageForCompareErrorTime, disabledMeeting } from '../../../contains'
-import { preLaunchCheckUpdateStartTime } from '../../../utils/check.utils'
-import { updateEndTimeSlots } from '../../../utils/slots/upDateSlots.utils'
+import { disabledMeeting, errorMessageForPastTimeError, errorMessageForCompareErrorTime } from '../../../contains'
+import { updateStartTimeSlots, updateEndTimeSlots } from '../../../utils/slots/upDateSlots.utils'
 
 const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
   const [isEditingIndex, setisEditingIndex] = useState(null)
@@ -27,8 +26,35 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
   const taskСreator = localStorage.getItem('email')
 
   const upDateStartTime = async (timeStart, index) => {
-    const checkResponse = await preLaunchCheckUpdateStartTime({ timeStart, index, setErrorExsist, setErrorMessage, tasksForActiveDate, activeDate })
-    if (!checkResponse) return
+    if (taskСreator !== tasksForActiveDate[index].creator) {
+      setErrorExsist(true)
+      setErrorMessage(disabledMeeting)
+      return
+    }
+    const checkPastTimeResponse = await checkPastTime(formatedDateToUTS(timeStart, activeDate))
+    if (checkPastTimeResponse) {
+      setErrorExsist(true)
+      setErrorMessage(errorMessageForPastTimeError)
+      return
+    }
+    const startLessEnd = compareStartEndMeeting({ startTime: timeStart.$d, endTime: tasksForActiveDate[index].timeEnd })
+    if (startLessEnd) {
+      setErrorExsist(true)
+      setErrorMessage(errorMessageForCompareErrorTime)
+      return
+    }
+    const updateStartTimeSlotsResponse = await updateStartTimeSlots({
+      obsoleteStart: `${tasksForActiveDate[index].timeStart}Z`,
+      start: formatedDateToUTS(timeStart, activeDate),
+      end: `${tasksForActiveDate[index].timeEnd}Z`,
+      taskСreator,
+      taskEditor: tasksForActiveDate[index].creator,
+    })
+    if (!updateStartTimeSlotsResponse) {
+      setErrorExsist(true)
+      setErrorMessage(crossingTimeMessage)
+      return
+    }
     const duration = calculateDuration({ timeStart, timeEnd: tasksForActiveDate[index].timeEnd })
     const meetingId = tasksForActiveDate[index].meetingId
     const newStartTimeValue = {
@@ -42,7 +68,7 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
     const compareResponse = compareStartEndMeeting({ startTime: tasksForActiveDate[index].timeStart, endTime: timeEnd.$d })
     if (compareResponse) {
       setErrorExsist(true)
-      setErrorMessage('errorMessageForCompareErrorTime')
+      setErrorMessage(errorMessageForCompareErrorTime)
       return
     }
     const updateEndTimeSlotsResponse = await updateEndTimeSlots({
@@ -66,6 +92,11 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
   }
 
   const handleEditBtn = (index) => {
+    if (taskСreator !== tasksForActiveDate[index].creator) {
+      setErrorExsist(true)
+      setErrorMessage(disabledMeeting)
+      return
+    }
     setisEditingIndex(index)
     setEditingValue(tasksForActiveDate[index].taskValue)
   }
