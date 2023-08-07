@@ -1,6 +1,6 @@
 export const clientId = 'mkQg8GOmTSem7YxdUujxAA'
 export const clientSecret = 'YQElNfVwH7Wo7zhvF0WV5HmIZw6jqDr0'
-export const homeUrL = 'http://localhost:5173'
+export const homeUrL = 'snazzy-muffin-3a5123.netlify.app'
 export const redirectHomeUrL = `https://zoom.us/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(homeUrL)}`
 export const serverUrl = 'https://servzoom.onrender.com'
 export const dataBaseUrl = 'https://test-f176b-default-rtdb.firebaseio.com/timeArr.json'
