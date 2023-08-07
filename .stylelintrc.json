@@ -2,13 +2,6 @@
   "extends": ["stylelint-config-standard", "stylelint-config-standard-scss"],
   "plugins": ["stylelint-order"],
   "rules": {
-    "order/properties-order": [
-      "display",
-      "width",
-      "height",
-      "margin",
-      "padding",
-      "..."
-    ]
+    "order/properties-order": ["display", "width", "height", "margin", "padding", "..."]
   }
 }

@@ -1,13 +1,9 @@
 {
   "overrides": [
     {
-      "files": [
-        "src/**/*.{js,jsx,json}",
-        "utils/**/*.{js,jsx,json}",
-        "routes/**/*.{js,jsx,json}"
-      ],
+      "files": ["**/*.{js,jsx,json}"],
       "options": {
-        "printWidth": 180,
+        "printWidth": 160,
         "useTabs": false,
         "tabWidth": 2,
         "singleQuote": true,
