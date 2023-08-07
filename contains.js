@@ -3,7 +3,7 @@ export const clientSecret = 'YQElNfVwH7Wo7zhvF0WV5HmIZw6jqDr0'
 export const homeUrL = 'https://snazzy-muffin-3a5123.netlify.app/'
 export const redirectHomeUrL = `https://zoom.us/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(homeUrL)}`
 export const serverUrl = 'https://servzoom.onrender.com'
-export const dataBaseUrl = 'https://test-f176b-default-rtdb.firebaseio.com/timeArr.json'
+export const dataBaseUrl = 'https://bsh-app-3e342-default-rtdb.firebaseio.com/timeArr.json'
 export const autosaveTime = 604800000 // неделя
 export const disabledMeeting = 'Редактирование чужих задач невозможно'
 export const errorMessageForCompareErrorTime = 'Время начала конференции не может быть позже времени её окончания или совпадать с ней'
