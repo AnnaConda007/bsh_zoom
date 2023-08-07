@@ -12,4 +12,4 @@ export const limitErrorMessage = 'Вы достигли предельного �
 export const serverErrorMessage = 'Ошибка при запросе к сервреру'
 export const crossingTimeMessage = 'Вы пытаетесь создать конференцию на время, которое уже занято или пересекается с другой встречей'
 export const sendErrorMessage = 'Ошибка при отправке данных'
-export const vebSocketUrl = 'ws://localhost:3001'
+export const vebSocketUrl = 'ws://https://servzoom.onrender.com'
