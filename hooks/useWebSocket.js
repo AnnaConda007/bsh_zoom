@@ -7,7 +7,6 @@ const useWebSocket = () => {
 
   const wss = new WebSocket(vebSocketUrl)
   wss.onmessage = (message) => {
-    console.log(message)
     setUpDateTaggedDateNeed(true)
   }
   wss.onerror = (error) => {
