@@ -152,7 +152,7 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
         {tasksForActiveDate.map((task, index) => {
           return (
             <div className={styles.tasks__task} key={`${index}-${task.timeStart} ${task.timeEnd}`}>
-              <span className={styles.tasks__user}>Организатор: {task.creator}</span>
+              <span className={styles.tasks__user}>Организатор: {task.creator || taskСreator}</span>
               <TextField
                 sx={{ border: '1px solid', borderRadius: '5px' }}
                 className={styles.planner__textField}
