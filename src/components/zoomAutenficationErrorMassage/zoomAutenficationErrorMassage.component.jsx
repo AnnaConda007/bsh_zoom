@@ -10,8 +10,8 @@ const zoomAutenficationErrorMassage = () => {
         target='_blank'
         rel='noreferrer'
         onClick={() => {
-          localStorage.removeItem('authorizationTime')
-          window.location.reload()
+          localStorage.removeItem('authorizationTime');
+          window.open('https://zoom.us/profile', '_blank');
         }}
       >
         Перейти на страницу Zoom профиля
