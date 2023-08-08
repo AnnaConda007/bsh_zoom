@@ -11,6 +11,8 @@ let hasRetried = false
 setInterval(() => {
   hasRetried = true
 }, 3540000) // 59 минут
+const urlParams = new URLSearchParams(window.location.search)
+const authorizationCode = urlParams.get('code')
 
 export const useTaggedDates = () => {
   const { setErrorExsist, setErrorMessage } = useContext(ErrorContext)
@@ -37,7 +39,7 @@ export const useTaggedDates = () => {
       } else if (error.response && error.response.data.code === 429) {
         setErrorExsist(true)
         setErrorMessage(limitErrorMessage)
-      } else {
+      } else if (authorizationCode !== null) {
         setErrorMessage(serverErrorMessage)
         setErrorExsist(true)
       }
@@ -94,7 +96,7 @@ export const useConferenceInfo = () => {
       } else if (error.response && error.response.data.code === 429) {
         setErrorExsist(true)
         setErrorMessage(limitErrorMessage)
-      } else {
+      } else if (authorizationCode !== null) {
         setErrorMessage(serverErrorMessage)
         setErrorExsist(true)
       }
