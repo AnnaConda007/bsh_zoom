@@ -44,14 +44,14 @@ function AuthorizationForm() {
         const data = await response.json()
         const errorMessage = data.error.message
         switch (errorMessage) {
-        case 'INVALID_PASSWORD':
-          setError('Неверный пароль')
-          break
-        case 'EMAIL_NOT_FOUND':
-          setError('Неверный email')
-          break
-        default:
-          console.error(error)
+          case 'INVALID_PASSWORD':
+            setError('Неверный пароль')
+            break
+          case 'EMAIL_NOT_FOUND':
+            setError('Неверный email')
+            break
+          default:
+            console.error(error)
         }
       }
     } catch (error) {
@@ -98,7 +98,7 @@ function AuthorizationForm() {
       </FormControl>
       <p className='text-danger'>{error}</p>
       <Button variant='contained' type='submit' autoComplete='off' sx={{ width: '30%' }}>
-        отправить
+        войти
       </Button>
     </form>
   )
