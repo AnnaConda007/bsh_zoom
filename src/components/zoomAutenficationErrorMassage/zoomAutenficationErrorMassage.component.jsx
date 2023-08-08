@@ -6,12 +6,11 @@ const zoomAutenficationErrorMassage = () => {
         повторите попытку входа.
       </p>
       <a
-        href='https://zoom.us/profile'
-        target='_blank'
         rel='noreferrer'
         onClick={() => {
-          localStorage.removeItem('authorizationTime');
-          window.open('https://zoom.us/profile', '_blank');
+          localStorage.removeItem('authorizationTime')
+          window.open('https://zoom.us/profile', '_blank')
+          window.location.reload()
         }}
       >
         Перейти на страницу Zoom профиля
