@@ -39,9 +39,6 @@ export const useTaggedDates = () => {
       } else if (error.response && error.response.data.code === 429) {
         setErrorExsist(true)
         setErrorMessage(limitErrorMessage)
-      } else if (authorizationCode !== null) {
-        setErrorMessage(serverErrorMessage)
-        setErrorExsist(true)
       }
       console.error('Ошибка при попытке получения ListMeeting', error)
     }
@@ -96,9 +93,6 @@ export const useConferenceInfo = () => {
       } else if (error.response && error.response.data.code === 429) {
         setErrorExsist(true)
         setErrorMessage(limitErrorMessage)
-      } else if (authorizationCode !== null) {
-        setErrorMessage(serverErrorMessage)
-        setErrorExsist(true)
       }
       console.error('Ошибка при попытке получения ListMeeting')
     }
