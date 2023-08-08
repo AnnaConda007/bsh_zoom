@@ -11,6 +11,7 @@ const zoomAutenficationErrorMassage = () => {
         onClick={() => {
           localStorage.removeItem('authorizationTime')
           window.open('https://zoom.us/profile', '_blank')
+          window.location.reload()
         }}
       >
         Перейти на страницу Zoom профиля
