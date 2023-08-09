@@ -7,6 +7,7 @@ import { limitErrorMessage, serverErrorMessage } from '../contains'
 import { DatesContext } from '../src/contexts/dates.context'
 import { calculatTimeEnd } from '../utils/useTime.utils'
 import { TasksContext } from '../src/contexts/tasks.context'
+import { homeUrL } from '../contains'
 let hasRetried = false
 setInterval(() => {
   hasRetried = true
@@ -18,7 +19,7 @@ export const useTaggedDates = () => {
   const getDates = async () => {
     try {
       const taggedDateArr = []
-      const conferenceData = await getListMeeting()
+      const conferenceData = await getListMeeting(homeUrL)
       const meetings = conferenceData.meetings
       meetings.forEach((miting) => {
         const startTime = miting.start_time

@@ -37,7 +37,10 @@ export const updateAccesToken = async () => {
   }
 }
 
-export const getListMeeting = async () => {
+export const getListMeeting = async (redirect) => {
+  if (!localStorage.getItem('zoomRefreshToken')) {
+    await getZoomTokens(redirect)
+  }
   try {
     let accessToken = localStorage.getItem('zoomAccesToken')
     const response = await axios.get(`${serverUrl}/listMeetings`, {
