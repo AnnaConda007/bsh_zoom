@@ -37,15 +37,6 @@ const Home = () => {
   }, [])
 
   useEffect(() => {
-    if (!localStorage.getItem('zoomRefreshToken')) {
-      const getTokens = async () => {
-        await getZoomTokens(homeUrL)
-      }
-      getTokens()
-    }
-  }, [])
-
-  useEffect(() => {
     const isExpired = authorizationTime + timeToAutosave
     if (!authorizationTime || currentTime > isExpired) {
       navigate('authorization')

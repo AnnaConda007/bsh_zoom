@@ -11,6 +11,7 @@ let hasRetried = false
 setInterval(() => {
   hasRetried = true
 }, 3540000) // 59 минут
+import { homeUrL } from '../contains'
 const urlParams = new URLSearchParams(window.location.search)
 const authorizationCode = urlParams.get('code')
 
@@ -20,7 +21,7 @@ export const useTaggedDates = () => {
   const getDates = async () => {
     try {
       const taggedDateArr = []
-      const conferenceData = await getListMeeting()
+      const conferenceData = await getListMeeting(homeUrL)
       const meetings = conferenceData.meetings
       meetings.forEach((miting) => {
         const startTime = miting.start_time
