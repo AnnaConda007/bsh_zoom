@@ -23,7 +23,7 @@ const AddNewTask = ({ tasksForActiveDate, setTasksForActiveDate }) => {
 
   const fullnessTimeForNewTask = async (selectedTime, timeKey) => {
     const date = formatedDateToUTS(selectedTime, activeDate)
-    const checkPastTimeResponse = await checkPastTime(date)
+    const checkPastTimeResponse = await checkPastTime(selectedTime)
     if (checkPastTimeResponse) {
       setErrorExsist(true)
       setErrorMessage(errorMessageForPastTimeError)

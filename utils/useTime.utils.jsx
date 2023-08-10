@@ -5,9 +5,7 @@ export const getcurrentTime = async () => {
     const response = await fetch('https://worldtimeapi.org/api/timezone/Europe/Moscow')
     const responseJSON = await response.json()
     const dateTime = DateTime.fromISO(responseJSON.datetime).setZone('Europe/Moscow')
-    const dateStr = dateTime.toFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-    const moskowTime = Math.floor(new DateTime(dateStr) / 1000)
-    return moskowTime
+    return Math.floor(dateTime.toSeconds())
   } catch (error) {
     console.error('Error getting getcurrent time :', error)
   }
@@ -24,15 +22,15 @@ export const checkPastDate = async (activeDate) => {
 }
 
 export const checkPastTime = async (time) => {
-  const moskowTime = await getcurrentTime()
-  const selectedTime = Math.floor(DateTime.fromISO(time.replace('Z', '')) / 1000)
-  if (moskowTime > selectedTime) {
+  const userDateTime = DateTime.fromJSDate(time.$d)
+  const moscowTimeWithSameLocalTime = userDateTime.setZone('Europe/Moscow', { keepLocalTime: true })
+  const mosdcowTime = await getcurrentTime()
+  if (mosdcowTime > moscowTimeWithSameLocalTime.toSeconds()) {
     return true
   } else {
     return false
   }
 }
-
 export const dateToNumber = (date) => {
   const number = Math.floor(new Date(date).getTime() / 1000)
   return number
