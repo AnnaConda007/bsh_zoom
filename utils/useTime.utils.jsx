@@ -22,8 +22,15 @@ export const checkPastDate = async (activeDate) => {
 }
 
 export const checkPastTime = async (time) => {
-  const userDateTime = DateTime.fromJSDate(time.$d)
-  const moscowTimeWithSameLocalTime = userDateTime.setZone('Europe/Moscow', { keepLocalTime: true })
+  const userDateTime = DateTime.fromISO(time, { zone: 'UTC' })
+  const moscowTimeWithSameLocalTime = DateTime.fromObject({
+    year: userDateTime.year,
+    month: userDateTime.month,
+    day: userDateTime.day,
+    hour: userDateTime.hour,
+    minute: userDateTime.minute,
+    second: userDateTime.second,
+  }).setZone('Europe/Moscow', { keepLocalTime: true })
   const mosdcowTime = await getcurrentTime()
   if (mosdcowTime > moscowTimeWithSameLocalTime.toSeconds()) {
     return true

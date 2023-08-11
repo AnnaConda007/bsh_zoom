@@ -30,7 +30,7 @@ export const createMeet = async ({ conferenceTopic, timeStart, timeEnd, setError
     } else if (error.response && error.response.data.code === 429) {
       setErrorExsist(true)
       setErrorMessage(limitErrorMessage)
-    } else {
+    } else if (error.code === 'ERR_NETWORK') {
       setErrorExsist(true)
       setErrorMessage(serverErrorMessage)
     }
@@ -56,7 +56,7 @@ export const updateConferenceInfo = async ({ meetingId, newMeetingData, setError
     } else if (error.response && error.response.data.code === 429) {
       setErrorExsist(true)
       setErrorMessage(limitErrorMessage)
-    } else {
+    } else if (error.code === 'ERR_NETWORK') {
       setErrorExsist(true)
       setErrorMessage(serverErrorMessage)
     }
@@ -88,7 +88,7 @@ export const deleteConference = async ({ meetingId, setErrorExsist, setErrorMess
     } else if (error.response && error.response.data.code === 429) {
       setErrorExsist(true)
       setErrorMessage(limitErrorMessage)
-    } else {
+    } else if (error.code === 'ERR_NETWORK') {
       setErrorExsist(true)
       setErrorMessage(serverErrorMessage)
     }

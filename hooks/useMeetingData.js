@@ -32,13 +32,12 @@ export const useTaggedDates = () => {
       setUpDateTaggedDateNeed(false)
     } catch (error) {
       if (error.response && error.response.data.code === 124 && hasRetried === false) {
-        hasRetried = true
         await updateAccesToken()
         return await getDates(setErrorExsist, setErrorMessage)
       } else if (error.response && error.response.data.code === 429) {
         setErrorExsist(true)
         setErrorMessage(limitErrorMessage)
-      } else {
+      } else if (error.code === 'ERR_NETWORK') {
         setErrorMessage(serverErrorMessage)
         setErrorExsist(true)
       }
@@ -89,17 +88,16 @@ export const useConferenceInfo = () => {
       setUpDateTaggedDateNeed(false)
     } catch (error) {
       if (error.response && error.response.data.code === 124 && hasRetried === false) {
-        hasRetried = true
         await updateAccesToken()
         return await getInfo()
       } else if (error.response && error.response.data.code === 429) {
         setErrorExsist(true)
         setErrorMessage(limitErrorMessage)
-      } else {
+      } else if (error.code === 'ERR_NETWORK') {
         setErrorMessage(serverErrorMessage)
         setErrorExsist(true)
       }
-      console.error('Ошибка при попытке получения ListMeeting')
+      console.error('Ошибка при попытке получения ListMeeting', error.code)
     }
   }
   useEffect(() => {
