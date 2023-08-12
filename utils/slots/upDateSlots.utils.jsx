@@ -14,6 +14,7 @@ export const clearMettingTimeArr = async ({ start, end }) => {
       newTimeSlot.push(time)
     }
   })
+  console.log('отправлено при удлании', newTimeSlot)
   await pushTimeSlot(newTimeSlot)
   return true
 }
@@ -22,20 +23,17 @@ export const updateStartTimeSlots = async ({ obsoleteStart, start, end, taskСre
   const checkMatch = await checkMatchSlotTime(start, end)
   if (checkMatch.length === 0) {
     await clearMettingTimeArr({ start: obsoleteStart, end: end })
-    processTimeSlot(start, end)
+    await processTimeSlot(start, end)
     return true
   }
   const startObsoleteNum = dateToNumber(obsoleteStart)
   const endNum = dateToNumber(end)
   const matchList = checkMatch.filter((time) => {
-    if (time >= startObsoleteNum && time <= endNum && taskСreator === taskEditor) {
-      return false
-    }
-    return (time <= startObsoleteNum && time >= endNum) || (time >= startObsoleteNum && time <= endNum)
+    return time < startObsoleteNum || time > endNum
   })
   if (matchList.length === 0) {
     await clearMettingTimeArr({ start: obsoleteStart, end: end })
-    processTimeSlot(start, end)
+    await processTimeSlot(start, end)
     return true
   }
 }
@@ -44,21 +42,17 @@ export const updateEndTimeSlots = async ({ start, obsoleteEnd, end, taskСreator
   const checkMatch = await checkMatchSlotTime(start, end)
   if (checkMatch.length === 0) {
     await clearMettingTimeArr({ start: start, end: obsoleteEnd })
-    processTimeSlot(start, end)
+    await processTimeSlot(start, end)
     return true
   }
   const startNum = dateToNumber(start)
-  const EndObsoleteNum = dateToNumber(obsoleteEnd)
-
+  const obsoletEndNum = dateToNumber(obsoleteEnd)
   const matchList = checkMatch.filter((time) => {
-    if (time >= startNum && time <= EndObsoleteNum && taskСreator === taskEditor) {
-      return false
-    }
-    return (time <= startNum && time >= EndObsoleteNum) || (time >= start && time <= EndObsoleteNum)
+    return time < startNum || time > obsoletEndNum
   })
   if (matchList.length === 0) {
-    await clearMettingTimeArr({ start: start, end: obsoleteEnd })
-    processTimeSlot(start, end)
+    await clearMettingTimeArr({ start: start, end: end })
+    await processTimeSlot(start, end)
     return true
   }
 }

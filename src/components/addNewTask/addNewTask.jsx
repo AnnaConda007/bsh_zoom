@@ -66,9 +66,7 @@ const AddNewTask = ({ tasksForActiveDate, setTasksForActiveDate }) => {
     }
     const createMeetReponse = await createMeet({ conferenceTopic, timeStart, timeEnd, setErrorExsist, setErrorMessage })
     if (!createMeetReponse || createMeetReponse.status !== 200) {
-      setErrorExsist(true)
-      setErrorMessage(sendErrorMessage)
-      return
+    //    отменить бд
     }
     const updatedTasks = [...tasksForActiveDate]
     updatedTasks.push(newTaskObj)

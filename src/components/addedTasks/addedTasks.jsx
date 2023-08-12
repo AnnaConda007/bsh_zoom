@@ -15,7 +15,7 @@ import { calculateDuration, compareStartEndMeeting, checkPastTime } from '../../
 import { formatedDateToUTS } from '../../../utils/formatting.utils'
 import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
-import { disabledMeeting, errorMessageForPastTimeError, errorMessageForCompareErrorTime } from '../../../contains'
+import { disabledMeeting, errorMessageForPastTimeError, errorMessageForCompareErrorTime , crossingTimeMessage} from '../../../contains'
 import { updateStartTimeSlots, updateEndTimeSlots } from '../../../utils/slots/upDateSlots.utils'
 
 const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
