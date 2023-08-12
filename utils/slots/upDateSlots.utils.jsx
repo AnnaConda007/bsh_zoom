@@ -1,5 +1,5 @@
 import { dateToNumber } from '../useTime.utils'
-import { checkMatchSlotTime, processTimeSlot, pushTimeSlot } from './addSlots.utils'
+import { checkMatchSlotTime, processTimeSlot, pushTimeSlot, setSlotTime } from './addSlots.utils'
 import { dataBaseUrl } from '../../contains'
 
 export const clearMettingTimeArr = async ({ start, end }) => {
@@ -33,7 +33,9 @@ export const updateStartTimeSlots = async ({ obsoleteStart, start, end, taskСre
   })
   if (matchList.length === 0) {
     await clearMettingTimeArr({ start: obsoleteStart, end: end })
-    await processTimeSlot(start, end)
+    const clots = await setSlotTime(start, end)
+    await pushTimeSlot(clots)
+    //await processTimeSlot(start, end)
     return true
   }
 }
@@ -51,8 +53,9 @@ export const updateEndTimeSlots = async ({ start, obsoleteEnd, end, taskСreator
     return time < startNum || time > obsoletEndNum
   })
   if (matchList.length === 0) {
-    await clearMettingTimeArr({ start: start, end: end })
-    await processTimeSlot(start, end)
+    await clearMettingTimeArr({ start: start, end: obsoleteEnd })
+    const clots = await setSlotTime(start, end)
+    await pushTimeSlot(clots)
     return true
   }
 }
