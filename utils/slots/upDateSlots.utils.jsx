@@ -19,12 +19,12 @@ export const clearMettingTimeArr = async ({ start, end }) => {
   }
 }
 
-export const updateStartTimeSlots = async ({ obsoleteStart, start, end }) => {
-  const timeSlots = await getTimeSlots()
+export const updateStartTimeSlots = async ({ obsoleteStart, start, end, setErrorExsist, setErrorMessage }) => {
+  const timeSlots = await getTimeSlots(setErrorExsist, setErrorMessage)
   const matchingTimeSlots = await getMatchingTimeSlots(timeSlots, start, end)
   if (matchingTimeSlots.length === 0) {
     await clearMettingTimeArr({ start: obsoleteStart, end: end })
-    const newtimeSlotsJSON = await getTimeSlots()
+    const newtimeSlotsJSON = await getTimeSlots(setErrorExsist, setErrorMessage)
     const newTimeSlots = await generateTimeSlotsInRange(newtimeSlotsJSON, start, end)
     await pushTimeSlot(newTimeSlots)
     return true
@@ -36,19 +36,19 @@ export const updateStartTimeSlots = async ({ obsoleteStart, start, end }) => {
   })
   if (matchListOutsideOfObsoleteInterval.length === 0) {
     await clearMettingTimeArr({ start: obsoleteStart, end: end })
-    const timeSlotsAfterDeletion = await getTimeSlots()
+    const timeSlotsAfterDeletion = await getTimeSlots(setErrorExsist, setErrorMessage)
     const newTimeSlots = await generateTimeSlotsInRange(timeSlotsAfterDeletion, start, end)
     await pushTimeSlot(newTimeSlots)
     return true
   }
 }
 
-export const updateEndTimeSlots = async ({ start, obsoleteEnd, end }) => {
-  const timeSlots = await getTimeSlots()
+export const updateEndTimeSlots = async ({ start, obsoleteEnd, end, setErrorExsist, setErrorMessage }) => {
+  const timeSlots = await getTimeSlots(setErrorExsist, setErrorMessage)
   const matchingTimeSlots = await getMatchingTimeSlots(timeSlots, start, end)
   if (matchingTimeSlots.length === 0) {
     await clearMettingTimeArr({ start: start, end: obsoleteEnd })
-    const newtimeSlots = await getTimeSlots()
+    const newtimeSlots = await getTimeSlots(setErrorExsist, setErrorMessage)
     const newTimeSlots = await generateTimeSlotsInRange(newtimeSlots, start, end)
     await pushTimeSlot(newTimeSlots)
   }
@@ -59,7 +59,7 @@ export const updateEndTimeSlots = async ({ start, obsoleteEnd, end }) => {
   })
   if (matchListOutsideOfObsoleteInterval.length === 0) {
     await clearMettingTimeArr({ start: start, end: obsoleteEnd })
-    const timeSlotsAfterDeletion = (await getTimeSlots()) || []
+    const timeSlotsAfterDeletion = await getTimeSlots(setErrorExsist, setErrorMessage)
     const newTimeSlots = await generateTimeSlotsInRange(timeSlotsAfterDeletion, start, end)
     await pushTimeSlot(newTimeSlots)
     return true

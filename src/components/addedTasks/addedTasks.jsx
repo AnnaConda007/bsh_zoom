@@ -35,16 +35,16 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
     if (checkPastTimeResponse) {
       return
     }
-    const startLessEnd = compareStartEndMeeting({ startTime: timeStart.$d, endTime: tasksForActiveDate[index].timeEnd })
+    const startLessEnd = compareStartEndMeeting({ startTime: timeStart.$d, endTime: tasksForActiveDate[index].timeEnd , setErrorExsist, setErrorMessage})
     if (startLessEnd) {
-      setErrorExsist(true)
-      setErrorMessage(errorMessageForCompareErrorTime)
       return
     }
     const updateStartTimeSlotsResponse = await updateStartTimeSlots({
       obsoleteStart: `${tasksForActiveDate[index].timeStart}Z`,
       start: formatedDateToUTS(timeStart, activeDate),
       end: `${tasksForActiveDate[index].timeEnd}Z`,
+      setErrorExsist,
+      setErrorMessage,
     })
     if (!updateStartTimeSlotsResponse) {
       setErrorExsist(true)
@@ -71,6 +71,8 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
       start: `${tasksForActiveDate[index].timeStart}Z`,
       obsoleteEnd: `${tasksForActiveDate[index].timeEnd}Z`,
       end: formatedDateToUTS(timeEnd, activeDate),
+      setErrorExsist,
+      setErrorMessage,
     })
     if (!updateEndTimeSlotsResponse) {
       setErrorExsist(true)
