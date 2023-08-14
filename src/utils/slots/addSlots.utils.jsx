@@ -1,6 +1,6 @@
 import { dateToNumber } from '../useTime.utils'
-import { dataBaseUrl } from '../../contains'
-import { crossingTimeMessage, sendErrorMessage } from '../../contains'
+import { dataBaseUrl } from '../../../contains'
+import { crossingTimeMessage, sendErrorMessage } from '../../../contains'
 
 export const getTimeSlots = async (setErrorExsist, setErrorMessage) => {
   const response = await fetch(dataBaseUrl)

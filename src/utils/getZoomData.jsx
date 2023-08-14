@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { serverUrl, clientId, clientSecret } from '../contains'
+import { serverUrl, clientId, clientSecret } from '../../contains'
 
 export const getZoomTokens = async (redirect) => {
   try {

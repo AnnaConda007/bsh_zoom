@@ -1,13 +1,13 @@
 import { useContext, useEffect } from 'react'
-import { ErrorContext } from '../src/contexts/error.context'
+import { ErrorContext } from '../contexts/error.context'
 import { getListMeeting } from '../utils/getZoomData'
 import { formatedDateFromUTStoDMY } from '../utils/formatting.utils'
 import { updateAccesToken } from '../utils/getZoomData'
-import { limitErrorMessage, serverErrorMessage } from '../contains'
-import { DatesContext } from '../src/contexts/dates.context'
+import { limitErrorMessage, serverErrorMessage } from '../../contains'
+import { DatesContext } from '../contexts/dates.context'
 import { calculatTimeEnd } from '../utils/useTime.utils'
-import { TasksContext } from '../src/contexts/tasks.context'
-import { homeUrL } from '../contains'
+import { TasksContext } from '../contexts/tasks.context'
+import { homeUrL } from '../../contains'
 let hasRetried = false
 setInterval(() => {
   hasRetried = true

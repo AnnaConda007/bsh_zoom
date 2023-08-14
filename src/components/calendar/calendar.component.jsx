@@ -8,12 +8,12 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/ru'
 import Header from '../header/header'
 import ModalBox from '../modal/modal'
-import { checkPastDate } from '../../../utils/useTime.utils'
+import { checkPastDate } from '../../utils/useTime.utils'
 import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
-import useWebSocket from '../../../hooks/useWebSocket'
+import useWebSocket from '../../hooks/useWebSocket'
 import styles from './calendar.module.scss'
-import { useTaggedDates } from '../../../hooks/useMeetingData'
+import { useTaggedDates } from '../../hooks/useMeetingData'
 
 const Calendar = () => {
   const [modal, setModal] = useState(false)

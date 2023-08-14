@@ -1,11 +1,10 @@
 import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getcurrentTime } from '../../utils/useTime.utils'
+import { getcurrentTime } from '../../src/utils/useTime.utils'
 import Calendar from '../../src/components/calendar/calendar.component'
 import { ErrorContext } from '../../src/contexts/error.context'
 import zoomAutenficationErrorMassage from '../../src/components/zoomAutenficationErrorMassage/zoomAutenficationErrorMassage.component'
-import { autosaveTime, homeUrL } from '../../contains'
-import { getZoomTokens } from '../../utils/getZoomData'
+import { autosaveTime, homeUrL } from '../../contains' 
 
 const Home = () => {
   const navigate = useNavigate()

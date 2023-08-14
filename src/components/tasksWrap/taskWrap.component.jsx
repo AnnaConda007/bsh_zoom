@@ -5,7 +5,7 @@ import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
 import styles from './taskWrap.module.scss'
 import { TasksContext } from '../../contexts/tasks.context'
-import { useConferenceInfo } from '../../../hooks/useMeetingData'
+import { useConferenceInfo } from '../../hooks/useMeetingData'
 const TaskWrap = () => {
   const { activeDate } = useContext(DatesContext)
   const { disabledDate } = useContext(ErrorContext)

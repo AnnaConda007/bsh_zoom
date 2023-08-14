@@ -10,13 +10,13 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
 import styles from './addedTasks.module.scss'
-import { deleteConference, updateConferenceInfo } from '../../../utils/manageConference.utils'
-import { calculateDuration, compareStartEndMeeting, checkPastTime } from '../../../utils/useTime.utils'
-import { formatedDateToUTS } from '../../../utils/formatting.utils'
+import { deleteConference, updateConferenceInfo } from '../../utils/manageConference.utils'
+import { calculateDuration, compareStartEndMeeting, checkPastTime } from '../../utils/useTime.utils'
+import { formatedDateToUTS } from '../../utils/formatting.utils'
 import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
 import { disabledMeeting, errorMessageForPastTimeError, errorMessageForCompareErrorTime, crossingTimeMessage } from '../../../contains'
-import { updateStartTimeSlots, updateEndTimeSlots } from '../../../utils/slots/upDateSlots.utils'
+import { updateStartTimeSlots, updateEndTimeSlots } from '../../utils/slots/upDateSlots.utils'
 
 const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
   const [isEditingIndex, setisEditingIndex] = useState(null)

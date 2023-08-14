@@ -5,13 +5,13 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { TimePicker } from '@mui/x-date-pickers/TimePicker'
 import styles from './addNewTask.module.scss'
-import { formatedDateToUTS } from '../../../utils/formatting.utils'
-import { checkPastTime, compareStartEndMeeting } from '../../../utils/useTime.utils'
-import { createMeet } from '../../../utils/manageConference.utils'
+import { formatedDateToUTS } from '../../utils/formatting.utils'
+import { checkPastTime, compareStartEndMeeting } from '../../utils/useTime.utils'
+import { createMeet } from '../../utils/manageConference.utils'
 import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
 import { TasksContext } from '../../contexts/tasks.context'
-import { processAndPushTimeSlot } from '../../../utils/slots/addSlots.utils'
+import { processAndPushTimeSlot } from '../../utils/slots/addSlots.utils'
 
 const AddNewTask = ({  setTasksForActiveDate }) => {
   const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' }

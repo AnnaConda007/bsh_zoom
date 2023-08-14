@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { errorMessageForCompareErrorTime, errorMessageForPastTimeError } from '../contains'
+import { errorMessageForCompareErrorTime, errorMessageForPastTimeError } from '../../contains'
 export const getcurrentTime = async () => {
   try {
     const response = await fetch('https://worldtimeapi.org/api/timezone/Europe/Moscow')

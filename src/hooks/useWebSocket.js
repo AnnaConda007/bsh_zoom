@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react'
-import { vebSocketUrl } from '../contains'
-import { DatesContext } from '../src/contexts/dates.context'
+import { vebSocketUrl } from '../../contains'
+import { DatesContext } from '../contexts/dates.context'
 const useWebSocket = () => {
   const { setUpDateTaggedDateNeed } = useContext(DatesContext)
   useEffect(() => {
