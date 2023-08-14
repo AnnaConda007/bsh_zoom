@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-
+import { errorMessageForCompareErrorTime, errorMessageForPastTimeError } from '../contains'
 export const getcurrentTime = async () => {
   try {
     const response = await fetch('https://worldtimeapi.org/api/timezone/Europe/Moscow')
@@ -21,8 +21,8 @@ export const checkPastDate = async (activeDate) => {
   }
 }
 
-export const checkPastTime = async (time) => {
-  const userDateTime = DateTime.fromISO(time, { zone: 'UTC' })
+export const checkPastTime = async ({ date, setErrorExsist, setErrorMessage }) => {
+  const userDateTime = DateTime.fromISO(date, { zone: 'UTC' })
   const moscowTimeWithSameLocalTime = DateTime.fromObject({
     year: userDateTime.year,
     month: userDateTime.month,
@@ -33,6 +33,8 @@ export const checkPastTime = async (time) => {
   }).setZone('Europe/Moscow', { keepLocalTime: true })
   const mosdcowTime = await getcurrentTime()
   if (mosdcowTime > moscowTimeWithSameLocalTime.toSeconds()) {
+    setErrorExsist(true)
+    setErrorMessage(errorMessageForPastTimeError)
     return true
   } else {
     return false
@@ -56,8 +58,10 @@ export const calculateDuration = ({ timeStart, timeEnd }) => {
   return minutes
 }
 
-export const compareStartEndMeeting = ({ startTime, endTime }) => {
+export const compareStartEndMeeting = ({ startTime, endTime, setErrorExsist, setErrorMessage }) => {
   if (new Date(startTime) > new Date(endTime)) {
+    setErrorExsist(true)
+    setErrorMessage(errorMessageForCompareErrorTime)
     return true
   } else {
     return false

@@ -15,7 +15,7 @@ import { calculateDuration, compareStartEndMeeting, checkPastTime } from '../../
 import { formatedDateToUTS } from '../../../utils/formatting.utils'
 import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
-import { disabledMeeting, errorMessageForPastTimeError, errorMessageForCompareErrorTime , crossingTimeMessage} from '../../../contains'
+import { disabledMeeting, errorMessageForPastTimeError, errorMessageForCompareErrorTime, crossingTimeMessage } from '../../../contains'
 import { updateStartTimeSlots, updateEndTimeSlots } from '../../../utils/slots/upDateSlots.utils'
 
 const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
@@ -31,10 +31,8 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
       setErrorMessage(disabledMeeting)
       return
     }
-    const checkPastTimeResponse = await checkPastTime(formatedDateToUTS(timeStart, activeDate))
+    const checkPastTimeResponse = await checkPastTime({ date: formatedDateToUTS(timeStart, activeDate), setErrorExsist, setErrorMessage })
     if (checkPastTimeResponse) {
-      setErrorExsist(true)
-      setErrorMessage(errorMessageForPastTimeError)
       return
     }
     const startLessEnd = compareStartEndMeeting({ startTime: timeStart.$d, endTime: tasksForActiveDate[index].timeEnd })
@@ -47,8 +45,6 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
       obsoleteStart: `${tasksForActiveDate[index].timeStart}Z`,
       start: formatedDateToUTS(timeStart, activeDate),
       end: `${tasksForActiveDate[index].timeEnd}Z`,
-      taskСreator,
-      taskEditor: tasksForActiveDate[index].creator,
     })
     if (!updateStartTimeSlotsResponse) {
       setErrorExsist(true)
@@ -75,8 +71,6 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
       start: `${tasksForActiveDate[index].timeStart}Z`,
       obsoleteEnd: `${tasksForActiveDate[index].timeEnd}Z`,
       end: formatedDateToUTS(timeEnd, activeDate),
-      taskСreator,
-      taskEditor: tasksForActiveDate[index].creator,
     })
     if (!updateEndTimeSlotsResponse) {
       setErrorExsist(true)

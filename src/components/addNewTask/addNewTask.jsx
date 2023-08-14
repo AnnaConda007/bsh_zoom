@@ -11,10 +11,9 @@ import { createMeet } from '../../../utils/manageConference.utils'
 import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
 import { TasksContext } from '../../contexts/tasks.context'
-import { processTimeSlot } from '../../../utils/slots/addSlots.utils'
-import { crossingTimeMessage, errorMessageForCompareErrorTime, errorMessageForPastTimeError, sendErrorMessage } from '../../../contains'
+import { processAndPushTimeSlot } from '../../../utils/slots/addSlots.utils'
 
-const AddNewTask = ({ tasksForActiveDate, setTasksForActiveDate }) => {
+const AddNewTask = ({  setTasksForActiveDate }) => {
   const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' }
   const [newTaskObj, setNewTaskObj] = useState(defaultTask)
   const { activeDate, taggedDates, setTaggedDates } = useContext(DatesContext)
@@ -23,11 +22,7 @@ const AddNewTask = ({ tasksForActiveDate, setTasksForActiveDate }) => {
 
   const fullnessTimeForNewTask = async (selectedTime, timeKey) => {
     const date = formatedDateToUTS(selectedTime, activeDate)
-    const checkPastTimeResponse = await checkPastTime(date)
-    if (checkPastTimeResponse) {
-      setErrorExsist(true)
-      setErrorMessage(errorMessageForPastTimeError)
-    }
+    await checkPastTime({ date, setErrorExsist, setErrorMessage })
     setNewTaskObj((prevTask) => ({
       ...prevTask,
       [timeKey]: selectedTime,
@@ -49,28 +44,14 @@ const AddNewTask = ({ tasksForActiveDate, setTasksForActiveDate }) => {
   }
 
   const handleAddTaskBtn = async () => {
-    const startLessEnd = compareStartEndMeeting({ startTime: timeStart, endTime: timeEnd })
-    if (startLessEnd) {
-      setErrorExsist(true)
-      setErrorMessage(errorMessageForCompareErrorTime)
-      return
-    }
-    if (newTaskObj.taskValue.trim() === '' || newTaskObj.timeStart === '' || newTaskObj.timeEnd === '') {
-      return
-    }
-    const createTimeSlot = await processTimeSlot(timeStart, timeEnd)
-    if (!createTimeSlot) {
-      setErrorExsist(true)
-      setErrorMessage(crossingTimeMessage)
-      return
-    }
+    const startLessEnd = compareStartEndMeeting({ startTime: timeStart, endTime: timeEnd, setErrorExsist, setErrorMessage })
+    if (startLessEnd) return
+    if (newTaskObj.taskValue.trim() === '' || newTaskObj.timeStart === '' || newTaskObj.timeEnd === '') return
+    const succesCeateTimeSlot = await processAndPushTimeSlot({ timeStart, timeEnd, setErrorExsist, setErrorMessage })
+    if (!succesCeateTimeSlot) return
     const createMeetReponse = await createMeet({ conferenceTopic, timeStart, timeEnd, setErrorExsist, setErrorMessage })
-    if (!createMeetReponse || createMeetReponse.status !== 200) {
-    //    отменить бд
-    }
-    const updatedTasks = [...tasksForActiveDate]
-    updatedTasks.push(newTaskObj)
-    setTasksForActiveDate(updatedTasks)
+    if (!createMeetReponse) return
+    setTasksForActiveDate((prevTasks) => [...prevTasks, newTaskObj])
     setNewTaskObj(defaultTask)
     if (!taggedDates.includes(activeDate)) {
       setTaggedDates((prevDates) => [...prevDates, activeDate])

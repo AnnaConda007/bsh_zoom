@@ -13,8 +13,7 @@ export const createMeet = async ({ conferenceTopic, timeStart, timeEnd, setError
       creator: userName,
       value: conferenceTopic,
     }
-
-    const response = await axios.get(`${serverUrl}/newConference`, {
+    await axios.get(`${serverUrl}/newConference`, {
       params: {
         conferenceTopic: JSON.stringify(topicValue),
         timeStart: timeStart,
@@ -22,7 +21,7 @@ export const createMeet = async ({ conferenceTopic, timeStart, timeEnd, setError
         token: accessToken,
       },
     })
-    return response
+    return true
   } catch (error) {
     if (error.response && error.response.data.code === 124) {
       await updateAccesToken()
