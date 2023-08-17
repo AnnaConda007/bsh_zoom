@@ -14,6 +14,7 @@ const Header = () => {
               localStorage.removeItem('authorizationTime')
               localStorage.removeItem('zoomRefreshToken')
               localStorage.removeItem('zoomAccesToken')
+              localStorage.removeItem('email')
             }}
           >
             выйти

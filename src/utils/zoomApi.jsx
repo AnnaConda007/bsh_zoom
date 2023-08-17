@@ -5,6 +5,7 @@ export const getZoomTokens = async (redirect) => {
   try {
     const urlParams = new URLSearchParams(window.location.search)
     const authorizationCode = urlParams.get('code')
+    if (!authorizationCode) return
     const response = await axios.get(`${serverUrl}/exchangeCode`, {
       params: {
         code: authorizationCode,
@@ -24,6 +25,7 @@ export const getZoomTokens = async (redirect) => {
 export const updateAccesToken = async () => {
   try {
     const refreshToken = localStorage.getItem('zoomRefreshToken')
+    if (!refreshToken) return
     const response = await axios.post(`${serverUrl}/refreshToken`, {
       refreshToken: refreshToken,
       clientId: clientId,
