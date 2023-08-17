@@ -1,4 +1,4 @@
-import { dateToNumber } from '../useTime.utils'
+import { dateToNumber } from '../time.utils'
 import { dataBaseUrl } from '../../../contains'
 import { crossingTimeMessage, sendErrorMessage } from '../../../contains'
 

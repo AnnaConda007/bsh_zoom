@@ -1,17 +1,17 @@
 import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getcurrentTime } from '../../src/utils/useTime.utils'
+import { getcurrentTime } from '../../src/utils/time.utils'
 import Calendar from '../../src/components/calendar/calendar.component'
 import { ErrorContext } from '../../src/contexts/error.context'
 import zoomAutenficationErrorMassage from '../../src/components/zoomAutenficationErrorMassage/zoomAutenficationErrorMassage.component'
-import { autosaveTime, homeUrL } from '../../contains' 
+import { autosaveTime } from '../../contains'
 
 const Home = () => {
   const navigate = useNavigate()
   const timeToAutosave = autosaveTime
   const authorizationTime = parseInt(localStorage.getItem('authorizationTime'))
   const [currentTime, setCurrentTime] = useState(null)
-  const { setErrorMessage, setErrorExsist, setAutoHide } = useContext(ErrorContext)
+  const { setErrorMessage, setErrorExsist, setAutoHide, errorExsist } = useContext(ErrorContext)
 
   useEffect(() => {
     const fetchCurrentTime = async () => {
@@ -25,7 +25,7 @@ const Home = () => {
     const checkZoomAuthorization = () => {
       const urlParams = new URLSearchParams(window.location.search)
       const authorizationCode = urlParams.get('code')
-      if (authorizationCode === null) {
+      if (authorizationCode === null && errorExsist ) {
         setErrorExsist(true)
         setErrorMessage(zoomAutenficationErrorMassage)
         setAutoHide(false)

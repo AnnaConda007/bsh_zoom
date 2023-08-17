@@ -1,5 +1,5 @@
-import { updateAccesToken } from './getZoomData'
-import { calculateDuration } from './useTime.utils'
+import { updateAccesToken } from './zoomAPI'
+import { calculateDuration } from './time.utils'
 import { limitErrorMessage, serverUrl, serverErrorMessage } from '../../contains'
 import axios from 'axios'
 import { clearMettingTimeArr } from './slots/upDateSlots.utils'
@@ -37,12 +37,12 @@ export const createMeet = async ({ conferenceTopic, timeStart, timeEnd, setError
   }
 }
 
-export const updateConferenceInfo = async ({ meetingId, newMeetingData, setErrorExsist, setErrorMessage }) => {
+export const updateMeet = async ({ meetingId, newMeetingData, setErrorExsist, setErrorMessage }) => {
   try {
     let accessToken = localStorage.getItem('zoomAccesToken')
     const id = meetingId
     const data = newMeetingData
-    const response = await axios.patch(`${serverUrl}/updateConferenceInfo`, {
+    const response = await axios.patch(`${serverUrl}/updateMeet`, {
       accessToken: accessToken,
       id: id,
       data: data,
@@ -51,7 +51,7 @@ export const updateConferenceInfo = async ({ meetingId, newMeetingData, setError
   } catch (error) {
     if (error.response && error.response.data.code === 124) {
       await updateAccesToken()
-      return await updateConferenceInfo({ meetingId, newMeetingData, setErrorExsist, setErrorMessage })
+      return await updateMeet({ meetingId, newMeetingData, setErrorExsist, setErrorMessage })
     } else if (error.response && error.response.data.code === 429) {
       setErrorExsist(true)
       setErrorMessage(limitErrorMessage)
@@ -63,14 +63,14 @@ export const updateConferenceInfo = async ({ meetingId, newMeetingData, setError
   }
 }
 
-export const deleteConference = async ({ meetingId, setErrorExsist, setErrorMessage, startTime, startEnd }) => {
+export const deleteMeet = async ({ meetingId, setErrorExsist, setErrorMessage, startTime, startEnd }) => {
   try {
     let accessToken = localStorage.getItem('zoomAccesToken')
     const id = meetingId
     const clearedMetting = await clearMettingTimeArr({ start: `${startTime}Z`, end: `${startEnd}Z` })
 
     if (!clearedMetting) return
-    const response = await axios.delete(`${serverUrl}/deleteConference`, {
+    const response = await axios.delete(`${serverUrl}/deleteMeet`, {
       data: {
         accessToken: accessToken,
         id: id,
@@ -83,7 +83,7 @@ export const deleteConference = async ({ meetingId, setErrorExsist, setErrorMess
   } catch (error) {
     if (error.response && error.response.data.code === 124) {
       await updateAccesToken()
-      return await deleteConference({ meetingId, setErrorExsist, setErrorMessage, startTime, startEnd })
+      return await deleteMeet({ meetingId, setErrorExsist, setErrorMessage, startTime, startEnd })
     } else if (error.response && error.response.data.code === 429) {
       setErrorExsist(true)
       setErrorMessage(limitErrorMessage)

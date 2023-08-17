@@ -8,19 +8,19 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/ru'
 import Header from '../header/header'
 import ModalBox from '../modal/modal'
-import { checkPastDate } from '../../utils/useTime.utils'
+import { checkPastDate } from '../../utils/time.utils'
 import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
 import useWebSocket from '../../hooks/useWebSocket'
 import styles from './calendar.module.scss'
-import { useTaggedDates } from '../../hooks/useMeetingData'
+import { markMettingDates } from '../../hooks/markMettingDates'
 
 const Calendar = () => {
   const [modal, setModal] = useState(false)
   const { setActiveDate, taggedDates } = useContext(DatesContext)
   const { setDisabledDate, setErrorExsist, errorExsist, errorMessage, autoHide } = useContext(ErrorContext)
   useWebSocket()
-  useTaggedDates()
+  markMettingDates()
 
   const handleDateClick = async (date) => {
     const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY')

@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
 import { errorMessageForCompareErrorTime, errorMessageForPastTimeError } from '../../contains'
+
 export const getcurrentTime = async () => {
   try {
     const response = await fetch('https://worldtimeapi.org/api/timezone/Europe/Moscow')
@@ -40,6 +41,7 @@ export const checkPastTime = async ({ date, setErrorExsist, setErrorMessage }) =
     return false
   }
 }
+
 export const dateToNumber = (date) => {
   const number = Math.floor(new Date(date).getTime() / 1000)
   return number

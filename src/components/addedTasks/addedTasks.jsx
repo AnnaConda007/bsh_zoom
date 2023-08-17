@@ -10,8 +10,8 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
 import styles from './addedTasks.module.scss'
-import { deleteConference, updateConferenceInfo } from '../../utils/manageConference.utils'
-import { calculateDuration, compareStartEndMeeting, checkPastTime } from '../../utils/useTime.utils'
+import { deleteMeet, updateMeet } from '../../utils/manageConference.utils'
+import { calculateDuration, compareStartEndMeeting, checkPastTime } from '../../utils/time.utils'
 import { formatedDateToUTS } from '../../utils/formatting.utils'
 import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
@@ -35,7 +35,7 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
     if (checkPastTimeResponse) {
       return
     }
-    const startLessEnd = compareStartEndMeeting({ startTime: timeStart.$d, endTime: tasksForActiveDate[index].timeEnd , setErrorExsist, setErrorMessage})
+    const startLessEnd = compareStartEndMeeting({ startTime: timeStart.$d, endTime: tasksForActiveDate[index].timeEnd, setErrorExsist, setErrorMessage })
     if (startLessEnd) {
       return
     }
@@ -57,7 +57,7 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
       duration: duration,
       start_time: formatedDateToUTS(timeStart, activeDate),
     }
-    await updateConferenceInfo({ meetingId, newMeetingData: newStartTimeValue, setErrorExsist, setErrorMessage })
+    await updateMeet({ meetingId, newMeetingData: newStartTimeValue, setErrorExsist, setErrorMessage })
   }
 
   const upDateEndTime = async (timeEnd, index) => {
@@ -84,7 +84,7 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
     const newEndTimeValue = {
       duration: duration,
     }
-    updateConferenceInfo({ meetingId, newMeetingData: newEndTimeValue, setErrorExsist, setErrorMessage })
+    updateMeet({ meetingId, newMeetingData: newEndTimeValue, setErrorExsist, setErrorMessage })
   }
 
   const handleEditBtn = (index) => {
@@ -108,7 +108,7 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
     const newTopicValue = {
       topic: editingValue,
     }
-    updateConferenceInfo({ meetingId, newMeetingData: newTopicValue, setErrorExsist, setErrorMessage })
+    updateMeet({ meetingId, newMeetingData: newTopicValue, setErrorExsist, setErrorMessage })
     setTasksForActiveDate(updatedTasks)
     setisEditingIndex(null)
   }
@@ -127,7 +127,7 @@ const AddedTasks = ({ tasksForActiveDate, setTasksForActiveDate }) => {
     const meetingId = tasksForActiveDate[index].meetingId
     const startTime = tasksForActiveDate[index].timeStart
     const startEnd = tasksForActiveDate[index].timeEnd
-    const deleteConferenceRsponse = await deleteConference({ meetingId, setErrorExsist, setErrorMessage, startTime, startEnd })
+    const deleteConferenceRsponse = await deleteMeet({ meetingId, setErrorExsist, setErrorMessage, startTime, startEnd })
     if (deleteConferenceRsponse.status === 200) return
     setTasksForActiveDate(updatedTasks)
     if (index === isEditingIndex) {
