@@ -2,7 +2,7 @@ import './authorizationform.styles.scss'
 import { Button, FormControl, TextField } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { redirectHomeUrL } from '../../../contains'
-import { getcurrentTime } from '../../../utils/currentTime.utils'
+import { getcurrentTime } from '../../utils/time.utils'
 function AuthorizationForm() {
   const [currentTime, setCurrentTime] = useState(null)
   const [error, setError] = useState('')
@@ -29,8 +29,7 @@ function AuthorizationForm() {
   const sendAuthorizationData = async () => {
     try {
       const apiKey = import.meta.env.VITE_DB_API
-      const authorizationUrl =
-        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='
+      const authorizationUrl = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='
       const response = await fetch(`${authorizationUrl}${apiKey}`, {
         method: 'POST',
         body: JSON.stringify(formValue),
@@ -45,14 +44,14 @@ function AuthorizationForm() {
         const data = await response.json()
         const errorMessage = data.error.message
         switch (errorMessage) {
-        case 'INVALID_PASSWORD':
-          setError('Неверный пароль')
-          break
-        case 'EMAIL_NOT_FOUND':
-          setError('Неверный email')
-          break
-        default:
-          console.error(error)
+          case 'INVALID_PASSWORD':
+            setError('Неверный пароль')
+            break
+          case 'EMAIL_NOT_FOUND':
+            setError('Неверный email')
+            break
+          default:
+            console.error(error)
         }
       }
     } catch (error) {
@@ -99,7 +98,7 @@ function AuthorizationForm() {
       </FormControl>
       <p className='text-danger'>{error}</p>
       <Button variant='contained' type='submit' autoComplete='off' sx={{ width: '30%' }}>
-        отправить
+        войти
       </Button>
     </form>
   )

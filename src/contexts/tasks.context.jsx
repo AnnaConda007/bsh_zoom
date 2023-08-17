@@ -1,18 +1,21 @@
 import { createContext, useState } from 'react'
 
-export const TaskInfoContext = createContext({
+export const TasksContext = createContext({
   conferenceTopic: '',
   setConferenceTopic: () => {},
   timeStart: '',
   setTimeStart: () => {},
   timeEnd: '',
   setTimeEnd: () => {},
+  tasksForActiveDate: [],
+  setTasksForActiveDate: () => {},
 })
 
-export const TaskInfoProvider = ({ children }) => {
+export const TasksProvider = ({ children }) => {
   const [conferenceTopic, setConferenceTopic] = useState('')
   const [timeStart, setTimeStart] = useState('')
   const [timeEnd, setTimeEnd] = useState('')
+  const [tasksForActiveDate, setTasksForActiveDate] = useState([])
 
   const value = {
     conferenceTopic,
@@ -21,6 +24,8 @@ export const TaskInfoProvider = ({ children }) => {
     setTimeStart,
     timeEnd,
     setTimeEnd,
+    tasksForActiveDate,
+    setTasksForActiveDate,
   }
-  return <TaskInfoContext.Provider value={value}> {children} </TaskInfoContext.Provider>
+  return <TasksContext.Provider value={value}> {children} </TasksContext.Provider>
 }

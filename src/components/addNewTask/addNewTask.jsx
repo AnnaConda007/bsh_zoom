@@ -5,40 +5,28 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { TimePicker } from '@mui/x-date-pickers/TimePicker'
 import styles from './addNewTask.module.scss'
-import { formatedDateToUTS } from '../../../utils/formatting.utils'
-import { checkPastTime } from '../../../utils/currentTime.utils'
-import { compareStartEndMeeting } from '../../../utils/calculat.utils'
-import { createMeet } from '../../../utils/manageConference.utils'
-import { DisabledContext } from '../../contexts/disabled.context'
+import { formatedDateToUTS } from '../../utils/formatting.utils'
+import { checkPastTime, compareStartEndMeeting } from '../../utils/time.utils'
+import { createMeet } from '../../utils/manageConference.utils'
+import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
-import { TaskInfoContext } from '../../contexts/taskInfo.context'
-import {
-  errorMessageForCompareErrorTime,
-  errorMessageForPastTimeError,
-} from '../../../contains'
-const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
+import { TasksContext } from '../../contexts/tasks.context'
+import { processAndPushTimeSlot } from '../../utils/slots/addSlots.utils'
+
+const AddNewTask = ({  setTasksForActiveDate }) => {
   const defaultTask = { taskValue: '', timeStart: '', timeEnd: '', meetingUrl: '' }
   const [newTaskObj, setNewTaskObj] = useState(defaultTask)
   const { activeDate, taggedDates, setTaggedDates } = useContext(DatesContext)
-  const { disabledDate, errorExsist, SetErrorExsist, SetErrorMessage } =
-    useContext(DisabledContext)
-  const {
-    conferenceTopic,
-    setConferenceTopic,
-    timeStart,
-    setTimeStart,
-    timeEnd,
-    setTimeEnd,
-  } = useContext(TaskInfoContext)
+  const { disabledDate, setErrorExsist, setErrorMessage } = useContext(ErrorContext)
+  const { conferenceTopic, setConferenceTopic, timeStart, setTimeStart, timeEnd, setTimeEnd } = useContext(TasksContext)
+
   const fullnessTimeForNewTask = async (selectedTime, timeKey) => {
-    const errorExsistResponse = await checkPastTime(selectedTime, activeDate)
-    SetErrorExsist(errorExsistResponse)
-    SetErrorMessage(errorMessageForPastTimeError)
+    const date = formatedDateToUTS(selectedTime, activeDate)
+    await checkPastTime({ date, setErrorExsist, setErrorMessage })
     setNewTaskObj((prevTask) => ({
       ...prevTask,
       [timeKey]: selectedTime,
     }))
-    const date = formatedDateToUTS(selectedTime, activeDate)
     if (timeKey === 'timeStart') {
       setTimeStart(date)
     }
@@ -47,7 +35,7 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
     }
   }
 
-  const fullnessValueForNewTask = (value) => {
+  const fullnessValueForNewTask = async (value) => {
     setNewTaskObj((prevTask) => ({
       ...prevTask,
       taskValue: value,
@@ -56,23 +44,14 @@ const AddNewTask = ({ pulledTasks, setPulledTasks }) => {
   }
 
   const handleAddTaskBtn = async () => {
-    const compareRes = compareStartEndMeeting(
-      newTaskObj.timeStart.$d,
-      newTaskObj.timeEnd.$d
-    )
-    SetErrorExsist(compareRes)
-    SetErrorMessage(errorMessageForCompareErrorTime)
-    if (errorExsist === true || compareRes === true) return
-    if (
-      newTaskObj.taskValue.trim() === '' ||
-      newTaskObj.timeStart === '' ||
-      newTaskObj.timeEnd === ''
-    )
-      return
-    await createMeet(SetErrorExsist, SetErrorMessage, conferenceTopic, timeStart, timeEnd)
-    const updatedTasks = [...pulledTasks]
-    updatedTasks.push(newTaskObj)
-    setPulledTasks(updatedTasks)
+    const startLessEnd = compareStartEndMeeting({ startTime: timeStart, endTime: timeEnd, setErrorExsist, setErrorMessage })
+    if (startLessEnd) return
+    if (newTaskObj.taskValue.trim() === '' || newTaskObj.timeStart === '' || newTaskObj.timeEnd === '') return
+    const succesCeateTimeSlot = await processAndPushTimeSlot({ timeStart, timeEnd, setErrorExsist, setErrorMessage })
+    if (!succesCeateTimeSlot) return
+    const createMeetReponse = await createMeet({ conferenceTopic, timeStart, timeEnd, setErrorExsist, setErrorMessage })
+    if (!createMeetReponse) return
+    setTasksForActiveDate((prevTasks) => [...prevTasks, newTaskObj])
     setNewTaskObj(defaultTask)
     if (!taggedDates.includes(activeDate)) {
       setTaggedDates((prevDates) => [...prevDates, activeDate])

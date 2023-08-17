@@ -1,12 +1,12 @@
 import { DatesProvider } from './dates.context'
-import { DisabledCProvider } from './disabled.context'
-import { TaskInfoProvider } from './taskInfo.context'
+import { ErrorProvider } from './error.context'
+import { TasksProvider } from './tasks.context'
 export const Providers = ({ children }) => {
   return (
     <DatesProvider>
-      <TaskInfoProvider>
-        <DisabledCProvider>{children} </DisabledCProvider>
-      </TaskInfoProvider>
+      <TasksProvider>
+        <ErrorProvider>{children} </ErrorProvider>
+      </TasksProvider>
     </DatesProvider>
   )
 }

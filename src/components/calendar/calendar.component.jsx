@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react'
+import { useState, useContext } from 'react'
 import { Badge } from '@mui/material'
 import { pickersDay } from './pickersDay-style'
 import { LocalizationProvider, DateCalendar, PickersDay } from '@mui/x-date-pickers'
@@ -8,42 +8,33 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/ru'
 import Header from '../header/header'
 import ModalBox from '../modal/modal'
-import { getTaggedDate } from '../../../utils/getZoomData.utils'
-import { homeUrL } from '../../../contains'
-import { getZoomTokens } from '../../../utils/getZoomData.utils'
-import { checkPastDate } from '../../../utils/currentTime.utils'
-import { DisabledContext } from '../../contexts/disabled.context'
+import { checkPastDate } from '../../utils/time.utils'
+import { ErrorContext } from '../../contexts/error.context'
 import { DatesContext } from '../../contexts/dates.context'
+import useWebSocket from '../../hooks/useWebSocket'
 import styles from './calendar.module.scss'
+import { markMettingDates } from '../../hooks/markMettingDates'
 
 const Calendar = () => {
   const [modal, setModal] = useState(false)
-  const { setActiveDate, taggedDates, setTaggedDates } = useContext(DatesContext)
-  const { SetDisabledDate, SetErrorExsist, SetErrorMessage, errorExsist, errorMessage } =
-    useContext(DisabledContext)
-
-  useEffect(() => {
-    const getTokens = async () => {
-      await getZoomTokens(homeUrL, SetErrorExsist, SetErrorMessage)
-    }
-    getTokens()
-
-    const getDates = async () => {
-      try {
-        setTaggedDates(await getTaggedDate(SetErrorExsist, SetErrorMessage))
-      } catch (error) {
-        console.error('Ошибка при попытке получения TaggedDates ', error)
-      }
-    }
-    getDates()
-  }, [])
+  const { setActiveDate, taggedDates } = useContext(DatesContext)
+  const { setDisabledDate, setErrorExsist, errorExsist, errorMessage, autoHide } = useContext(ErrorContext)
+  useWebSocket()
+  markMettingDates()
 
   const handleDateClick = async (date) => {
     const formattedDate = dayjs(date.day.$d).format('DD-MM-YYYY')
     setActiveDate(formattedDate)
     const disabledDateDate = await checkPastDate(formattedDate)
-    SetDisabledDate(disabledDateDate)
+    setDisabledDate(disabledDateDate)
     setModal(true)
+  }
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+    setErrorExsist(false)
   }
 
   const slotProps = {
@@ -56,21 +47,10 @@ const Calendar = () => {
       }
     },
   }
-
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return
-    }
-    SetErrorExsist(false)
-  }
   const ServerDay = (props) => {
     const { day, isDateInArray, ...other } = props
     return (
-      <Badge
-        key={day.toString()}
-        overlap='circular'
-        badgeContent={isDateInArray ? '🟢' : undefined}
-      >
+      <Badge key={day.toString()} overlap='circular' badgeContent={isDateInArray ? '🟢' : undefined}>
         <PickersDay {...other} day={day} sx={pickersDay} />
       </Badge>
     )
@@ -79,7 +59,7 @@ const Calendar = () => {
     <div className={styles.wrap}>
       <Snackbar
         open={errorExsist}
-        onClose={handleSnackbarClose}
+        onClose={autoHide === true ? handleSnackbarClose : null}
         autoHideDuration={4000}
         message={errorMessage}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
