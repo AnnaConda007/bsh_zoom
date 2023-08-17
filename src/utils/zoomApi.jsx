@@ -25,6 +25,7 @@ export const getZoomTokens = async (redirect) => {
 export const updateAccesToken = async () => {
   try {
     const refreshToken = localStorage.getItem('zoomRefreshToken')
+    if (!refreshToken) return
     const response = await axios.post(`${serverUrl}/refreshToken`, {
       refreshToken: refreshToken,
       clientId: clientId,
