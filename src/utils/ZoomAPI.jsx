@@ -10,7 +10,7 @@ export const getZoomTokens = async (redirect) => {
         code: authorizationCode,
         redirecturl: redirect,
         clientId: clientId,
-        clientSecret: clientSecret,
+        clientSecret: clientSecret,   
       },
     })
     localStorage.setItem('zoomRefreshToken', response.data.refresh_token)
