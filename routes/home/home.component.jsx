@@ -25,7 +25,7 @@ const Home = () => {
     const checkZoomAuthorization = () => {
       const urlParams = new URLSearchParams(window.location.search)
       const authorizationCode = urlParams.get('code')
-      if (authorizationCode === null && errorExsist ) {
+      if (authorizationCode === null && errorExsist) {
         setErrorExsist(true)
         setErrorMessage(zoomAutenficationErrorMassage)
         setAutoHide(false)
