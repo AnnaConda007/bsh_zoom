@@ -1,4 +1,4 @@
-import { dateToNumber } from '../useTime.utils'
+import { dateToNumber } from '../time.utils'
 import { getMatchingTimeSlots, pushTimeSlot, generateTimeSlotsInRange, getTimeSlots } from './addSlots.utils'
 
 export const clearMettingTimeArr = async ({ start, end }) => {

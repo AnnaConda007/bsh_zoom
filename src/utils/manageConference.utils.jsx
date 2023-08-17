@@ -1,5 +1,5 @@
-import { updateAccesToken } from './getZoomData'
-import { calculateDuration } from './useTime.utils'
+import { updateAccesToken } from './zoomApi'
+import { calculateDuration } from './time.utils'
 import { limitErrorMessage, serverUrl, serverErrorMessage } from '../../contains'
 import axios from 'axios'
 import { clearMettingTimeArr } from './slots/upDateSlots.utils'

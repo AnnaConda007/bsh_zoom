@@ -1,55 +1,17 @@
 import { useContext, useEffect } from 'react'
 import { ErrorContext } from '../contexts/error.context'
-import { getListMeeting } from '../utils/getZoomData'
 import { formatedDateFromUTStoDMY } from '../utils/formatting.utils'
-import { updateAccesToken } from '../utils/getZoomData'
+import { updateAccesToken, getListMeeting } from '../utils/zoomApi'
 import { limitErrorMessage, serverErrorMessage } from '../../contains'
 import { DatesContext } from '../contexts/dates.context'
-import { calculatTimeEnd } from '../utils/useTime.utils'
+import { calculatTimeEnd } from '../utils/time.utils'
 import { TasksContext } from '../contexts/tasks.context'
-import { homeUrL } from '../../contains'
 let hasRetried = false
 setInterval(() => {
   hasRetried = true
 }, 3540000) // 59 минут
 
-export const useTaggedDates = () => {
-  const { setErrorExsist, setErrorMessage } = useContext(ErrorContext)
-  const { setTaggedDates, upDateTaggedDateNeed, setUpDateTaggedDateNeed } = useContext(DatesContext)
-  const getDates = async () => {
-    try {
-      const taggedDateArr = []
-      const conferenceData = await getListMeeting(homeUrL)
-      const meetings = conferenceData.meetings
-      meetings.forEach((miting) => {
-        const startTime = miting.start_time
-        const date = formatedDateFromUTStoDMY(startTime)
-        if (!taggedDateArr.includes(date)) {
-          taggedDateArr.push(date)
-        }
-      })
-      setTaggedDates(taggedDateArr)
-      setUpDateTaggedDateNeed(false)
-    } catch (error) {
-      if (error.response && error.response.data.code === 124 && hasRetried === false) {
-        await updateAccesToken()
-        return await getDates(setErrorExsist, setErrorMessage)
-      } else if (error.response && error.response.data.code === 429) {
-        setErrorExsist(true)
-        setErrorMessage(limitErrorMessage)
-      } else if (error.code === 'ERR_NETWORK') {
-        setErrorMessage(serverErrorMessage)
-        setErrorExsist(true)
-      }
-      console.error('Ошибка при попытке получения ListMeeting', error)
-    }
-  }
-  useEffect(() => {
-    getDates()
-  }, [upDateTaggedDateNeed])
-}
-
-export const useConferenceInfo = () => {
+export const useMeettingData = () => {
   const { setErrorExsist, setErrorMessage } = useContext(ErrorContext)
   const { activeDate } = useContext(DatesContext)
   const { setTasksForActiveDate } = useContext(TasksContext)
