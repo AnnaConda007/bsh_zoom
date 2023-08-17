@@ -5,6 +5,7 @@ export const getZoomTokens = async (redirect) => {
   try {
     const urlParams = new URLSearchParams(window.location.search)
     const authorizationCode = urlParams.get('code')
+    if (!authorizationCode) return
     const response = await axios.get(`${serverUrl}/exchangeCode`, {
       params: {
         code: authorizationCode,
