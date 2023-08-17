@@ -1,4 +1,4 @@
-import { updateAccesToken } from './zoomAPI'
+import { updateAccesToken } from './apiZoom'
 import { calculateDuration } from './time.utils'
 import { limitErrorMessage, serverUrl, serverErrorMessage } from '../../contains'
 import axios from 'axios'
