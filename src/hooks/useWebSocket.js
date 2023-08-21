@@ -6,6 +6,7 @@ const useWebSocket = () => {
   useEffect(() => {
     const ws = new WebSocket(vebSocketUrl)
     ws.onmessage = (message) => {
+      console.log("message", message)
       setUpDateTaggedDateNeed(true)
     }
     ws.onerror = (error) => {
